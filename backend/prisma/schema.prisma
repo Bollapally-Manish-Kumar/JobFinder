@@ -1,0 +1,111 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Plan enum for subscription tiers
+enum Plan {
+  BASIC       // Free - View 1 job only
+  BASIC_PLUS  // ₹10 - All jobs + resume builder
+  AI          // ₹20 - Everything + AI Job Match
+  PRO_PLUS    // ₹30 - Everything + ATS Score + Skill Gap
+}
+
+// User model for authentication and subscription
+model User {
+  id              String    @id @default(uuid())
+  email           String    @unique
+  password        String?   // Optional for Google OAuth users
+  name            String?
+  googleId        String?   @unique // Google OAuth ID
+  authProvider    String    @default("local") // "local" or "google"
+  role            String    @default("USER") // "USER" or "ADMIN"
+  plan            Plan      @default(BASIC) // Current subscription plan
+  paymentVerified Boolean   @default(false) // Admin verified payment
+  paidAt          DateTime? // When payment was verified
+  expiresAt       DateTime? // When subscription expires (30 days after paidAt)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  payments     Payment[]
+  savedJobs    SavedJob[]
+  applications JobApplication[]
+}
+
+// Job model for storing scraped job listings
+model Job {
+  id              String   @id @default(uuid())
+  title           String
+  company         String
+  location        String
+  experience      String?
+  salary          String?
+  description     String?
+  source          String   // Where the job was scraped from (Arbeitnow, TheMuse, etc.)
+  url             String   @unique // Unique URL to prevent duplicates
+  verified        Boolean  @default(true)
+  type            String?  // FULL_TIME, INTERNSHIP, PART_TIME, CONTRACT
+  category        String?  // SOFTWARE, DATA, AI_ML, NON_TECH
+  isIndiaEligible Boolean  @default(false) // India or Remote eligible
+  isRemote        Boolean  @default(false) // Remote job
+  postedAt        DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  savedBy      SavedJob[]
+  applications JobApplication[]
+}
+
+// SavedJob model for user's saved/bookmarked jobs
+model SavedJob {
+  id        String   @id @default(uuid())
+  userId    String
+  jobId     String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+}
+
+// Payment model for UPI transactions with UTR verification
+model Payment {
+  id              String   @id @default(uuid())
+  userId          String
+  utr             String   @unique // 12-digit UTR number
+  amount          Int      // Amount in rupees (10, 20, or 30)
+  plan            String   // "BASIC_PLUS", "AI", or "PRO_PLUS"
+  status          String   @default("pending") // pending, verified, rejected
+  method          String   @default("upi")
+  rejectionReason String?  // Reason if rejected
+  verifiedAt      DateTime?
+  verifiedBy      String?  // Admin who verified
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Job Application Tracker model
+model JobApplication {
+  id        String   @id @default(uuid())
+  userId    String
+  jobId     String
+  status    String   @default("APPLIED") // APPLIED, INTERVIEW, OFFER, REJECTED
+  notes     String?
+  appliedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
+}
