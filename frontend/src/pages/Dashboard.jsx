@@ -247,7 +247,7 @@ function Dashboard() {
                     {syncStatus.jobsAddedToday} New Jobs Today! 🎉
                   </h3>
                   <p className="text-dark-400 text-xs md:text-sm hidden sm:block">
-                    From {syncStatus.sourceBreakdown.map(s => `${s.source} (${s.count})`).join(', ')}
+                    Fresh opportunities available
                   </p>
                 </>
               ) : (
