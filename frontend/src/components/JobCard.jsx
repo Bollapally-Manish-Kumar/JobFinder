@@ -2,7 +2,7 @@
  * JobCard Component - Displays job listing with blur for unpaid users
  */
 
-import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check, Sparkles } from 'lucide-react';
+import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Helper function to check if job is new (added within last 24 hours)
@@ -47,17 +47,7 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
   const isNew = isNewJob(job.createdAt);
 
   return (
-    <div className={`card card-hover p-4 md:p-5 ${isLocked ? 'relative overflow-hidden' : ''} ${isNew ? 'border-green-500/30' : ''}`}>
-      {/* NEW badge for recently added jobs */}
-      {isNew && !isLocked && (
-        <div className="absolute top-2 left-2 z-20">
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-[10px] font-bold rounded-full shadow-lg animate-pulse">
-            <Sparkles className="w-3 h-3" />
-            NEW
-          </span>
-        </div>
-      )}
-
+    <div className={`card card-hover p-4 md:p-5 relative overflow-hidden ${isNew && !isLocked ? 'ring-1 ring-green-500/40' : ''}`}>
       {/* Locked overlay */}
       {isLocked && (
         <div className="absolute inset-0 bg-dark-900/60 backdrop-blur-sm z-10 flex items-center justify-center">
@@ -88,11 +78,18 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
             </div>
           </div>
           
-          {/* Source badge */}
+          {/* Source badge and NEW tag */}
           <div className="flex flex-col items-end gap-1 flex-shrink-0">
-            <span className="badge badge-source text-[10px] md:text-xs">
-              {job.source}
-            </span>
+            <div className="flex items-center gap-1.5">
+              {isNew && !isLocked && (
+                <span className="px-1.5 py-0.5 bg-green-500 text-white text-[10px] font-bold rounded uppercase tracking-wide">
+                  New
+                </span>
+              )}
+              <span className="badge badge-source text-[10px] md:text-xs">
+                {job.source}
+              </span>
+            </div>
             {freshness && (
               <span className={`px-1.5 md:px-2 py-0.5 rounded text-[10px] md:text-xs flex items-center gap-1 ${freshness.bg} ${freshness.color}`}>
                 <Clock className="w-2.5 h-2.5 md:w-3 md:h-3" />
