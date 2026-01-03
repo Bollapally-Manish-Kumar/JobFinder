@@ -1,10 +1,10 @@
 /**
  * Payment Page - UPI with UTR verification
- * 3-tier plan system:
+ * 4-tier plan system:
  * - BASIC (Free) - Default
- * - BASIC_PLUS (₹9/month) - Unlimited jobs access
- * - AI (₹29/month) - AI job matching
- * - PRO_PLUS (₹59/month) - All features + Unlimited AI
+ * - BASIC_PLUS (₹10/month) - Premium features
+ * - AI (₹20/month) - AI job matching
+ * - PRO_PLUS (₹30/month) - All features
  */
 
 import { useState, useEffect } from 'react';
@@ -28,65 +28,56 @@ import toast from 'react-hot-toast';
 import paymentService from '../services/paymentService';
 import useAuthStore from '../hooks/useAuthStore';
 
-// Plan definitions - Updated pricing
+// Plan definitions
 const PLANS = {
   BASIC_PLUS: {
     id: 'BASIC_PLUS',
     name: 'Basic Plus',
-    price: 9,
+    price: 10,
     icon: Zap,
     color: 'primary',
     gradient: 'from-primary-500 to-blue-500',
-    tag: 'Most Popular',
     features: [
       'Unlimited job access',
+      'Resume LaTeX generator',
+      'Verified badge',
       'Save & track jobs',
-      'Job alerts (Email only)',
-      'Ad-free experience',
-      '✔ Verified User badge'
-    ],
-    cta: 'Unlock All Jobs for ₹9',
-    subtext: 'Less than ₹0.30 per day • Cancel anytime'
+      'Early notifications',
+      'Ad-free experience'
+    ]
   },
   AI: {
     id: 'AI',
     name: 'AI Match',
-    price: 29,
+    price: 20,
     icon: Brain,
     color: 'purple',
     gradient: 'from-purple-500 to-pink-500',
-    tag: 'Best Value',
     recommended: true,
     features: [
       'All Basic Plus features',
-      'Resume LaTeX generator',
       'AI-powered job matching',
-      'Match score with reasons',
       'Resume skill analysis',
-      'Missing skills insights',
-      '5 AI matches per day',
-      '✔✔ AI Verified badge'
-    ],
-    cta: 'Get AI Match',
-    subtext: '⭐ Most shortlisted candidates use AI Match'
+      'Personalized recommendations',
+      'Match score for each job',
+      'Missing skills insights'
+    ]
   },
   PRO_PLUS: {
     id: 'PRO_PLUS',
     name: 'Pro Plus',
-    price: 59,
+    price: 30,
     icon: Crown,
     color: 'yellow',
     gradient: 'from-yellow-500 to-orange-500',
-    tag: 'Pro',
     features: [
       'All AI Match features',
-      'Unlimited AI job matches',
-      'Resume improvement suggestions',
-      'Priority support (Email + WhatsApp)',
-      '✔✔✔ Pro Verified badge'
-    ],
-    cta: 'Go Pro – Get the Edge',
-    subtext: 'Interview tips, salary insights & analytics unlock automatically'
+      'Priority support (Coming Soon)',
+      'Advanced analytics (Coming Soon)',
+      'Resume templates library (Coming Soon)',
+      'Interview preparation tips (Coming Soon)',
+      'Salary insights (Coming Soon)'
+    ]
   }
 };
 
@@ -470,27 +461,20 @@ function Payment() {
       <div className="grid lg:grid-cols-3 gap-6">
         {Object.entries(PLANS).map(([planId, plan]) => {
           const IconComponent = plan.icon;
-          const isBasicPlus = planId === 'BASIC_PLUS';
-          const isAI = planId === 'AI';
           const isProPlus = planId === 'PRO_PLUS';
           return (
             <div 
               key={planId} 
-              className={`card p-6 relative overflow-hidden ${isBasicPlus ? 'border-2 border-primary-500/50' : ''} ${isAI ? 'border-2 border-purple-500/50' : ''} ${isProPlus ? 'border-2 border-yellow-500/50' : ''}`}
+              className={`card p-6 relative overflow-hidden ${plan.recommended ? 'border-2 border-purple-500/50' : ''} ${isProPlus ? 'border-2 border-yellow-500/50' : ''}`}
             >
               <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r ${plan.gradient} opacity-20 rounded-full blur-3xl`} />
               
-              {/* Tag badges */}
-              {isBasicPlus && (
-                <div className="absolute top-4 right-4 bg-gradient-to-r from-primary-500 to-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                  MOST POPULAR
-                </div>
-              )}
-              {isAI && (
+              {plan.recommended && (
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-                  BEST VALUE
+                  RECOMMENDED
                 </div>
               )}
+              
               {isProPlus && (
                 <div className="absolute top-4 right-4">
                   <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full">
@@ -511,7 +495,7 @@ function Payment() {
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
                     <span className="text-xl text-dark-400">₹</span>
-                    <span className={`text-4xl font-bold ${isBasicPlus ? 'gradient-text' : isAI ? 'text-purple-400' : 'text-yellow-400'}`}>{plan.price}</span>
+                    <span className="text-4xl font-bold gradient-text">{plan.price}</span>
                     <span className="text-dark-400">/ month</span>
                   </div>
                 </div>
@@ -520,7 +504,7 @@ function Payment() {
                 <ul className="space-y-2 mb-6">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className={`w-4 h-4 ${isBasicPlus ? 'text-primary-400' : isAI ? 'text-purple-400' : 'text-yellow-400'} flex-shrink-0`} />
+                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                       <span className="text-dark-300">{feature}</span>
                     </li>
                   ))}
@@ -530,19 +514,17 @@ function Payment() {
                 <div className="relative">
                   <button
                     onClick={() => handleSelectPlan(planId)}
-                    className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 bg-gradient-to-r ${plan.gradient} hover:opacity-90 ${isProPlus ? 'text-black' : 'text-white'} transition-all`}
+                    className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white transition-all`}
                   >
                     <Smartphone className="w-5 h-5" />
-                    {plan.cta}
+                    Pay ₹{plan.price}
                   </button>
+                  {isProPlus && (
+                    <span className="coming-soon-badge absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-500 text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg shadow-primary-500/30 whitespace-nowrap border border-primary-400">
+                      Coming Soon
+                    </span>
+                  )}
                 </div>
-                
-                {/* Subtext */}
-                {plan.subtext && (
-                  <p className={`text-center text-xs mt-3 ${isBasicPlus ? 'text-dark-400' : isAI ? 'text-purple-400' : 'text-yellow-400/80'}`}>
-                    {plan.subtext}
-                  </p>
-                )}
               </div>
             </div>
           );

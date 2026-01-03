@@ -138,7 +138,7 @@ export const requirePaid = (req, res, next) => {
 };
 
 /**
- * Middleware to require AI plan (₹29+)
+ * Middleware to require AI plan (₹20+)
  */
 export const requireAIPlan = (req, res, next) => {
   if (!req.user) {
@@ -157,7 +157,7 @@ export const requireAIPlan = (req, res, next) => {
   
   if (!hasAIAccess) {
     return res.status(403).json({ 
-      error: 'AI Job Match plan required (₹29/month)',
+      error: 'AI Job Match plan required (₹20/month)',
       code: 'AI_PLAN_REQUIRED',
       currentPlan: req.user.plan,
       requiredPlan: 'AI or PRO_PLUS',

@@ -44,10 +44,11 @@ const howItWorks = [
 
 const features = [
   'Unlimited job access',
+  'Resume LaTeX generator',
+  'Verified Badge',
   'Save & track jobs',
-  'Job alerts (Email only)',
-  'Ad-free experience',
-  '✔ Verified User badge'
+  'Early notifications',
+  'Ad-free experience'
 ];
 
 function Home() {
@@ -163,21 +164,18 @@ function Home() {
           </div>
 
           <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-6">
-            {/* Basic Plus - ₹9 - MOST POPULAR */}
-            <div className="card p-6 relative overflow-hidden border-2 border-primary-500/50">
+            {/* Basic Plus - ₹10 */}
+            <div className="card p-6 relative overflow-hidden">
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary-500/20 rounded-full blur-3xl" />
-              <div className="absolute top-4 right-4 bg-gradient-to-r from-primary-500 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                MOST POPULAR
-              </div>
               
               <div className="relative">
                 <div className="text-center mb-6">
                   <span className="px-3 py-1 bg-primary-500/20 text-primary-400 rounded-full text-sm font-medium">
-                    ⚡ Basic Plus
+                    Basic Plus
                   </span>
                   <div className="flex items-baseline justify-center gap-1 mt-4">
                     <span className="text-xl text-dark-400">₹</span>
-                    <span className="text-4xl font-bold gradient-text">9</span>
+                    <span className="text-4xl font-bold gradient-text">10</span>
                     <span className="text-dark-400">/ month</span>
                   </div>
                 </div>
@@ -185,7 +183,7 @@ function Home() {
                 <ul className="space-y-3 mb-6">
                   {features.map((feature, index) => (
                     <li key={index} className="flex items-center gap-3 text-sm">
-                      <CheckCircle className="w-4 h-4 text-primary-400 flex-shrink-0" />
+                      <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                       <span className="text-dark-300">{feature}</span>
                     </li>
                   ))}
@@ -195,20 +193,17 @@ function Home() {
                   to="/register"
                   className="btn-primary w-full flex items-center justify-center gap-2 py-3"
                 >
-                  Unlock All Jobs for ₹9
+                  Get Started
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <p className="text-center text-xs text-dark-400 mt-3">
-                  Less than ₹0.30 per day • Cancel anytime
-                </p>
               </div>
             </div>
 
-            {/* AI Match - ₹29 - BEST VALUE */}
+            {/* AI Match - ₹20 */}
             <div className="card p-6 relative overflow-hidden border-2 border-purple-500/50">
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl" />
               <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                BEST VALUE
+                POPULAR
               </div>
               
               <div className="relative">
@@ -218,7 +213,7 @@ function Home() {
                   </span>
                   <div className="flex items-baseline justify-center gap-1 mt-4">
                     <span className="text-xl text-dark-400">₹</span>
-                    <span className="text-4xl font-bold text-purple-400">29</span>
+                    <span className="text-4xl font-bold text-purple-400">20</span>
                     <span className="text-dark-400">/ month</span>
                   </div>
                 </div>
@@ -230,15 +225,7 @@ function Home() {
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                    <span className="text-dark-300">Resume LaTeX generator</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-sm">
-                    <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
                     <span className="text-dark-300">AI-powered job matching</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-sm">
-                    <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                    <span className="text-dark-300">Match score with reasons</span>
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
@@ -246,15 +233,11 @@ function Home() {
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                    <span className="text-dark-300">Match score for each job</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-sm">
+                    <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
                     <span className="text-dark-300">Missing skills insights</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-sm">
-                    <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                    <span className="text-dark-300">5 AI matches per day</span>
-                  </li>
-                  <li className="flex items-center gap-3 text-sm">
-                    <CheckCircle className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                    <span className="text-dark-300">✔✔ AI Verified badge</span>
                   </li>
                 </ul>
 
@@ -265,13 +248,10 @@ function Home() {
                   Get AI Match
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-                <p className="text-center text-xs text-purple-400 mt-3">
-                  ⭐ Most shortlisted candidates use AI Match
-                </p>
               </div>
             </div>
 
-            {/* Pro Plus - ₹59 - PRO */}
+            {/* Pro Plus - ₹30 */}
             <div className="card p-6 relative overflow-hidden border-2 border-yellow-500/50">
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-yellow-500/20 rounded-full blur-3xl" />
               <div className="absolute top-4 right-4">
@@ -287,7 +267,7 @@ function Home() {
                   </span>
                   <div className="flex items-baseline justify-center gap-1 mt-4">
                     <span className="text-xl text-dark-400">₹</span>
-                    <span className="text-4xl font-bold text-yellow-400">59</span>
+                    <span className="text-4xl font-bold text-yellow-400">30</span>
                     <span className="text-dark-400">/ month</span>
                   </div>
                 </div>
@@ -299,32 +279,38 @@ function Home() {
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                    <span className="text-dark-300">Unlimited AI job matches</span>
+                    <span className="text-dark-300">Priority support <span className="text-yellow-500 text-xs">(Coming Soon)</span></span>
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                    <span className="text-dark-300">Resume improvement suggestions</span>
+                    <span className="text-dark-300">Advanced analytics <span className="text-yellow-500 text-xs">(Coming Soon)</span></span>
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                    <span className="text-dark-300">Priority support (Email + WhatsApp)</span>
+                    <span className="text-dark-300">Resume templates <span className="text-yellow-500 text-xs">(Coming Soon)</span></span>
                   </li>
                   <li className="flex items-center gap-3 text-sm">
                     <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
-                    <span className="text-dark-300">✔✔✔ Pro Verified badge</span>
+                    <span className="text-dark-300">Interview tips <span className="text-yellow-500 text-xs">(Coming Soon)</span></span>
+                  </li>
+                  <li className="flex items-center gap-3 text-sm">
+                    <CheckCircle className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                    <span className="text-dark-300">Salary insights <span className="text-yellow-500 text-xs">(Coming Soon)</span></span>
                   </li>
                 </ul>
 
-                <Link
-                  to="/register"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 text-black transition-all"
-                >
-                  Go Pro – Get the Edge
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <p className="text-center text-xs text-yellow-400/80 mt-3">
-                  Interview tips, salary insights & analytics unlock automatically
-                </p>
+                <div className="relative">
+                  <Link
+                    to="/register"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-lg font-semibold bg-gradient-to-r from-yellow-500 to-orange-500 hover:opacity-90 text-black transition-all"
+                  >
+                    Go Pro
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <span className="coming-soon-badge absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-500 text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg shadow-primary-500/30 whitespace-nowrap border border-primary-400">
+                    Coming Soon
+                  </span>
+                </div>
               </div>
             </div>
           </div>

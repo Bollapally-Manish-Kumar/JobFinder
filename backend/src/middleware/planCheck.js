@@ -2,12 +2,6 @@
  * Plan Check Middleware
  * - Auto-downgrades expired subscriptions
  * - Provides feature access guards
- * 
- * Plan Pricing:
- * - BASIC: Free - View 1 job only
- * - BASIC_PLUS: ₹9/month - Unlimited jobs, save & track
- * - AI: ₹29/month - All Basic + AI matching (5/day)
- * - PRO_PLUS: ₹59/month - All AI + Unlimited AI matches
  */
 
 import { prisma } from '../utils/prisma.js';
@@ -22,11 +16,11 @@ const PLAN_HIERARCHY = {
 
 // Feature to minimum plan mapping
 const FEATURE_ACCESS = {
-  viewAllJobs: 'BASIC_PLUS',    // ₹9+
-  resumeBuilder: 'AI',          // ₹29+ (moved from BASIC_PLUS)
-  aiJobMatch: 'AI',             // ₹29+
-  unlimitedAI: 'PRO_PLUS',      // ₹59 only
-  prioritySupport: 'PRO_PLUS'   // ₹59 only
+  viewAllJobs: 'BASIC_PLUS',    // ₹10+
+  resumeBuilder: 'BASIC_PLUS',  // ₹10+
+  aiJobMatch: 'AI',             // ₹20+
+  atsScore: 'PRO_PLUS',         // ₹30 only
+  skillGap: 'PRO_PLUS'          // ₹30 only
 };
 
 /**

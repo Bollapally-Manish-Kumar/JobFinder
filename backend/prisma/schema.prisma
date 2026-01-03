@@ -13,9 +13,9 @@ datasource db {
 // Plan enum for subscription tiers
 enum Plan {
   BASIC       // Free - View 1 job only
-  BASIC_PLUS  // ₹9 - Unlimited jobs + save & track
-  AI          // ₹29 - All Basic + AI Job Match (5/day)
-  PRO_PLUS    // ₹59 - All AI + Unlimited AI matches
+  BASIC_PLUS  // ₹10 - All jobs + resume builder
+  AI          // ₹20 - Everything + AI Job Match
+  PRO_PLUS    // ₹30 - Everything + ATS Score + Skill Gap
 }
 
 // User model for authentication and subscription
