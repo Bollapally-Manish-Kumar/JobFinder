@@ -165,6 +165,52 @@
     }
   }
   
+  /* Coming Soon pulse animation */
+  .coming-soon-badge {
+    animation: comingSoonPulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes comingSoonPulse {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+  
+  /* Shimmer animation for coming soon text */
+  .shimmer-text {
+    background: linear-gradient(90deg, #eab308 0%, #fbbf24 50%, #eab308 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 2s linear infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  
+  /* Partner logo hover animation */
+  .partner-logo {
+    @apply transition-all duration-300 grayscale hover:grayscale-0 hover:scale-110;
+  }
+  
+  /* Floating animation for badges */
+  .float-badge {
+    animation: floatBadge 3s ease-in-out infinite;
+  }
+  
+  @keyframes floatBadge {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+  
   /* Background gradient overlay */
   .bg-gradient-overlay {
     background: linear-gradient(135deg, 

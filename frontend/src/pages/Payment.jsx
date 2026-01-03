@@ -461,16 +461,28 @@ function Payment() {
       <div className="grid lg:grid-cols-3 gap-6">
         {Object.entries(PLANS).map(([planId, plan]) => {
           const IconComponent = plan.icon;
+          const isProPlus = planId === 'PRO_PLUS';
           return (
             <div 
               key={planId} 
-              className={`card p-6 relative overflow-hidden ${plan.recommended ? 'border-2 border-purple-500/50' : ''}`}
+              className={`card p-6 relative overflow-hidden ${plan.recommended ? 'border-2 border-purple-500/50' : ''} ${isProPlus ? 'border-2 border-yellow-500/50' : ''}`}
             >
               <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r ${plan.gradient} opacity-20 rounded-full blur-3xl`} />
               
               {plan.recommended && (
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                   RECOMMENDED
+                </div>
+              )}
+              
+              {isProPlus && (
+                <div className="absolute top-4 right-4 flex gap-2">
+                  <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full">
+                    PRO
+                  </span>
+                  <span className="coming-soon-badge bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                    ✨ Coming Soon
+                  </span>
                 </div>
               )}
               
@@ -489,6 +501,9 @@ function Payment() {
                     <span className="text-4xl font-bold gradient-text">{plan.price}</span>
                     <span className="text-dark-400">/ month</span>
                   </div>
+                  {isProPlus && (
+                    <p className="mt-2 text-xs shimmer-text font-semibold">Features launching soon!</p>
+                  )}
                 </div>
 
                 {/* Features */}
