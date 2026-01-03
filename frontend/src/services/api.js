@@ -4,10 +4,8 @@
 
 import axios from 'axios';
 
-// Use relative URL for Vite proxy in development, full URL in production
-const API_URL = import.meta.env.PROD 
-  ? (import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
-  : '/api';
+// API URL configuration
+const API_URL = import.meta.env.VITE_API_URL || 'https://jobfinder-wog8.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
