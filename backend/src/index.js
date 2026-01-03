@@ -23,8 +23,9 @@ import { dirname, join } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Load environment variables from backend folder
+// Load environment variables (from .env file in local dev, from system in production)
 dotenv.config({ path: join(__dirname, '..', '.env') });
+dotenv.config(); // Also check default .env location
 
 console.log('✅ Environment loaded');
 console.log('   JWT_SECRET:', process.env.JWT_SECRET ? 'SET' : '❌ MISSING');
@@ -54,7 +55,10 @@ const PORT = process.env.PORT || 5000;
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: [
+    "http://localhost:5173",
+    "https://job-finder-two-kappa.vercel.app"
+  ],
   credentials: true
 }));
 
