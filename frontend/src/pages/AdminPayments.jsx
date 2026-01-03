@@ -150,20 +150,20 @@ function AdminPayments() {
     switch(plan) {
       case 'PRO_PLUS':
         return (
-          <span className="flex items-center gap-1 px-2 py-1 bg-orange-500/20 text-orange-400 text-xs rounded-full">
-            ₹30 Pro Plus
+          <span className="flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">
+            ₹59 Pro Plus
           </span>
         );
       case 'AI':
         return (
-          <span className="flex items-center gap-1 px-2 py-1 bg-yellow-500/20 text-yellow-400 text-xs rounded-full">
-            ₹20 AI Match
+          <span className="flex items-center gap-1 px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded-full">
+            ₹29 AI Match
           </span>
         );
       case 'BASIC_PLUS':
         return (
-          <span className="flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-full">
-            ₹10 Basic Plus
+          <span className="flex items-center gap-1 px-2 py-1 bg-primary-500/20 text-primary-400 text-xs rounded-full">
+            ₹9 Basic Plus
           </span>
         );
       default:

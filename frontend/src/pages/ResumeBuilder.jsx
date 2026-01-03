@@ -83,8 +83,8 @@ function ResumeBuilder() {
     toast.success('Resume downloaded!');
   };
 
-  // Show upgrade prompt for non-paid users (only BASIC_PLUS and above can access)
-  const hasAccess = user?.role === 'ADMIN' || (user?.paymentVerified && user?.plan !== 'BASIC');
+  // Show upgrade prompt for non-paid users (AI plan ₹29+ required for Resume Builder)
+  const hasAccess = user?.role === 'ADMIN' || (user?.paymentVerified && ['AI', 'PRO_PLUS'].includes(user?.plan));
   if (!hasAccess) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -92,14 +92,14 @@ function ResumeBuilder() {
           <div className="w-16 h-16 mx-auto rounded-full bg-primary-500/20 flex items-center justify-center mb-4">
             <Lock className="w-8 h-8 text-primary-500" />
           </div>
-          <h2 className="text-xl font-bold text-white mb-2">Premium Feature</h2>
+          <h2 className="text-xl font-bold text-white mb-2">AI Match Feature</h2>
           <p className="text-dark-400 mb-6">
-            The Resume Builder is available for Basic Plus subscribers and above. 
+            The Resume LaTeX Generator is available for AI Match subscribers and above. 
             Upgrade to generate professional LaTeX resumes tailored to job descriptions.
           </p>
           <Link to="/payment" className="btn-primary inline-flex items-center gap-2">
             <Sparkles className="w-4 h-4" />
-            Upgrade from ₹10/month
+            Get AI Match for ₹29/month
           </Link>
         </div>
       </div>

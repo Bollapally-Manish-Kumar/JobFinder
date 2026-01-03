@@ -11,7 +11,6 @@ import {
   CreditCard, 
   LogOut,
   Search,
-  BadgeCheck,
   Menu,
   X,
   ClipboardList,
@@ -20,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import useAuthStore from '../hooks/useAuthStore';
+import VerificationBadge from './VerificationBadge';
 
 // Regular navigation items
 const navigation = [
@@ -90,38 +90,19 @@ function Layout({ children }) {
                 <p className="text-sm font-medium text-white truncate">
                   {user?.name || 'User'}
                 </p>
-                {/* Badge based on plan */}
-                {user?.paymentVerified && user?.plan === 'PRO_PLUS' && (
-                  <>
-                    {/* Crown badge for Pro Plus (₹30) */}
-                    <BadgeCheck className="w-4 h-4 text-orange-400" />
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-[8px]">★</span>
-                    </div>
-                  </>
-                )}
-                {user?.paymentVerified && user?.plan === 'AI' && (
-                  <>
-                    {/* Gold badge for AI plan (₹20) */}
-                    <BadgeCheck className="w-4 h-4 text-yellow-400" />
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-[8px]">AI</span>
-                    </div>
-                  </>
-                )}
-                {user?.paymentVerified && user?.plan === 'BASIC_PLUS' && (
-                  /* Blue badge for Basic Plus (₹10) */
-                  <BadgeCheck className="w-4 h-4 text-blue-400" />
+                {/* Verification badge based on plan */}
+                {user?.paymentVerified && user?.plan !== 'BASIC' && (
+                  <VerificationBadge plan={user.plan} size="sm" />
                 )}
               </div>
               {user?.paymentVerified && user?.plan !== 'BASIC' && (
                 <div className="flex items-center gap-1 text-xs mt-0.5">
                   {user?.plan === 'PRO_PLUS' ? (
-                    <span className="text-orange-400">Pro Plus Member</span>
+                    <span className="text-yellow-400">Pro Verified</span>
                   ) : user?.plan === 'AI' ? (
-                    <span className="text-yellow-400">AI Pro Member</span>
+                    <span className="text-purple-400">AI Verified</span>
                   ) : (
-                    <span className="text-blue-400">Plus Member</span>
+                    <span className="text-blue-400">Verified User</span>
                   )}
                 </div>
               )}

@@ -1,12 +1,13 @@
 /**
  * Resume Routes
  * Handles Gemini API integration for LaTeX resume generation
+ * Requires AI plan (₹29+) or higher
  */
 
 import express from 'express';
 import { body } from 'express-validator';
 import { generateResume } from '../controllers/resumeController.js';
-import { authenticate, requirePaid } from '../middlewares/auth.js';
+import { authenticate, requireAIPlan } from '../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ const resumeValidation = [
     .withMessage('Job description must be at least 50 characters')
 ];
 
-// Generate resume - requires paid subscription
-router.post('/generate', authenticate, requirePaid, resumeValidation, generateResume);
+// Generate resume - requires AI plan (₹29+)
+router.post('/generate', authenticate, requireAIPlan, resumeValidation, generateResume);
 
 export default router;
