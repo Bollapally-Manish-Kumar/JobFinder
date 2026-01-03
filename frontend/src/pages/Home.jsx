@@ -53,33 +53,33 @@ const features = [
 
 function Home() {
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="min-h-screen bg-dark-900 overflow-x-hidden">
       <Navbar />
 
       {/* Hero Section */}
-      <section id="home" className="relative pt-24 pb-16 overflow-hidden">
+      <section id="home" className="relative pt-20 md:pt-24 pb-12 md:pb-16 overflow-hidden">
         {/* Background effects */}
         <div className="absolute inset-0 stars-bg opacity-50" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-500/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] md:w-[800px] h-[400px] md:h-[800px] bg-primary-500/10 rounded-full blur-3xl" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Text content */}
             <div className="text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                 Find Every Job.
                 <br />
                 <span className="gradient-text">Before You Miss It.</span>
               </h1>
-              <p className="mt-6 text-lg text-dark-300 max-w-xl mx-auto lg:mx-0">
+              <p className="mt-4 md:mt-6 text-base md:text-lg text-dark-300 max-w-xl mx-auto lg:mx-0">
                 Jobs from Accenture, TCS, Infosys, Startups & Career Portals - in one place.
                 Never miss an opportunity again.
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link to="/register" className="btn-primary text-center py-3 px-8 text-lg">
+              <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
+                <Link to="/register" className="btn-primary text-center py-2.5 md:py-3 px-6 md:px-8 text-base md:text-lg">
                   View Jobs
                 </Link>
-                <Link to="/login" className="btn-secondary text-center py-3 px-8 text-lg">
+                <Link to="/login" className="btn-secondary text-center py-2.5 md:py-3 px-6 md:px-8 text-base md:text-lg">
                   Login
                 </Link>
               </div>
@@ -105,21 +105,21 @@ function Home() {
       </section>
 
       {/* How It Works */}
-      <section id="how-it-works" className="py-16 bg-dark-800/50">
+      <section id="how-it-works" className="py-12 md:py-16 bg-dark-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-8 md:mb-12">
             How It Works
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
             {howItWorks.map((item, index) => (
-              <div key={index} className="card card-hover p-6 text-center">
-                <div className="w-16 h-16 mx-auto rounded-full bg-primary-500/10 flex items-center justify-center mb-4">
-                  <item.icon className="w-8 h-8 text-primary-500" />
+              <div key={index} className="card card-hover p-4 md:p-6 text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto rounded-full bg-primary-500/10 flex items-center justify-center mb-3 md:mb-4">
+                  <item.icon className="w-6 h-6 md:w-8 md:h-8 text-primary-500" />
                 </div>
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <h3 className="text-lg md:text-xl font-semibold text-white mb-2">
                   {item.title}
                 </h3>
-                <p className="text-dark-400">
+                <p className="text-dark-400 text-sm md:text-base">
                   {item.description}
                 </p>
               </div>
@@ -129,22 +129,22 @@ function Home() {
       </section>
 
       {/* Popular Categories */}
-      <section className="py-16">
+      <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-white text-center mb-8 md:mb-12">
             Popular Categories
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {categories.map((category, index) => (
               <div
                 key={index}
-                className="card card-hover p-6 text-center cursor-pointer"
+                className="card card-hover p-4 md:p-6 text-center cursor-pointer"
               >
-                <div className="w-12 h-12 mx-auto rounded-lg bg-primary-500/10 flex items-center justify-center mb-3">
-                  <category.icon className="w-6 h-6 text-primary-500" />
+                <div className="w-10 h-10 md:w-12 md:h-12 mx-auto rounded-lg bg-primary-500/10 flex items-center justify-center mb-2 md:mb-3">
+                  <category.icon className="w-5 h-5 md:w-6 md:h-6 text-primary-500" />
                 </div>
-                <h3 className="font-semibold text-white">{category.name}</h3>
-                <p className="text-sm text-dark-400 mt-1">{category.count} jobs</p>
+                <h3 className="font-semibold text-white text-sm md:text-base">{category.name}</h3>
+                <p className="text-xs md:text-sm text-dark-400 mt-1">{category.count} jobs</p>
               </div>
             ))}
           </div>

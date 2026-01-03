@@ -188,12 +188,12 @@ function Dashboard() {
   };
 
   return (
-    <div>
+    <div className="pb-4">
       {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-bold text-white">
-            Welcome back, {user?.name || 'User'}! 👋
+      <div className="mb-4 md:mb-6">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
+          <h1 className="text-xl md:text-2xl font-bold text-white">
+            Welcome, {user?.name?.split(' ')[0] || 'User'}! 👋
           </h1>
           {/* Badge based on plan */}
           {user?.paymentVerified && user?.plan === 'PRO_PLUS' && (
@@ -234,43 +234,44 @@ function Dashboard() {
       </div>
 
       {/* Sync Status Banner */}
-      <div className="card p-4 mb-6 bg-gradient-to-r from-dark-800 to-dark-700 border-dark-600">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-primary-500/20 rounded-lg">
-              <TrendingUp className="w-6 h-6 text-primary-400" />
+      <div className="card p-3 md:p-4 mb-4 md:mb-6 bg-gradient-to-r from-dark-800 to-dark-700 border-dark-600">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="p-2 md:p-3 bg-primary-500/20 rounded-lg">
+              <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-primary-400" />
             </div>
             <div>
               {syncStatus.jobsAddedToday > 0 ? (
                 <>
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-base md:text-lg font-semibold text-white">
                     {syncStatus.jobsAddedToday} New Jobs Today! 🎉
                   </h3>
-                  <p className="text-dark-400 text-sm">
+                  <p className="text-dark-400 text-xs md:text-sm hidden sm:block">
                     From {syncStatus.sourceBreakdown.map(s => `${s.source} (${s.count})`).join(', ')}
                   </p>
                 </>
               ) : (
                 <>
-                  <h3 className="text-lg font-semibold text-white">
+                  <h3 className="text-base md:text-lg font-semibold text-white">
                     No new jobs posted today
                   </h3>
-                  <p className="text-dark-400 text-sm">
+                  <p className="text-dark-400 text-xs md:text-sm">
                     Check back later for fresh opportunities
                   </p>
                 </>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-4 text-sm text-dark-400">
-            <div className="flex items-center gap-2">
-              <Briefcase className="w-4 h-4" />
-              <span>{syncStatus.totalJobs} total jobs</span>
+          <div className="flex items-center gap-3 md:gap-4 text-xs md:text-sm text-dark-400">
+            <div className="flex items-center gap-1.5 md:gap-2">
+              <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              <span>{syncStatus.totalJobs} total</span>
             </div>
             {syncStatus.lastSyncAt && (
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                <span>Updated {new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
+              <div className="flex items-center gap-1.5 md:gap-2">
+                <Clock className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">Updated {new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
+                <span className="sm:hidden">{new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
               </div>
             )}
           </div>
@@ -278,7 +279,7 @@ function Dashboard() {
       </div>
 
       {/* Search and filters */}
-      <div className="card p-4 mb-6">
+      <div className="card p-3 md:p-4 mb-4 md:mb-6">
         <form onSubmit={handleSearch} className="flex flex-col gap-4">
           {/* Search row */}
           <div className="flex flex-col md:flex-row gap-4">
@@ -470,10 +471,10 @@ function Dashboard() {
 
       {/* Job listings */}
       {loading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="card p-5 animate-pulse">
-              <div className="h-6 bg-dark-700 rounded w-3/4 mb-3" />
+            <div key={i} className="card p-4 md:p-5 animate-pulse">
+              <div className="h-5 md:h-6 bg-dark-700 rounded w-3/4 mb-3" />
               <div className="h-4 bg-dark-700 rounded w-1/2 mb-4" />
               <div className="h-4 bg-dark-700 rounded w-full mb-2" />
               <div className="h-4 bg-dark-700 rounded w-2/3" />
@@ -481,14 +482,14 @@ function Dashboard() {
           ))}
         </div>
       ) : jobs.length === 0 ? (
-        <div className="card p-12 text-center">
-          <Briefcase className="w-12 h-12 text-dark-600 mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-white mb-2">No jobs found</h3>
-          <p className="text-dark-400">Try adjusting your search filters</p>
+        <div className="card p-8 md:p-12 text-center">
+          <Briefcase className="w-10 h-10 md:w-12 md:h-12 text-dark-600 mx-auto mb-4" />
+          <h3 className="text-lg md:text-xl font-semibold text-white mb-2">No jobs found</h3>
+          <p className="text-dark-400 text-sm md:text-base">Try adjusting your search filters</p>
         </div>
       ) : (
         <>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {jobs.map((job) => (
               <JobCard
                 key={job.id}
@@ -504,24 +505,24 @@ function Dashboard() {
 
           {/* Pagination */}
           {pagination.pages > 1 && (
-            <div className="flex items-center justify-center gap-4 mt-8">
+            <div className="flex items-center justify-center gap-2 md:gap-4 mt-6 md:mt-8">
               <button
                 onClick={() => fetchJobs(pagination.page - 1)}
                 disabled={pagination.page === 1}
-                className="btn-secondary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-secondary flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ChevronLeft className="w-4 h-4" />
-                Previous
+                <span className="hidden sm:inline">Previous</span>
               </button>
-              <span className="text-dark-400">
-                Page {pagination.page} of {pagination.pages}
+              <span className="text-dark-400 text-sm">
+                {pagination.page} / {pagination.pages}
               </span>
               <button
                 onClick={() => fetchJobs(pagination.page + 1)}
                 disabled={pagination.page === pagination.pages}
-                className="btn-secondary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-secondary flex items-center gap-1 md:gap-2 px-3 md:px-4 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                <span className="hidden sm:inline">Next</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

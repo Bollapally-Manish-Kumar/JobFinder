@@ -37,16 +37,16 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
   const freshness = getFreshness(job.postedAt);
 
   return (
-    <div className={`card card-hover p-5 ${isLocked ? 'relative overflow-hidden' : ''}`}>
+    <div className={`card card-hover p-4 md:p-5 ${isLocked ? 'relative overflow-hidden' : ''}`}>
       {/* Locked overlay */}
       {isLocked && (
         <div className="absolute inset-0 bg-dark-900/60 backdrop-blur-sm z-10 flex items-center justify-center">
-          <div className="text-center">
-            <Lock className="w-8 h-8 text-primary-500 mx-auto mb-2" />
-            <p className="text-dark-300 text-sm">Pay ₹10 to unlock</p>
+          <div className="text-center p-4">
+            <Lock className="w-6 h-6 md:w-8 md:h-8 text-primary-500 mx-auto mb-2" />
+            <p className="text-dark-300 text-xs md:text-sm">Pay ₹10 to unlock</p>
             <Link
               to="/payment"
-              className="inline-block mt-2 text-primary-500 text-sm font-medium hover:text-primary-400"
+              className="inline-block mt-2 text-primary-500 text-xs md:text-sm font-medium hover:text-primary-400"
             >
               Pay to Unlock
             </Link>
@@ -57,51 +57,52 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
       {/* Card content */}
       <div className={isLocked ? 'blur-content' : ''}>
         {/* Header */}
-        <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="flex items-start justify-between gap-2 md:gap-4 mb-3">
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-white truncate">
+            <h3 className="text-base md:text-lg font-semibold text-white truncate">
               {job.title}
             </h3>
             <div className="flex items-center gap-2 text-primary-400 mt-1">
-              <Building2 className="w-4 h-4 flex-shrink-0" />
-              <span className="text-sm truncate">{job.company}</span>
+              <Building2 className="w-3.5 h-3.5 md:w-4 md:h-4 flex-shrink-0" />
+              <span className="text-xs md:text-sm truncate">{job.company}</span>
             </div>
           </div>
           
           {/* Source badge */}
           <div className="flex flex-col items-end gap-1 flex-shrink-0">
-            <span className="badge badge-source">
+            <span className="badge badge-source text-[10px] md:text-xs">
               {job.source}
             </span>
             {freshness && (
-              <span className={`px-2 py-0.5 rounded text-xs flex items-center gap-1 ${freshness.bg} ${freshness.color}`}>
-                <Clock className="w-3 h-3" />
-                {freshness.text}
+              <span className={`px-1.5 md:px-2 py-0.5 rounded text-[10px] md:text-xs flex items-center gap-1 ${freshness.bg} ${freshness.color}`}>
+                <Clock className="w-2.5 h-2.5 md:w-3 md:h-3" />
+                <span className="hidden sm:inline">{freshness.text}</span>
+                <span className="sm:hidden">{freshness.text.split(' ')[0]}</span>
               </span>
             )}
           </div>
         </div>
 
         {/* Meta info */}
-        <div className="flex flex-wrap items-center gap-3 text-sm text-dark-400 mb-4">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3 text-xs md:text-sm text-dark-400 mb-3 md:mb-4">
           <div className="flex items-center gap-1">
-            <MapPin className="w-4 h-4" />
-            <span>{job.location}</span>
+            <MapPin className="w-3.5 h-3.5 md:w-4 md:h-4" />
+            <span className="truncate max-w-[120px] md:max-w-none">{job.location}</span>
           </div>
           {job.experience && (
             <div className="flex items-center gap-1">
-              <Briefcase className="w-4 h-4" />
+              <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
               <span>{job.experience}</span>
             </div>
           )}
           {job.salary && (
-            <span className="text-green-400">{job.salary}</span>
+            <span className="text-green-400 text-xs md:text-sm">{job.salary}</span>
           )}
         </div>
 
         {/* Description */}
         {job.description && (
-          <p className="text-dark-400 text-sm line-clamp-2 mb-4">
+          <p className="text-dark-400 text-xs md:text-sm line-clamp-2 mb-3 md:mb-4">
             {job.description}
           </p>
         )}
@@ -112,10 +113,10 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
             href={job.url || '#'}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary flex-1 flex items-center justify-center gap-2 text-sm"
+            className="btn-primary flex-1 flex items-center justify-center gap-1.5 md:gap-2 text-xs md:text-sm py-2"
           >
-            Apply Now
-            <ExternalLink className="w-4 h-4" />
+            <span>Apply</span>
+            <ExternalLink className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </a>
           
           {/* Track Application Button */}
