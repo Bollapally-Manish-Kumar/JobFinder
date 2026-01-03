@@ -8,7 +8,8 @@ import { Eye, EyeOff, Mail, Lock, User, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+// Backend URL for OAuth (production Render URL)
+const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://jobfinder-wog8.onrender.com';
 
 function Register() {
   const [name, setName] = useState('');
