@@ -49,7 +49,8 @@ function getFreshness(postedAt) {
   } else if (diffDays <= 30) {
     return { text: `${Math.floor(diffDays / 7)} weeks ago`, color: 'text-dark-400', bg: 'bg-dark-600' };
   } else {
-    return { text: 'Over a month ago', color: 'text-dark-500', bg: 'bg-dark-700' };
+    // Don't show tag for jobs over a month old
+    return null;
   }
 }
 
