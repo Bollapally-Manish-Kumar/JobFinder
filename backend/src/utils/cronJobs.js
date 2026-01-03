@@ -1,6 +1,6 @@
 /**
  * Job Scraper Cron Jobs
- * Automatically scrapes jobs every 30 minutes
+ * Automatically scrapes jobs every 2 hours
  */
 
 import cron from 'node-cron';
@@ -12,8 +12,8 @@ import { runAllScrapers } from '../scrapers/runAll.js';
 export function initializeCronJobs() {
   console.log('📅 Initializing cron jobs...');
 
-  // Run job scraper every 30 minutes
-  cron.schedule('*/30 * * * *', async () => {
+  // Run job scraper every 2 hours
+  cron.schedule('0 */2 * * *', async () => {
     const timestamp = new Date().toISOString();
     console.log(`\n🔄 [${timestamp}] Starting scheduled job scraping...`);
     
@@ -27,9 +27,9 @@ export function initializeCronJobs() {
     timezone: "Asia/Kolkata" // Adjust to your timezone
   });
 
-  console.log('✅ Cron job scheduled: Job scraping every 30 minutes');
+  console.log('✅ Cron job scheduled: Job scraping every 2 hours');
 
-  // Optional: Run immediately on startup if jobs are stale (older than 1 hour)
+  // Optional: Run immediately on startup if jobs are stale (older than 2 hours)
   checkAndRunIfStale();
 }
 
@@ -54,8 +54,8 @@ async function checkAndRunIfStale() {
 
     const hoursSinceLastSync = (Date.now() - latestJob.createdAt.getTime()) / (1000 * 60 * 60);
     
-    // Run if jobs are older than 1 hour (since we scrape every 30 mins)
-    if (hoursSinceLastSync > 1) {
+    // Run if jobs are older than 2 hours
+    if (hoursSinceLastSync > 2) {
       console.log(`⏰ Jobs are ${Math.floor(hoursSinceLastSync)}h old. Running refresh...`);
       await runAllScrapers();
     } else {
