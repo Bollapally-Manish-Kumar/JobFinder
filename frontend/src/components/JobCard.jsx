@@ -47,7 +47,7 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
   const isNew = isNewJob(job.createdAt);
 
   return (
-    <div className={`card card-hover p-4 md:p-5 relative overflow-hidden ${isNew && !isLocked ? 'ring-1 ring-green-500/40' : ''}`}>
+    <div className={`card card-hover p-4 md:p-5 relative overflow-hidden ${isNew && !isLocked ? 'ring-1 ring-primary-500/40' : ''}`}>
       {/* Locked overlay */}
       {isLocked && (
         <div className="absolute inset-0 bg-dark-900/60 backdrop-blur-sm z-10 flex items-center justify-center">
@@ -82,7 +82,7 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
           <div className="flex flex-col items-end gap-1 flex-shrink-0">
             <div className="flex items-center gap-1.5">
               {isNew && !isLocked && (
-                <span className="px-1.5 py-0.5 bg-green-500 text-white text-[10px] font-bold rounded uppercase tracking-wide">
+                <span className="px-1.5 py-0.5 bg-primary-500 text-dark-900 text-[10px] font-bold rounded uppercase tracking-wide">
                   New
                 </span>
               )}
