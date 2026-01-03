@@ -61,7 +61,8 @@ app.set('trust proxy', 1);
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://job-finder-two-kappa.vercel.app"
+    "https://job-finder-two-kappa.vercel.app",
+    "https://jobfinderplus.vercel.app"
   ],
   credentials: true
 }));
