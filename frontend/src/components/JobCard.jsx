@@ -5,16 +5,25 @@
 import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Helper function to check if job is new (scraped within last 2 hours)
-function isNewJob(createdAt) {
+// Helper function to check if job is new (scraped within last 2 hours AND posted within 7 days)
+function isNewJob(createdAt, postedAt) {
   if (!createdAt) return false;
   
-  const created = new Date(createdAt);
   const now = new Date();
+  const created = new Date(createdAt);
   const createdDiffHours = (now - created) / (1000 * 60 * 60);
   
-  // Must be scraped/added within last 2 hours (matches scraping interval)
-  return createdDiffHours <= 2;
+  // Must be scraped/added within last 2 hours
+  if (createdDiffHours > 2) return false;
+  
+  // If postedAt exists, must be posted within last 7 days (not old jobs)
+  if (postedAt) {
+    const posted = new Date(postedAt);
+    const postedDiffDays = (now - posted) / (1000 * 60 * 60 * 24);
+    if (postedDiffDays > 7) return false;
+  }
+  
+  return true;
 }
 
 // Helper function to format freshness
@@ -47,7 +56,7 @@ function getFreshness(postedAt) {
 function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTracking, trackingStatus }) {
   const { isLocked } = job;
   const freshness = getFreshness(job.postedAt);
-  const isNew = isNewJob(job.createdAt);
+  const isNew = isNewJob(job.createdAt, job.postedAt);
 
   return (
     <div className={`card card-hover p-4 md:p-5 relative overflow-hidden ${isNew && !isLocked ? 'ring-1 ring-primary-500/40' : ''}`}>
