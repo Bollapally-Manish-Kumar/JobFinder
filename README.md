@@ -76,7 +76,6 @@ jobfinder/
 - JWT Authentication
 - Razorpay Payment Gateway
 - Cheerio + Axios (scraping)
-- Puppeteer (for JS-heavy pages)
 
 ### AI
 - Google Gemini API (resume generation)

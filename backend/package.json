@@ -33,9 +33,6 @@
     "rss-parser": "^3.13.0",
     "uuid": "^9.0.1"
   },
-  "optionalDependencies": {
-    "puppeteer": "^21.6.1"
-  },
   "devDependencies": {
     "nodemon": "^3.0.2",
     "prisma": "^5.7.0"
