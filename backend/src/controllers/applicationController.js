@@ -3,9 +3,7 @@
  * Handles job application tracking: Applied, Interview, Offer, Rejected
  */
 
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma.js';
 
 // Valid application statuses
 const VALID_STATUSES = ['APPLIED', 'INTERVIEW', 'OFFER', 'REJECTED'];

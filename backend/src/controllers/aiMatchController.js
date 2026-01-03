@@ -3,10 +3,8 @@
  * Uses Groq API (llama3-70b-8192) to analyze resume and match with jobs
  */
 
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma.js';
 import { generateCompletion, GROQ_MODEL } from '../utils/groqClient.js';
-
-const prisma = new PrismaClient();
 
 /**
  * Analyze resume and match with top jobs

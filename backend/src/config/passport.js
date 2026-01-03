@@ -8,10 +8,8 @@
 
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma.js';
 import jwt from 'jsonwebtoken';
-
-const prisma = new PrismaClient();
 
 /**
  * Initialize Google OAuth Strategy

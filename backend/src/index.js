@@ -53,6 +53,10 @@ console.log('✅ All routes imported');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Trust proxy - required for Render/Vercel reverse proxies
+// This ensures express-rate-limit works correctly behind a proxy
+app.set('trust proxy', 1);
+
 // CORS configuration
 app.use(cors({
   origin: [
