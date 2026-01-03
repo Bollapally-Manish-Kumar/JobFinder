@@ -94,7 +94,8 @@ export const getJobs = asyncHandler(async (req, res) => {
       verified: true,
       type: true,
       category: true,
-      createdAt: true
+      createdAt: true,
+      postedAt: true
     }
   });
 

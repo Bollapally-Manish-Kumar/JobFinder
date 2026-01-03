@@ -2,8 +2,17 @@
  * JobCard Component - Displays job listing with blur for unpaid users
  */
 
-import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check } from 'lucide-react';
+import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+// Helper function to check if job is new (added within last 24 hours)
+function isNewJob(createdAt) {
+  if (!createdAt) return false;
+  const created = new Date(createdAt);
+  const now = new Date();
+  const diffHours = (now - created) / (1000 * 60 * 60);
+  return diffHours <= 24;
+}
 
 // Helper function to format freshness
 function getFreshness(postedAt) {
@@ -35,9 +44,20 @@ function getFreshness(postedAt) {
 function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTracking, trackingStatus }) {
   const { isLocked } = job;
   const freshness = getFreshness(job.postedAt);
+  const isNew = isNewJob(job.createdAt);
 
   return (
-    <div className={`card card-hover p-4 md:p-5 ${isLocked ? 'relative overflow-hidden' : ''}`}>
+    <div className={`card card-hover p-4 md:p-5 ${isLocked ? 'relative overflow-hidden' : ''} ${isNew ? 'border-green-500/30' : ''}`}>
+      {/* NEW badge for recently added jobs */}
+      {isNew && !isLocked && (
+        <div className="absolute top-2 left-2 z-20">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-[10px] font-bold rounded-full shadow-lg animate-pulse">
+            <Sparkles className="w-3 h-3" />
+            NEW
+          </span>
+        </div>
+      )}
+
       {/* Locked overlay */}
       {isLocked && (
         <div className="absolute inset-0 bg-dark-900/60 backdrop-blur-sm z-10 flex items-center justify-center">
