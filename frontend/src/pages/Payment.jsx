@@ -476,12 +476,9 @@ function Payment() {
               )}
               
               {isProPlus && (
-                <div className="absolute top-4 right-4 flex gap-2">
+                <div className="absolute top-4 right-4">
                   <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full">
                     PRO
-                  </span>
-                  <span className="coming-soon-badge bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                    ✨ Coming Soon
                   </span>
                 </div>
               )}
@@ -501,9 +498,6 @@ function Payment() {
                     <span className="text-4xl font-bold gradient-text">{plan.price}</span>
                     <span className="text-dark-400">/ month</span>
                   </div>
-                  {isProPlus && (
-                    <p className="mt-2 text-xs shimmer-text font-semibold">Features launching soon!</p>
-                  )}
                 </div>
 
                 {/* Features */}
@@ -517,13 +511,20 @@ function Payment() {
                 </ul>
 
                 {/* Pay button */}
-                <button
-                  onClick={() => handleSelectPlan(planId)}
-                  className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white transition-all`}
-                >
-                  <Smartphone className="w-5 h-5" />
-                  Pay ₹{plan.price}
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => handleSelectPlan(planId)}
+                    className={`w-full py-3 rounded-lg font-semibold flex items-center justify-center gap-2 bg-gradient-to-r ${plan.gradient} hover:opacity-90 text-white transition-all`}
+                  >
+                    <Smartphone className="w-5 h-5" />
+                    Pay ₹{plan.price}
+                  </button>
+                  {isProPlus && (
+                    <span className="coming-soon-badge absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
+                      ✨ Coming Soon
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           );
