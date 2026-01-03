@@ -316,44 +316,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Job Sources Section */}
-      <section className="py-12 bg-dark-800/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h3 className="text-center text-lg font-semibold text-dark-300 mb-6">
-            🌐 Jobs Aggregated From Official APIs
-          </h3>
-          <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10">
-            <div className="flex flex-col items-center gap-2 partner-logo">
-              <div className="w-14 h-14 rounded-xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
-                <span className="text-2xl font-bold text-blue-400">Az</span>
-              </div>
-              <span className="text-xs text-dark-400">Adzuna</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 partner-logo">
-              <div className="w-14 h-14 rounded-xl bg-green-500/20 flex items-center justify-center border border-green-500/30">
-                <span className="text-2xl font-bold text-green-400">An</span>
-              </div>
-              <span className="text-xs text-dark-400">Arbeitnow</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 partner-logo">
-              <div className="w-14 h-14 rounded-xl bg-purple-500/20 flex items-center justify-center border border-purple-500/30">
-                <span className="text-2xl font-bold text-purple-400">Re</span>
-              </div>
-              <span className="text-xs text-dark-400">Remotive</span>
-            </div>
-            <div className="flex flex-col items-center gap-2 partner-logo">
-              <div className="w-14 h-14 rounded-xl bg-pink-500/20 flex items-center justify-center border border-pink-500/30">
-                <span className="text-2xl font-bold text-pink-400">Mu</span>
-              </div>
-              <span className="text-xs text-dark-400">The Muse</span>
-            </div>
-          </div>
-          <p className="text-center text-dark-500 text-xs mt-6">
-            All jobs are fetched directly from official partner APIs. No web scraping.
-          </p>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="py-8 border-t border-dark-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -365,10 +327,7 @@ function Home() {
               <span className="text-lg font-bold text-white">JobFinder+</span>
             </div>
             <div className="text-center">
-              <p className="text-dark-400 text-xs">
-                Powered by: Adzuna API • Arbeitnow API • Remotive API • The Muse API
-              </p>
-              <Link to="/disclaimer" className="text-primary-400 text-xs hover:underline mt-1 inline-block">
+              <Link to="/disclaimer" className="text-primary-400 text-xs hover:underline">
                 Disclaimer - We are not affiliated with employers
               </Link>
             </div>
