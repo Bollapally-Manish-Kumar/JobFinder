@@ -1,21 +1,24 @@
-# 1️⃣ Base image
-FROM node:20-alpine
+# 1️⃣ Base image (using slim instead of alpine for Prisma compatibility)
+FROM node:20-slim
 
-# 2️⃣ Set working directory
+# 2️⃣ Install OpenSSL (required by Prisma)
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
+# 3️⃣ Set working directory
 WORKDIR /app
 
-# 3️⃣ Copy package files AND prisma schema (needed for postinstall)
+# 4️⃣ Copy package files AND prisma schema (needed for postinstall)
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# 4️⃣ Install dependencies (postinstall will run prisma generate)
+# 5️⃣ Install dependencies (postinstall will run prisma generate)
 RUN npm install
 
-# 5️⃣ Copy rest of backend code
+# 6️⃣ Copy rest of backend code
 COPY . .
 
-# 6️⃣ Expose port
+# 7️⃣ Expose port
 EXPOSE 5000
 
-# 7️⃣ Start server
+# 8️⃣ Start server
 CMD ["npm", "start"]
