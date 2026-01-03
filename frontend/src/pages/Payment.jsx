@@ -520,8 +520,8 @@ function Payment() {
                     Pay ₹{plan.price}
                   </button>
                   {isProPlus && (
-                    <span className="coming-soon-badge absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap">
-                      ✨ Coming Soon
+                    <span className="coming-soon-badge absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-500 text-dark-900 text-xs font-bold px-3 py-1.5 rounded-full shadow-lg shadow-primary-500/30 whitespace-nowrap border border-primary-400">
+                      Coming Soon
                     </span>
                   )}
                 </div>
