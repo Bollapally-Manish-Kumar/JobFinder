@@ -215,17 +215,10 @@ function Payment() {
 
   // Payment Modal
   const planDetails = selectedPlan ? PLANS[selectedPlan] : null;
-  const qrUrl = qrData?.qrUrl;
-  // Get base URL without /api suffix for static files
-  const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-  const serverBaseUrl = apiBaseUrl.replace('/api', '');
-  // Use QR from API, or fallback to hardcoded path
-  const fullQrUrl = qrUrl 
-    ? (qrUrl.startsWith('http') ? qrUrl : `${serverBaseUrl}${qrUrl}`) 
-    : `${serverBaseUrl}/uploads/qr/payment-qr.jpg`;
   
-  // Debug log
-  console.log('QR URL Debug:', { qrUrl, apiBaseUrl, serverBaseUrl, fullQrUrl, qrImageError });
+  // Use GitHub raw URL for reliable QR image access
+  const GITHUB_QR_URL = 'https://raw.githubusercontent.com/Bollapally-Manish-Kumar/JobFinder/main/backend/uploads/qr/payment-qr.jpg';
+  const fullQrUrl = qrData?.qrUrl || GITHUB_QR_URL;
   
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
