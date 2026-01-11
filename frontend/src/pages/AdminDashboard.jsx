@@ -99,12 +99,22 @@ function AdminDashboard() {
   const fetchQrData = async () => {
     try {
       const data = await paymentService.getPaymentQR();
+      // Remove /api from the URL since uploads are at root level
+      const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const serverBaseUrl = apiBaseUrl.replace('/api', '');
+      
       if (data.qrUrl) {
-        const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-        setCurrentQrUrl(data.qrUrl.startsWith('http') ? data.qrUrl : `${apiBaseUrl}${data.qrUrl}`);
+        setCurrentQrUrl(data.qrUrl.startsWith('http') ? data.qrUrl : `${serverBaseUrl}${data.qrUrl}`);
+      } else {
+        // Fallback to default QR path
+        setCurrentQrUrl(`${serverBaseUrl}/uploads/qr/payment-qr.jpg`);
       }
     } catch (error) {
       console.error('Failed to fetch QR data:', error);
+      // Fallback to default QR path on error
+      const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const serverBaseUrl = apiBaseUrl.replace('/api', '');
+      setCurrentQrUrl(`${serverBaseUrl}/uploads/qr/payment-qr.jpg`);
     }
   };
 
@@ -418,18 +428,21 @@ function AdminDashboard() {
           </h2>
 
           {/* Current QR Code */}
-          {currentQrUrl && (
-            <div className="mb-6">
-              <p className="text-sm text-dark-400 mb-2">Current QR Code:</p>
-              <div className="bg-white rounded-lg p-4 inline-block">
-                <img 
-                  src={currentQrUrl} 
-                  alt="Current Payment QR" 
-                  className="w-48 h-48 object-contain"
-                />
-              </div>
+          <div className="mb-6">
+            <p className="text-sm text-dark-400 mb-2">Current QR Code:</p>
+            <div className="bg-white rounded-lg p-4 inline-block">
+              <img 
+                src={currentQrUrl || `${(import.meta.env.VITE_API_URL || 'http://localhost:5000').replace('/api', '')}/uploads/qr/payment-qr.jpg`} 
+                alt="Current Payment QR" 
+                className="w-48 h-48 object-contain"
+                onError={(e) => {
+                  console.error('QR image failed to load:', e.target.src);
+                  e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 24 24" fill="none" stroke="%23666" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 7h.01M7 12h.01M7 17h.01M12 7h.01M12 12h.01M12 17h.01M17 7h.01M17 12h.01M17 17h.01"/></svg>';
+                }}
+                onLoad={() => console.log('QR loaded successfully:', currentQrUrl)}
+              />
             </div>
-          )}
+          </div>
 
           {/* Upload New QR */}
           <div className="border-t border-dark-700 pt-6">
