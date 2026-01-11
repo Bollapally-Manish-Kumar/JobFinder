@@ -104,9 +104,15 @@ function Payment() {
   const fetchQRData = async () => {
     try {
       const data = await paymentService.getPaymentQR();
+      console.log('QR Data received:', data);
       setQrData(data);
     } catch (error) {
       console.error('Failed to fetch QR data:', error);
+      // Set fallback QR data if API fails
+      setQrData({
+        qrUrl: '/uploads/qr/payment-qr.jpg',
+        upiId: '9030405493@upi'
+      });
     }
   };
 
@@ -209,10 +215,13 @@ function Payment() {
   const planDetails = selectedPlan ? PLANS[selectedPlan] : null;
   const qrUrl = qrData?.qrUrl;
   const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-  // Use QR from API, or fallback to static path
+  // Use QR from API, or fallback to hardcoded path
   const fullQrUrl = qrUrl 
     ? (qrUrl.startsWith('http') ? qrUrl : `${apiBaseUrl}${qrUrl}`) 
-    : null;
+    : `${apiBaseUrl}/uploads/qr/payment-qr.jpg`;
+  
+  // State to track if QR image failed to load
+  const [qrImageError, setQrImageError] = useState(false);
   
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
@@ -235,30 +244,25 @@ function Payment() {
             <span className="font-medium text-white">Scan QR or Pay via UPI</span>
           </div>
 
-          {/* QR Code Display - Show if available */}
-          {fullQrUrl ? (
+          {/* QR Code Display - Always show */}
+          {!qrImageError && (
             <div className="bg-white rounded-lg p-4 mb-4 flex flex-col items-center">
               <img 
                 src={fullQrUrl} 
                 alt="Payment QR Code" 
                 className="w-48 h-48 object-contain"
                 onError={(e) => {
-                  e.target.parentElement.style.display = 'none';
+                  console.error('QR image failed to load:', fullQrUrl);
+                  setQrImageError(true);
                 }}
+                onLoad={() => console.log('QR image loaded successfully:', fullQrUrl)}
               />
               <p className="text-dark-800 text-sm mt-2 font-medium">Scan to pay ₹{planDetails.price}</p>
-            </div>
-          ) : (
-            <div className="bg-dark-700 rounded-lg p-4 mb-4 flex flex-col items-center border-2 border-dashed border-dark-500">
-              <div className="w-32 h-32 bg-dark-600 rounded-lg flex items-center justify-center mb-2">
-                <span className="text-4xl">📱</span>
-              </div>
-              <p className="text-dark-400 text-sm text-center">QR Code not available<br/>Please use UPI ID below</p>
             </div>
           )}
 
           <div className="bg-dark-700 rounded-lg p-4 mb-3">
-            <p className="text-sm text-dark-400 mb-2">Send ₹{planDetails.price} to this UPI ID:</p>
+            <p className="text-sm text-dark-400 mb-2">Or send ₹{planDetails.price} to this UPI ID:</p>
             <div className="flex items-center justify-between bg-dark-600 rounded-lg px-4 py-3">
               <span className="text-white font-mono">{qrData?.upiId || upiDetails?.upiId || '9030405493@upi'}</span>
               <button onClick={copyUpiId} className="text-primary-400 hover:text-primary-300">
