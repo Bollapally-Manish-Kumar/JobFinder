@@ -72,7 +72,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from uploads directory
+// Serve static files from uploads directory (backend/uploads)
+// __dirname = backend/src, so we go up one level to backend/, then into uploads/
 app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
 // Initialize Passport for Google OAuth
