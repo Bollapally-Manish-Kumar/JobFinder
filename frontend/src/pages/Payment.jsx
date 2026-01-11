@@ -216,9 +216,10 @@ function Payment() {
   // Payment Modal
   const planDetails = selectedPlan ? PLANS[selectedPlan] : null;
   
-  // Use GitHub raw URL for reliable QR image access
+  // Use GitHub raw URL for reliable QR image access (always works)
   const GITHUB_QR_URL = 'https://raw.githubusercontent.com/Bollapally-Manish-Kumar/JobFinder/main/backend/uploads/qr/payment-qr.jpg';
-  const fullQrUrl = qrData?.qrUrl || GITHUB_QR_URL;
+  // Only use API URL if it's a full HTTP URL, otherwise use GitHub
+  const fullQrUrl = (qrData?.qrUrl && qrData.qrUrl.startsWith('http')) ? qrData.qrUrl : GITHUB_QR_URL;
   
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
