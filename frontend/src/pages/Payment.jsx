@@ -253,21 +253,23 @@ function Payment() {
                   console.error('QR image failed to load:', fullQrUrl);
                   setQrImageError(true);
                 }}
-                onLoad={() => console.log('QR image loaded successfully:', fullQrUrl)}
               />
               <p className="text-dark-800 text-sm mt-2 font-medium">Scan to pay ₹{planDetails.price}</p>
             </div>
           )}
 
-          <div className="bg-dark-700 rounded-lg p-4 mb-3">
-            <p className="text-sm text-dark-400 mb-2">Or send ₹{planDetails.price} to this UPI ID:</p>
-            <div className="flex items-center justify-between bg-dark-600 rounded-lg px-4 py-3">
-              <span className="text-white font-mono">{qrData?.upiId || upiDetails?.upiId || '9030405493@upi'}</span>
-              <button onClick={copyUpiId} className="text-primary-400 hover:text-primary-300">
-                <Copy className="w-5 h-5" />
-              </button>
+          {/* Only show UPI ID if QR failed to load */}
+          {qrImageError && (
+            <div className="bg-dark-700 rounded-lg p-4 mb-3">
+              <p className="text-sm text-dark-400 mb-2">Send ₹{planDetails.price} to this UPI ID:</p>
+              <div className="flex items-center justify-between bg-dark-600 rounded-lg px-4 py-3">
+                <span className="text-white font-mono">{qrData?.upiId || upiDetails?.upiId || '9030405493@upi'}</span>
+                <button onClick={copyUpiId} className="text-primary-400 hover:text-primary-300">
+                  <Copy className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <button
             onClick={openUpiApp}
