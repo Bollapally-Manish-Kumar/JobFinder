@@ -72,9 +72,13 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files from uploads directory (backend/uploads)
+// Serve static files from uploads directory with CORS headers
 // __dirname = backend/src, so we go up one level to backend/, then into uploads/
-app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
+app.use('/uploads', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+}, express.static(join(__dirname, '..', 'uploads')));
 
 // Initialize Passport for Google OAuth
 app.use(passport.initialize());
