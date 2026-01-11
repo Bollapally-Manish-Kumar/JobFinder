@@ -216,11 +216,16 @@ function Payment() {
   // Payment Modal
   const planDetails = selectedPlan ? PLANS[selectedPlan] : null;
   const qrUrl = qrData?.qrUrl;
+  // Get base URL without /api suffix for static files
   const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const serverBaseUrl = apiBaseUrl.replace('/api', '');
   // Use QR from API, or fallback to hardcoded path
   const fullQrUrl = qrUrl 
-    ? (qrUrl.startsWith('http') ? qrUrl : `${apiBaseUrl}${qrUrl}`) 
-    : `${apiBaseUrl}/uploads/qr/payment-qr.jpg`;
+    ? (qrUrl.startsWith('http') ? qrUrl : `${serverBaseUrl}${qrUrl}`) 
+    : `${serverBaseUrl}/uploads/qr/payment-qr.jpg`;
+  
+  // Debug log
+  console.log('QR URL Debug:', { qrUrl, apiBaseUrl, serverBaseUrl, fullQrUrl, qrImageError });
   
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
