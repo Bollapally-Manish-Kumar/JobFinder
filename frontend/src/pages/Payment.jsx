@@ -90,6 +90,7 @@ function Payment() {
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [upiDetails, setUpiDetails] = useState(null);
   const [qrData, setQrData] = useState(null);
+  const [qrImageError, setQrImageError] = useState(false);
   
   const { user, updateUser } = useAuthStore();
 
@@ -148,6 +149,7 @@ function Payment() {
     setSelectedPlan(planId);
     setShowPaymentModal(true);
     setUtr('');
+    setQrImageError(false); // Reset QR error state when opening modal
   };
 
   // Copy UPI ID
@@ -219,9 +221,6 @@ function Payment() {
   const fullQrUrl = qrUrl 
     ? (qrUrl.startsWith('http') ? qrUrl : `${apiBaseUrl}${qrUrl}`) 
     : `${apiBaseUrl}/uploads/qr/payment-qr.jpg`;
-  
-  // State to track if QR image failed to load
-  const [qrImageError, setQrImageError] = useState(false);
   
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
