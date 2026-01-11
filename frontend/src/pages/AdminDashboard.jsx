@@ -4,6 +4,7 @@
  * - QR code upload for payments
  * - Job upload with AI auto-fill
  * - Payment request management
+ * - Scraping status monitoring
  */
 
 import { useState, useEffect } from 'react';
@@ -21,7 +22,9 @@ import {
   ExternalLink,
   Loader2,
   AlertCircle,
-  Image
+  Image,
+  Database,
+  Play
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
@@ -55,6 +58,10 @@ function AdminDashboard() {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [processing, setProcessing] = useState(null);
 
+  // Scraping Status State
+  const [scrapingStatus, setScrapingStatus] = useState(null);
+  const [triggeringScrape, setTriggeringScrape] = useState(false);
+
   // Check if user is admin (by role or email)
   const isAdmin = user?.role === 'ADMIN' || user?.email === ADMIN_EMAIL;
 
@@ -80,10 +87,34 @@ function AdminDashboard() {
       await Promise.all([
         fetchAdminJobs(),
         fetchQrData(),
-        fetchPendingRequests()
+        fetchPendingRequests(),
+        fetchScrapingStatus()
       ]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchScrapingStatus = async () => {
+    try {
+      const response = await api.get('/admin/scraping/status');
+      setScrapingStatus(response.data.status);
+    } catch (error) {
+      console.error('Failed to fetch scraping status:', error);
+    }
+  };
+
+  const handleTriggerScraping = async () => {
+    setTriggeringScrape(true);
+    try {
+      await api.post('/admin/scraping/trigger');
+      toast.success('Scraping started! Check back in a few minutes.');
+      // Refresh status after a delay
+      setTimeout(fetchScrapingStatus, 5000);
+    } catch (error) {
+      toast.error('Failed to trigger scraping');
+    } finally {
+      setTriggeringScrape(false);
     }
   };
 
@@ -271,7 +302,7 @@ function AdminDashboard() {
       <h1 className="text-2xl font-bold text-white mb-6">Admin Dashboard</h1>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 flex-wrap">
         <button
           onClick={() => setActiveTab('jobs')}
           className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
@@ -280,6 +311,15 @@ function AdminDashboard() {
         >
           <Briefcase className="w-4 h-4" />
           Job Upload
+        </button>
+        <button
+          onClick={() => setActiveTab('scraping')}
+          className={`px-4 py-2 rounded-lg font-medium flex items-center gap-2 ${
+            activeTab === 'scraping' ? 'bg-primary-500 text-white' : 'bg-dark-700 text-dark-400'
+          }`}
+        >
+          <Database className="w-4 h-4" />
+          Scraping Status
         </button>
         <button
           onClick={() => setActiveTab('qr')}
@@ -305,6 +345,104 @@ function AdminDashboard() {
           )}
         </button>
       </div>
+
+      {/* Scraping Status Tab */}
+      {activeTab === 'scraping' && (
+        <div className="card p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <Database className="w-5 h-5 text-primary-400" />
+              Job Scraping Status
+            </h2>
+            <div className="flex gap-2">
+              <button
+                onClick={fetchScrapingStatus}
+                className="btn-secondary px-3 py-2 flex items-center gap-2"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Refresh
+              </button>
+              <button
+                onClick={handleTriggerScraping}
+                disabled={triggeringScrape}
+                className="btn-primary px-4 py-2 flex items-center gap-2"
+              >
+                {triggeringScrape ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Play className="w-4 h-4" />
+                )}
+                Run Now
+              </button>
+            </div>
+          </div>
+
+          {scrapingStatus ? (
+            <div className="space-y-4">
+              {/* Overview Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="bg-dark-700 rounded-lg p-4">
+                  <p className="text-dark-400 text-sm">Total Jobs</p>
+                  <p className="text-2xl font-bold text-white">{scrapingStatus.totalJobs?.toLocaleString()}</p>
+                </div>
+                <div className="bg-dark-700 rounded-lg p-4">
+                  <p className="text-dark-400 text-sm">Last 24 Hours</p>
+                  <p className="text-2xl font-bold text-green-400">+{scrapingStatus.jobsAddedLast24h}</p>
+                </div>
+                <div className="bg-dark-700 rounded-lg p-4">
+                  <p className="text-dark-400 text-sm">Last 2 Hours</p>
+                  <p className="text-2xl font-bold text-blue-400">+{scrapingStatus.jobsAddedLast2h}</p>
+                </div>
+                <div className="bg-dark-700 rounded-lg p-4">
+                  <p className="text-dark-400 text-sm">Hours Since Sync</p>
+                  <p className="text-2xl font-bold text-yellow-400">{scrapingStatus.hoursSinceLastSync}h</p>
+                </div>
+              </div>
+
+              {/* Jobs by Source */}
+              <div className="bg-dark-700 rounded-lg p-4">
+                <p className="text-dark-400 text-sm mb-3">Jobs by Source</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  {Object.entries(scrapingStatus.jobsBySource || {}).map(([source, count]) => (
+                    <div key={source} className="bg-dark-600 rounded-lg px-3 py-2">
+                      <p className="text-white font-medium">{source}</p>
+                      <p className="text-dark-400 text-sm">{count} jobs</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Latest Job */}
+              {scrapingStatus.latestJob && (
+                <div className="bg-dark-700 rounded-lg p-4">
+                  <p className="text-dark-400 text-sm mb-2">Most Recent Job</p>
+                  <p className="text-white font-medium">{scrapingStatus.latestJob.title}</p>
+                  <p className="text-dark-400 text-sm">
+                    Source: {scrapingStatus.latestJob.source} • 
+                    Added: {new Date(scrapingStatus.latestJob.addedAt).toLocaleString()}
+                  </p>
+                </div>
+              )}
+
+              {/* Schedule Info */}
+              <div className="bg-dark-700/50 rounded-lg p-4 border border-dark-600">
+                <p className="text-dark-400 text-sm">
+                  <Clock className="w-4 h-4 inline mr-1" />
+                  Next scheduled run: <span className="text-white">{scrapingStatus.nextScheduledRun}</span>
+                </p>
+                <p className="text-dark-400 text-sm mt-1">
+                  Server time: {new Date(scrapingStatus.serverTime).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-8 text-dark-400">
+              <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2" />
+              Loading scraping status...
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Job Upload Tab */}
       {activeTab === 'jobs' && (
