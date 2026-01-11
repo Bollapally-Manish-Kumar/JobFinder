@@ -33,7 +33,11 @@ export class ArbeitnowScraper {
         timeout: 20000,
         headers: {
           'Accept': 'application/json',
-          'User-Agent': process.env.USER_AGENT || 'JobFinderBot/1.0'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Cache-Control': 'no-cache',
+          'Connection': 'keep-alive'
         }
       });
 

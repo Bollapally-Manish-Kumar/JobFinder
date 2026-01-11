@@ -7,6 +7,7 @@
  * - Arbeitnow API (free, no key required)
  * - Remotive API (free remote jobs)
  * - The Muse API (free, no key required)
+ * - Jobicy API (free remote jobs)
  */
 
 import { fileURLToPath } from 'url';
@@ -23,6 +24,7 @@ import { AdzunaScraper } from './AdzunaScraper.js';
 import { ArbeitnowScraper } from './ArbeitnowScraper.js';
 import { RemotiveScraper } from './RemotiveAPIScraper.js';
 import { TheMuseScraper } from './TheMuseScraper.js';
+import { JobicyScraper } from './JobicyScraper.js';
 
 /**
  * Run all legal API scrapers sequentially
@@ -39,6 +41,7 @@ export async function runAllScrapers() {
   console.log('   • Arbeitnow API (free remote jobs)');
   console.log('   • Remotive API (remote tech jobs)');
   console.log('   • The Muse API (quality job listings)');
+  console.log('   • Jobicy API (remote tech jobs)');
   console.log('');
 
   // Only use legal API-based scrapers
@@ -46,7 +49,8 @@ export async function runAllScrapers() {
     new AdzunaScraper(),
     new ArbeitnowScraper(),
     new RemotiveScraper(),
-    new TheMuseScraper()
+    new TheMuseScraper(),
+    new JobicyScraper()
   ];
 
   const results = [];
