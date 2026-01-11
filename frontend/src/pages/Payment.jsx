@@ -89,6 +89,7 @@ function Payment() {
   const [subscription, setSubscription] = useState(null);
   const [paymentHistory, setPaymentHistory] = useState([]);
   const [upiDetails, setUpiDetails] = useState(null);
+  const [qrData, setQrData] = useState(null);
   
   const { user, updateUser } = useAuthStore();
 
@@ -97,7 +98,17 @@ function Payment() {
     fetchSubscription();
     fetchHistory();
     fetchUpiDetails();
+    fetchQRData();
   }, []);
+
+  const fetchQRData = async () => {
+    try {
+      const data = await paymentService.getPaymentQR();
+      setQrData(data);
+    } catch (error) {
+      console.error('Failed to fetch QR data:', error);
+    }
+  };
 
   const fetchUpiDetails = async () => {
     try {
@@ -196,9 +207,16 @@ function Payment() {
 
   // Payment Modal
   const planDetails = selectedPlan ? PLANS[selectedPlan] : null;
+  const qrUrl = qrData?.qrUrl;
+  const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  // Use QR from API, or fallback to static path
+  const fullQrUrl = qrUrl 
+    ? (qrUrl.startsWith('http') ? qrUrl : `${apiBaseUrl}${qrUrl}`) 
+    : null;
+  
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="bg-dark-800 rounded-2xl max-w-md w-full p-6 relative">
+      <div className="bg-dark-800 rounded-2xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto">
         <button 
           onClick={() => setShowPaymentModal(false)}
           className="absolute top-4 right-4 text-dark-400 hover:text-white"
@@ -210,17 +228,39 @@ function Payment() {
           Pay ₹{planDetails.price} for {planDetails.name}
         </h2>
 
-        {/* Step 1: Pay via UPI */}
+        {/* Step 1: Pay via UPI - QR Code Display */}
         <div className="mb-6">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-6 h-6 rounded-full bg-primary-500 text-white flex items-center justify-center text-sm font-bold">1</div>
-            <span className="font-medium text-white">Pay via UPI</span>
+            <span className="font-medium text-white">Scan QR or Pay via UPI</span>
           </div>
+
+          {/* QR Code Display - Show if available */}
+          {fullQrUrl ? (
+            <div className="bg-white rounded-lg p-4 mb-4 flex flex-col items-center">
+              <img 
+                src={fullQrUrl} 
+                alt="Payment QR Code" 
+                className="w-48 h-48 object-contain"
+                onError={(e) => {
+                  e.target.parentElement.style.display = 'none';
+                }}
+              />
+              <p className="text-dark-800 text-sm mt-2 font-medium">Scan to pay ₹{planDetails.price}</p>
+            </div>
+          ) : (
+            <div className="bg-dark-700 rounded-lg p-4 mb-4 flex flex-col items-center border-2 border-dashed border-dark-500">
+              <div className="w-32 h-32 bg-dark-600 rounded-lg flex items-center justify-center mb-2">
+                <span className="text-4xl">📱</span>
+              </div>
+              <p className="text-dark-400 text-sm text-center">QR Code not available<br/>Please use UPI ID below</p>
+            </div>
+          )}
 
           <div className="bg-dark-700 rounded-lg p-4 mb-3">
             <p className="text-sm text-dark-400 mb-2">Send ₹{planDetails.price} to this UPI ID:</p>
             <div className="flex items-center justify-between bg-dark-600 rounded-lg px-4 py-3">
-              <span className="text-white font-mono">{upiDetails?.upiId || 'jobfinderplus@upi'}</span>
+              <span className="text-white font-mono">{qrData?.upiId || upiDetails?.upiId || '9030405493@upi'}</span>
               <button onClick={copyUpiId} className="text-primary-400 hover:text-primary-300">
                 <Copy className="w-5 h-5" />
               </button>

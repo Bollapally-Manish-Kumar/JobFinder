@@ -163,19 +163,32 @@ function Layout({ children }) {
             );
           })}
           
-          {/* Admin link - only visible to admin (uses secret URL) */}
-          {user?.email === ADMIN_EMAIL && (
-            <Link
-              to="/manage-jfp-9030405493"
-              onClick={() => setSidebarOpen(false)}
-              className={`sidebar-link border-t border-dark-600 mt-2 pt-2 ${location.pathname === '/manage-jfp-9030405493' ? 'active' : ''}`}
-            >
-              <Shield className="w-5 h-5 text-yellow-400" />
-              <span>Admin: Payments</span>
-              <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold bg-yellow-500/20 text-yellow-400 rounded">
-                ADMIN
-              </span>
-            </Link>
+          {/* Admin link - only visible to admin */}
+          {(user?.role === 'ADMIN' || user?.email === ADMIN_EMAIL) && (
+            <>
+              <Link
+                to="/admin-dashboard"
+                onClick={() => setSidebarOpen(false)}
+                className={`sidebar-link border-t border-dark-600 mt-2 pt-2 ${location.pathname === '/admin-dashboard' ? 'active' : ''}`}
+              >
+                <Shield className="w-5 h-5 text-green-400" />
+                <span>Admin Dashboard</span>
+                <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold bg-green-500/20 text-green-400 rounded">
+                  NEW
+                </span>
+              </Link>
+              <Link
+                to="/manage-jfp-9030405493"
+                onClick={() => setSidebarOpen(false)}
+                className={`sidebar-link ${location.pathname === '/manage-jfp-9030405493' ? 'active' : ''}`}
+              >
+                <Shield className="w-5 h-5 text-yellow-400" />
+                <span>Legacy Payments</span>
+                <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold bg-yellow-500/20 text-yellow-400 rounded">
+                  ADMIN
+                </span>
+              </Link>
+            </>
           )}
         </nav>
 

@@ -1,6 +1,6 @@
 /**
  * Payment Routes
- * Handles UPI payment with UTR verification
+ * Handles UPI payment with UTR verification + QR-based payment system
  */
 
 import express from 'express';
@@ -16,12 +16,49 @@ import {
   approvePayment,
   rejectPayment
 } from '../controllers/paymentController.js';
+import {
+  getPaymentQR,
+  submitPaymentRequest,
+  getUserPaymentRequests,
+  getPendingRequests,
+  getAllRequests,
+  approvePaymentRequest,
+  rejectPaymentRequest,
+  uploadQRCode
+} from '../controllers/qrPaymentController.js';
 import { authenticate, requireAdmin } from '../middlewares/auth.js';
+import { uploadQR, handleUploadError } from '../middlewares/upload.js';
 
 const router = express.Router();
 
 // All payment routes require authentication
 router.use(authenticate);
+
+// =============================================
+// NEW QR-BASED PAYMENT SYSTEM
+// =============================================
+
+// Get QR code and payment info
+router.get('/qr', getPaymentQR);
+
+// Submit payment request with UTR
+router.post('/submit', submitPaymentRequest);
+
+// Get user's payment requests
+router.get('/requests', getUserPaymentRequests);
+
+// Admin: QR code management
+router.post('/admin/upload-qr', requireAdmin, uploadQR.single('qr'), handleUploadError, uploadQRCode);
+
+// Admin: Payment requests management
+router.get('/admin/requests/pending', requireAdmin, getPendingRequests);
+router.get('/admin/requests/all', requireAdmin, getAllRequests);
+router.post('/admin/requests/approve/:requestId', requireAdmin, approvePaymentRequest);
+router.post('/admin/requests/reject/:requestId', requireAdmin, rejectPaymentRequest);
+
+// =============================================
+// LEGACY UPI PAYMENT SYSTEM (kept for compatibility)
+// =============================================
 
 // Get UPI payment details (UPI ID, QR code, plans)
 router.get('/upi-details', getUpiDetails);

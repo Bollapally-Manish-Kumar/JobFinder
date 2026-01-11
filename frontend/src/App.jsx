@@ -18,6 +18,7 @@ import MyApplications from './pages/MyApplications';
 import AIJobMatch from './pages/AIJobMatch';
 import OAuthSuccess from './pages/OAuthSuccess';
 import AdminPayments from './pages/AdminPayments';
+import AdminDashboard from './pages/AdminDashboard';
 import Disclaimer from './pages/Disclaimer';
 
 // Components
@@ -141,6 +142,18 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <AdminPayments />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        
+        {/* Admin Dashboard - New combined admin panel */}
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminDashboard />
               </Layout>
             </ProtectedRoute>
           }

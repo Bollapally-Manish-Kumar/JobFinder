@@ -1,6 +1,6 @@
 /**
  * AI Job Match Page
- * Premium feature (₹20) - Upload resume and get top 5 matching jobs
+ * Premium feature (₹20) - Upload resume (PDF or text) and get top 5 matching jobs
  */
 
 import { useState, useEffect } from 'react';
@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { 
   Sparkles, Upload, FileText, Target, TrendingUp, 
   CheckCircle, XCircle, AlertCircle, ExternalLink, 
-  Loader2, IndianRupee, Lock, RefreshCw
+  Loader2, IndianRupee, Lock, RefreshCw, File
 } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -22,6 +22,9 @@ function AIJobMatch() {
   const [resumeText, setResumeText] = useState('');
   const [results, setResults] = useState(null);
   const [resumeProfile, setResumeProfile] = useState(null);
+  const [uploadMethod, setUploadMethod] = useState('text'); // 'text' or 'pdf'
+  const [pdfFile, setPdfFile] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
     checkAccess();
@@ -35,6 +38,130 @@ function AIJobMatch() {
       console.error('Failed to check access:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleTextFileUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
+      toast.error('Please upload a .txt file');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setResumeText(event.target?.result || '');
+      toast.success('Resume loaded!');
+    };
+    reader.readAsText(file);
+  };
+
+  const handlePdfFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      toast.error('Please upload a PDF file');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error('PDF size must be under 2MB');
+      return;
+    }
+
+    setPdfFile(file);
+    toast.success(`Selected: ${file.name}`);
+  };
+
+  const analyzeTextResume = async () => {
+    if (!resumeText.trim()) {
+      toast.error('Please enter or upload your resume');
+      return;
+    }
+
+    if (resumeText.trim().length < 50) {
+      toast.error('Resume text is too short. Please provide more details.');
+      return;
+    }
+
+    setAnalyzing(true);
+    setResults(null);
+
+    try {
+      const response = await api.post('/ai-match/analyze', { resumeText });
+      
+      if (response.data.success) {
+        setResults(response.data.matches);
+        setResumeProfile(response.data.resumeProfile);
+        toast.success(`Found ${response.data.matches.length} matching jobs!`);
+      } else {
+        throw new Error(response.data.error || 'Analysis failed');
+      }
+    } catch (error) {
+      handleAnalysisError(error);
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const analyzePdfResume = async () => {
+    if (!pdfFile) {
+      toast.error('Please select a PDF file');
+      return;
+    }
+
+    setAnalyzing(true);
+    setResults(null);
+    setUploadProgress(10);
+
+    try {
+      const formData = new FormData();
+      formData.append('resume', pdfFile);
+
+      setUploadProgress(30);
+
+      const response = await api.post('/ai-match/upload-pdf', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(30 + (percentCompleted * 0.3)); // 30-60%
+        }
+      });
+
+      setUploadProgress(80);
+
+      if (response.data.success) {
+        setResults(response.data.matches);
+        setResumeProfile(response.data.resumeProfile);
+        toast.success(`Found ${response.data.matches.length} matching jobs!`);
+        setUploadProgress(100);
+      } else {
+        throw new Error(response.data.error || 'Analysis failed');
+      }
+    } catch (error) {
+      handleAnalysisError(error);
+    } finally {
+      setAnalyzing(false);
+      setTimeout(() => setUploadProgress(0), 1000);
+    }
+  };
+
+  const handleAnalysisError = (error) => {
+    console.error('Analysis error:', error);
+    const errorData = error.response?.data;
+    const status = error.response?.status;
+    
+    if (status === 429) {
+      toast.error('🚫 AI service limit reached. Please try again in a few minutes.', { duration: 5000 });
+    } else if (status === 503) {
+      toast.error('AI service is not configured. Please contact support.');
+    } else if (status === 400) {
+      toast.error(errorData?.message || 'Invalid file. Please upload a valid PDF.');
+    } else {
+      toast.error(errorData?.message || errorData?.error || 'Failed to analyze resume');
     }
   };
 
@@ -219,52 +346,169 @@ function AIJobMatch() {
 
       {/* Resume Input */}
       <div className="card p-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-            <FileText className="w-5 h-5 text-primary-400" />
-            Your Resume
-          </h2>
-          <label className="btn-secondary text-sm cursor-pointer flex items-center gap-2">
-            <Upload className="w-4 h-4" />
-            Upload .txt
-            <input
-              type="file"
-              accept=".txt,text/plain"
-              onChange={handleFileUpload}
-              className="hidden"
-            />
-          </label>
-        </div>
-        
-        <textarea
-          value={resumeText}
-          onChange={(e) => setResumeText(e.target.value)}
-          placeholder="Paste your resume text here... Include your skills, experience, education, and projects."
-          className="input w-full h-64 text-sm resize-none"
-        />
-        
-        <div className="flex items-center justify-between mt-4">
-          <span className="text-sm text-dark-500">
-            {resumeText.length} characters
-          </span>
+        {/* Upload Method Tabs */}
+        <div className="flex gap-2 mb-6">
           <button
-            onClick={analyzeResume}
-            disabled={analyzing || resumeText.length < 50}
-            className="btn-primary flex items-center gap-2 disabled:opacity-50"
+            onClick={() => setUploadMethod('text')}
+            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
+              uploadMethod === 'text' 
+                ? 'bg-primary-500 text-white' 
+                : 'bg-dark-700 text-dark-400 hover:text-white'
+            }`}
           >
-            {analyzing ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Analyzing...
-              </>
-            ) : (
-              <>
-                <Target className="w-4 h-4" />
-                Find Matching Jobs
-              </>
-            )}
+            <FileText className="w-4 h-4" />
+            Paste Text
+          </button>
+          <button
+            onClick={() => setUploadMethod('pdf')}
+            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
+              uploadMethod === 'pdf' 
+                ? 'bg-primary-500 text-white' 
+                : 'bg-dark-700 text-dark-400 hover:text-white'
+            }`}
+          >
+            <File className="w-4 h-4" />
+            Upload PDF
           </button>
         </div>
+
+        {/* Text Input Method */}
+        {uploadMethod === 'text' && (
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <FileText className="w-5 h-5 text-primary-400" />
+                Your Resume
+              </h2>
+              <label className="btn-secondary text-sm cursor-pointer flex items-center gap-2">
+                <Upload className="w-4 h-4" />
+                Upload .txt
+                <input
+                  type="file"
+                  accept=".txt,text/plain"
+                  onChange={handleTextFileUpload}
+                  className="hidden"
+                />
+              </label>
+            </div>
+            
+            <textarea
+              value={resumeText}
+              onChange={(e) => setResumeText(e.target.value)}
+              placeholder="Paste your resume text here... Include your skills, experience, education, and projects."
+              className="input w-full h-64 text-sm resize-none"
+            />
+            
+            <div className="flex items-center justify-between mt-4">
+              <span className="text-sm text-dark-500">
+                {resumeText.length} characters
+              </span>
+              <button
+                onClick={analyzeTextResume}
+                disabled={analyzing || resumeText.length < 50}
+                className="btn-primary flex items-center gap-2 disabled:opacity-50"
+              >
+                {analyzing ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Target className="w-4 h-4" />
+                    Find Matching Jobs
+                  </>
+                )}
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* PDF Upload Method */}
+        {uploadMethod === 'pdf' && (
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                <File className="w-5 h-5 text-primary-400" />
+                Upload PDF Resume
+              </h2>
+            </div>
+            
+            {/* Drag & Drop Zone */}
+            <label className="block w-full p-8 border-2 border-dashed border-dark-600 rounded-xl hover:border-primary-500 transition-colors cursor-pointer text-center mb-4">
+              <input
+                type="file"
+                accept=".pdf,application/pdf"
+                onChange={handlePdfFileSelect}
+                className="hidden"
+              />
+              <File className="w-12 h-12 text-dark-500 mx-auto mb-4" />
+              <p className="text-white font-medium mb-1">
+                {pdfFile ? pdfFile.name : 'Click to upload PDF'}
+              </p>
+              <p className="text-sm text-dark-500">
+                Max size: 2MB • PDF only
+              </p>
+            </label>
+
+            {/* Selected File Info */}
+            {pdfFile && (
+              <div className="bg-dark-700 rounded-lg p-4 mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <File className="w-8 h-8 text-primary-400" />
+                  <div>
+                    <p className="text-white font-medium">{pdfFile.name}</p>
+                    <p className="text-sm text-dark-500">{(pdfFile.size / 1024).toFixed(1)} KB</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setPdfFile(null)}
+                  className="text-dark-400 hover:text-red-400"
+                >
+                  <XCircle className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+
+            {/* Upload Progress */}
+            {uploadProgress > 0 && (
+              <div className="mb-4">
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-dark-400">Processing...</span>
+                  <span className="text-primary-400">{Math.round(uploadProgress)}%</span>
+                </div>
+                <div className="w-full bg-dark-700 rounded-full h-2">
+                  <div 
+                    className="bg-primary-500 h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${uploadProgress}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={analyzePdfResume}
+              disabled={analyzing || !pdfFile}
+              className="btn-primary w-full flex items-center justify-center gap-2 py-3 disabled:opacity-50"
+            >
+              {analyzing ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Analyzing PDF...
+                </>
+              ) : (
+                <>
+                  <Target className="w-5 h-5" />
+                  Analyze & Find Matching Jobs
+                </>
+              )}
+            </button>
+
+            <p className="text-xs text-dark-500 text-center mt-3">
+              📝 Your PDF is processed securely and deleted immediately after analysis
+            </p>
+          </>
+        )}
       </div>
 
       {/* Resume Profile Summary */}

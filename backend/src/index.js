@@ -41,6 +41,7 @@ import paymentRoutes from './routes/payments.js';
 import resumeRoutes from './routes/resume.js';
 import applicationRoutes from './routes/applicationRoutes.js';
 import aiMatchRoutes from './routes/aiMatchRoutes.js';
+import adminRoutes from './routes/admin.js';
 
 // Import middleware
 import { errorHandler } from './middlewares/errorHandler.js';
@@ -70,6 +71,9 @@ app.use(cors({
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from uploads directory
+app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
 
 // Initialize Passport for Google OAuth
 app.use(passport.initialize());
@@ -103,6 +107,27 @@ const paymentLimiter = rateLimit({
 });
 app.use('/api/payments/', paymentLimiter);
 
+// Rate limit for AI routes (expensive operations)
+const aiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 10, // 10 AI requests per minute
+  message: { error: 'Too many AI requests, please wait a minute.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api/ai-match/', aiLimiter);
+app.use('/api/resume/', aiLimiter);
+
+// Rate limit for admin routes
+const adminLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000,
+  max: 20, // 20 admin requests per minute
+  message: { error: 'Too many admin requests, please wait a minute.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use('/api/admin/', adminLimiter);
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -115,6 +140,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/ai-match', aiMatchRoutes);
+app.use('/api/admin', adminRoutes);
 
 console.log('✅ All routes mounted');
 

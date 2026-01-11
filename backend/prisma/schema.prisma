@@ -34,9 +34,10 @@ model User {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 
-  payments     Payment[]
-  savedJobs    SavedJob[]
-  applications JobApplication[]
+  payments        Payment[]
+  savedJobs       SavedJob[]
+  applications    JobApplication[]
+  paymentRequests PaymentRequest[]
 }
 
 // Job model for storing scraped job listings
@@ -108,4 +109,28 @@ model JobApplication {
   job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@unique([userId, jobId])
+}
+
+// PaymentRequest model for QR-based payment system
+model PaymentRequest {
+  id        String   @id @default(uuid())
+  userId    String
+  plan      String   // BASIC_PLUS | AI | PRO_PLUS
+  amount    Int      // Amount in rupees (10, 20, or 30)
+  utr       String?  // Optional UTR submitted by user
+  status    String   @default("PENDING") // PENDING | APPROVED | REJECTED
+  rejectionReason String?
+  approvedBy      String?  // Admin who approved
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Admin Settings for storing QR code path and other settings
+model AdminSettings {
+  id        String   @id @default(uuid())
+  key       String   @unique // e.g., "payment_qr_url"
+  value     String   // e.g., "/uploads/admin-qr.png"
+  updatedAt DateTime @updatedAt
 }

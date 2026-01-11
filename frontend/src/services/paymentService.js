@@ -1,10 +1,70 @@
 /**
- * Payment Service - UPI with UTR verification
+ * Payment Service - QR-based payment with UTR verification
  */
 
 import api from './api';
 
 export const paymentService = {
+  // =============================================
+  // NEW QR-BASED PAYMENT SYSTEM
+  // =============================================
+
+  // Get QR code and payment info
+  getPaymentQR: async () => {
+    const response = await api.get('/payments/qr');
+    return response.data;
+  },
+
+  // Submit payment request with UTR
+  submitPaymentRequest: async (plan, utr = null) => {
+    const response = await api.post('/payments/submit', { plan, utr });
+    return response.data;
+  },
+
+  // Get user's payment requests
+  getPaymentRequests: async () => {
+    const response = await api.get('/payments/requests');
+    return response.data;
+  },
+
+  // Admin: Upload QR code
+  uploadQRCode: async (file) => {
+    const formData = new FormData();
+    formData.append('qr', file);
+    const response = await api.post('/payments/admin/upload-qr', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  },
+
+  // Admin: Get pending payment requests
+  getPendingRequests: async () => {
+    const response = await api.get('/payments/admin/requests/pending');
+    return response.data;
+  },
+
+  // Admin: Get all payment requests
+  getAllRequests: async () => {
+    const response = await api.get('/payments/admin/requests/all');
+    return response.data;
+  },
+
+  // Admin: Approve payment request
+  approveRequest: async (requestId) => {
+    const response = await api.post(`/payments/admin/requests/approve/${requestId}`);
+    return response.data;
+  },
+
+  // Admin: Reject payment request
+  rejectRequest: async (requestId, reason) => {
+    const response = await api.post(`/payments/admin/requests/reject/${requestId}`, { reason });
+    return response.data;
+  },
+
+  // =============================================
+  // LEGACY UPI PAYMENT SYSTEM (kept for compatibility)
+  // =============================================
+
   // Get UPI payment details (UPI ID, QR code, plans)
   getUpiDetails: async () => {
     const response = await api.get('/payments/upi-details');

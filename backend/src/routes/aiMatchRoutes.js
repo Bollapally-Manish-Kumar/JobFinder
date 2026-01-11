@@ -5,7 +5,9 @@
 
 import express from 'express';
 import { analyzeResumeMatch, checkAccess } from '../controllers/aiMatchController.js';
+import { uploadAndAnalyzePDF, getUploadInfo } from '../controllers/pdfResumeController.js';
 import { authenticate, requireAIPlan } from '../middlewares/auth.js';
+import { uploadPDF, handleUploadError } from '../middlewares/upload.js';
 
 const router = express.Router();
 
@@ -15,7 +17,19 @@ router.use(authenticate);
 // Check if user has access to AI Match feature (no plan check - just info)
 router.get('/check-access', checkAccess);
 
-// Analyze resume and match with jobs - requires AI plan (₹20+)
+// Get upload info (supported types, max size)
+router.get('/upload-info', getUploadInfo);
+
+// Analyze resume text and match with jobs - requires AI plan (₹20+)
 router.post('/analyze', requireAIPlan, analyzeResumeMatch);
+
+// Upload PDF resume and analyze - requires AI plan (₹20+)
+router.post(
+  '/upload-pdf',
+  requireAIPlan,
+  uploadPDF.single('resume'),
+  handleUploadError,
+  uploadAndAnalyzePDF
+);
 
 export default router;
