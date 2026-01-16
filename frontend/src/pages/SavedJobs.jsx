@@ -7,6 +7,7 @@ import { Bookmark, Trash2, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import JobCard from '../components/JobCard';
 import jobService from '../services/jobService';
+import SEO from '../components/SEO';
 
 function SavedJobs() {
   const [jobs, setJobs] = useState([]);
@@ -42,6 +43,12 @@ function SavedJobs() {
 
   return (
     <div>
+      <SEO 
+        title="Saved Jobs - Your Bookmarked Opportunities | JobFinder+"
+        description="View and manage your saved job listings. Keep track of opportunities you're interested in and apply when ready."
+        keywords="saved jobs, bookmarked jobs, job tracker, my jobs"
+        url="https://jobfinderplus.vercel.app/saved-jobs"
+      />
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">

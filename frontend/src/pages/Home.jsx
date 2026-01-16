@@ -16,6 +16,7 @@ import {
   BadgeCheck
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import SEO from '../components/SEO';
 
 const categories = [
   { name: 'IT Jobs', icon: Laptop, count: '500+' },
@@ -52,8 +53,29 @@ const features = [
 ];
 
 function Home() {
+  // Structured data for homepage
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "JobFinder+",
+    "url": "https://jobfinderplus.vercel.app",
+    "description": "Find tech jobs from top companies like Accenture, TCS, Infosys. AI-powered resume builder and job matching platform.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://jobfinderplus.vercel.app/dashboard?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <div className="min-h-screen bg-dark-900 overflow-x-hidden">
+      <SEO 
+        title="JobFinder+ | Find Every Job Before You Miss It"
+        description="Find tech jobs from Accenture, TCS, Infosys, and top startups. AI-powered resume builder, job matching, and application tracking. Get hired faster with JobFinder+."
+        keywords="jobs, careers, job search, IT jobs, software jobs, fresher jobs, internships, remote jobs, AI resume builder, job matching, tech jobs India, Accenture jobs, TCS careers, Infosys hiring"
+        url="https://jobfinderplus.vercel.app"
+        structuredData={structuredData}
+      />
       <Navbar />
 
       {/* Hero Section */}

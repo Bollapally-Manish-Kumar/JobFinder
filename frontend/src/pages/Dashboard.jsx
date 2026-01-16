@@ -9,6 +9,7 @@ import JobCard from '../components/JobCard';
 import jobService from '../services/jobService';
 import api from '../services/api';
 import useAuthStore from '../hooks/useAuthStore';
+import SEO from '../components/SEO';
 
 function Dashboard() {
   const [jobs, setJobs] = useState([]);
@@ -187,8 +188,44 @@ function Dashboard() {
     }
   };
 
+  // Structured data for job listings
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": jobs.slice(0, 10).map((job, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": {
+        "@type": "JobPosting",
+        "title": job.title,
+        "description": job.description?.substring(0, 200) || "View full job details",
+        "datePosted": job.postedAt || job.createdAt,
+        "hiringOrganization": {
+          "@type": "Organization",
+          "name": job.company
+        },
+        "jobLocation": {
+          "@type": "Place",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": job.location
+          }
+        },
+        "employmentType": job.type || "FULL_TIME",
+        "url": job.url
+      }
+    }))
+  };
+
   return (
     <div className="pb-4">
+      <SEO 
+        title="Job Dashboard - Latest Tech Jobs | JobFinder+"
+        description={`Browse ${pagination.total || '1000+'} verified tech jobs from Accenture, TCS, Infosys, and top startups. Updated daily with remote and India-eligible opportunities.`}
+        keywords="tech jobs, IT jobs India, software developer jobs, remote jobs, fresher jobs, job dashboard, Accenture careers, TCS jobs, Infosys hiring"
+        url="https://jobfinderplus.vercel.app/dashboard"
+        structuredData={structuredData}
+      />
       {/* Header */}
       <div className="mb-4 md:mb-6">
         <div className="flex flex-wrap items-center gap-2 md:gap-3">

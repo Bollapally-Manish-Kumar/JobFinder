@@ -7,6 +7,7 @@ import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-do
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
+import SEO from '../components/SEO';
 
 // Backend URL for OAuth (production Render URL)
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://jobfinder-wog8.onrender.com';
@@ -73,6 +74,12 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-dark-900 flex items-center justify-center p-4">
+      <SEO 
+        title="Login - Access Your Job Dashboard | JobFinder+"
+        description="Login to JobFinder+ to access personalized job recommendations, AI resume builder, and application tracking. Secure authentication with Google OAuth."
+        keywords="login, sign in, job portal login, user authentication"
+        url="https://jobfinderplus.vercel.app/login"
+      />
       {/* Background effects */}
       <div className="absolute inset-0 stars-bg opacity-30" />
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />

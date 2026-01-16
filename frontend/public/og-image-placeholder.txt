@@ -1,0 +1,12 @@
+<!-- OG Image Placeholder -->
+<!-- Create a 1200x630px image for social media preview -->
+<!-- Use Canva or Figma to design with JobFinder+ branding -->
+<!-- Upload to /public/og-image.png -->
+
+This file serves as a reminder to create an Open Graph image.
+
+Recommended specs:
+- Dimensions: 1200x630px
+- Format: PNG or JPG
+- Content: JobFinder+ logo, tagline, and key visual
+- File size: < 300KB for fast loading

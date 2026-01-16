@@ -17,6 +17,7 @@ import toast from 'react-hot-toast';
 import resumeService from '../services/resumeService';
 import useAuthStore from '../hooks/useAuthStore';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 function ResumeBuilder() {
   const [jobDescription, setJobDescription] = useState('');
@@ -108,6 +109,12 @@ function ResumeBuilder() {
 
   return (
     <div>
+      <SEO 
+        title="AI Resume Builder - Generate Professional LaTeX Resumes | JobFinder+"
+        description="Create ATS-friendly, professional resumes with AI. Generate LaTeX-formatted resumes tailored to job descriptions. Free AI-powered resume builder for tech jobs."
+        keywords="AI resume builder, LaTeX resume generator, ATS resume, professional resume maker, free resume builder, tech resume, AI CV generator"
+        url="https://jobfinderplus.vercel.app/resume-builder"
+      />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white flex items-center gap-2">
           <FileText className="w-7 h-7 text-primary-500" />

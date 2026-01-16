@@ -1,0 +1,16 @@
+# JobFinder+ Robots.txt
+# Allow all search engines to crawl
+
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /register
+Allow: /dashboard
+Allow: /disclaimer
+
+# Block admin and payment pages from indexing
+Disallow: /admin
+Disallow: /payment
+
+# Sitemap location
+Sitemap: https://jobfinderplus.vercel.app/sitemap.xml
