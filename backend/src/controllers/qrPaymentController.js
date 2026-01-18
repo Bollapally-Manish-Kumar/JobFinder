@@ -2,9 +2,10 @@
  * QR Payment Controller - QR Code-Based Payment System
  * 
  * Plans:
- * - BASIC_PLUS: ₹10 - All jobs + resume builder
- * - AI: ₹20 - Everything + AI Job Match
- * - PRO_PLUS: ₹30 - Everything + ATS Score + Skill Gap
+ * - BASIC_PLUS: ₹10 - 3 AI matches
+ * - AI: ₹20 - 5 AI matches
+ * - PRO_PLUS: ₹30 - 6 AI matches
+ * - ULTIMATE: ₹50 - Unlimited AI + LaTeX resume
  * 
  * Flow:
  * 1. User sees admin's QR code
@@ -26,19 +27,29 @@ const PLANS = {
     amount: 10,
     days: 30,
     name: 'Basic Plus',
-    features: ['All jobs', 'Resume builder', 'Save jobs']
+    aiMatches: 3,
+    features: ['3 AI job matches', 'Unlimited job access', 'Resume builder', 'Save & track jobs']
   },
   AI: {
     amount: 20,
     days: 30,
-    name: 'AI Job Match',
-    features: ['All Basic Plus features', 'AI job matching', 'Personalized recommendations']
+    name: 'AI Pro',
+    aiMatches: 5,
+    features: ['5 AI job matches', 'All Basic Plus features', 'Match score analysis', 'Skills gap insights']
   },
   PRO_PLUS: {
     amount: 30,
     days: 30,
     name: 'Pro Plus',
-    features: ['All AI features', 'ATS score analysis', 'Skill gap insights']
+    aiMatches: 6,
+    features: ['6 AI job matches', 'All AI Pro features', 'Priority support', 'Early access']
+  },
+  ULTIMATE: {
+    amount: 50,
+    days: 30,
+    name: 'Ultimate',
+    aiMatches: 'Unlimited',
+    features: ['Unlimited AI matches', 'LaTeX resume generator', 'Job-specific resumes', 'All Pro Plus features']
   }
 };
 
@@ -107,7 +118,7 @@ export const submitPaymentRequest = asyncHandler(async (req, res) => {
   if (!PLANS[planKey]) {
     return res.status(400).json({
       error: 'Invalid plan',
-      message: 'Choose BASIC_PLUS, AI, or PRO_PLUS',
+      message: 'Choose BASIC_PLUS, AI, PRO_PLUS, or ULTIMATE',
       validPlans: Object.keys(PLANS)
     });
   }
@@ -295,14 +306,16 @@ export const approvePaymentRequest = asyncHandler(async (req, res) => {
         approvedBy: adminId
       }
     }),
-    // Update user plan
+    // Update user plan and reset AI match count
     prisma.user.update({
       where: { id: request.userId },
       data: {
         plan: request.plan,
         paymentVerified: true,
         paidAt: now,
-        expiresAt
+        expiresAt,
+        aiMatchCount: 0, // Reset AI match count on plan upgrade
+        aiMatchResetAt: now
       }
     })
   ]);

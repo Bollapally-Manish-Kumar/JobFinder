@@ -1,10 +1,11 @@
 /**
  * Payment Page - UPI with UTR verification
- * 4-tier plan system:
- * - BASIC (Free) - Default
- * - BASIC_PLUS (₹10/month) - Premium features
- * - AI (₹20/month) - AI job matching
- * - PRO_PLUS (₹30/month) - All features
+ * 5-tier plan system:
+ * - BASIC (Free) - 1 AI match trial
+ * - BASIC_PLUS (₹10/month) - 3 AI matches
+ * - AI (₹20/month) - 5 AI matches
+ * - PRO_PLUS (₹30/month) - 6 AI matches
+ * - ULTIMATE (₹50/month) - Unlimited AI + LaTeX resume
  */
 
 import { useState, useEffect } from 'react';
@@ -22,7 +23,9 @@ import {
   AlertCircle,
   Clock,
   Crown,
-  X
+  X,
+  Infinity,
+  FileCode
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import paymentService from '../services/paymentService';
@@ -37,30 +40,30 @@ const PLANS = {
     icon: Zap,
     color: 'primary',
     gradient: 'from-primary-500 to-blue-500',
+    aiMatches: 3,
     features: [
+      '3 AI job matches',
       'Unlimited job access',
-      'Resume LaTeX generator',
-      'Verified badge',
+      'Resume builder',
       'Save & track jobs',
-      'Early notifications',
-      'Ad-free experience'
+      'Verified badge'
     ]
   },
   AI: {
     id: 'AI',
-    name: 'AI Match',
+    name: 'AI Pro',
     price: 20,
     icon: Brain,
     color: 'purple',
     gradient: 'from-purple-500 to-pink-500',
     recommended: true,
+    aiMatches: 5,
     features: [
+      '5 AI job matches',
       'All Basic Plus features',
-      'AI-powered job matching',
-      'Resume skill analysis',
-      'Personalized recommendations',
-      'Match score for each job',
-      'Missing skills insights'
+      'Match score analysis',
+      'Skills gap insights',
+      'Personalized recommendations'
     ]
   },
   PRO_PLUS: {
@@ -70,13 +73,31 @@ const PLANS = {
     icon: Crown,
     color: 'yellow',
     gradient: 'from-yellow-500 to-orange-500',
+    aiMatches: 6,
     features: [
-      'All AI Match features',
-      'Priority support (Coming Soon)',
-      'Advanced analytics (Coming Soon)',
-      'Resume templates library (Coming Soon)',
-      'Interview preparation tips (Coming Soon)',
-      'Salary insights (Coming Soon)'
+      '6 AI job matches',
+      'All AI Pro features',
+      'Priority support',
+      'Advanced analytics',
+      'Early access to features'
+    ]
+  },
+  ULTIMATE: {
+    id: 'ULTIMATE',
+    name: 'Ultimate',
+    price: 50,
+    icon: Infinity,
+    color: 'emerald',
+    gradient: 'from-emerald-500 to-teal-500',
+    aiMatches: 'Unlimited',
+    popular: true,
+    features: [
+      'Unlimited AI job matches',
+      'All Pro Plus features',
+      '🆕 LaTeX resume generator',
+      'Job-specific tailored resumes',
+      'ATS-optimized formatting',
+      'Priority AI processing'
     ]
   }
 };
@@ -406,14 +427,14 @@ function Payment() {
             </div>
           </div>
 
-          {/* Upgrade options */}
-          {currentPlan !== 'PRO_PLUS' && (
+          {/* Upgrade options - only show if not on ULTIMATE (highest) plan */}
+          {currentPlan !== 'ULTIMATE' && (
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-white">Upgrade Your Plan</h3>
               
               {Object.entries(PLANS)
                 .filter(([planId]) => {
-                  const planOrder = ['BASIC', 'BASIC_PLUS', 'AI', 'PRO_PLUS'];
+                  const planOrder = ['BASIC', 'BASIC_PLUS', 'AI', 'PRO_PLUS', 'ULTIMATE'];
                   return planOrder.indexOf(planId) > planOrder.indexOf(currentPlan);
                 })
                 .map(([planId, plan]) => {

@@ -6,12 +6,14 @@ import { useState, useEffect } from 'react';
 import { Bookmark, Trash2, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import JobCard from '../components/JobCard';
+import JobDetailModal from '../components/JobDetailModal';
 import jobService from '../services/jobService';
 import SEO from '../components/SEO';
 
 function SavedJobs() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedJob, setSelectedJob] = useState(null);
 
   // Fetch saved jobs
   const fetchSavedJobs = async () => {
@@ -95,6 +97,7 @@ function SavedJobs() {
                 job={job}
                 onSave={handleUnsave}
                 isSaved={true}
+                onViewDetails={() => setSelectedJob(job)}
               />
               {job.savedAt && (
                 <p className="text-xs text-dark-500 mt-2 px-1">
@@ -104,6 +107,20 @@ function SavedJobs() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Job Detail Modal */}
+      {selectedJob && (
+        <JobDetailModal
+          jobId={selectedJob.id}
+          onClose={() => setSelectedJob(null)}
+          onSaveToggle={(jobId, saved) => {
+            if (!saved) {
+              setJobs(jobs.filter(job => job.id !== jobId));
+            }
+          }}
+          isSaved={true}
+        />
       )}
     </div>
   );

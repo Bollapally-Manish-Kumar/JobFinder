@@ -20,6 +20,7 @@ import OAuthSuccess from './pages/OAuthSuccess';
 import AdminPayments from './pages/AdminPayments';
 import AdminDashboard from './pages/AdminDashboard';
 import Disclaimer from './pages/Disclaimer';
+import Profile from './pages/Profile';
 
 // Components
 import Layout from './components/Layout';
@@ -130,6 +131,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <AIJobMatch />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <Profile />
               </Layout>
             </ProtectedRoute>
           }

@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { Search, Filter, MapPin, Briefcase, RefreshCw, ChevronLeft, ChevronRight, X, Clock, TrendingUp, Globe, Wifi } from 'lucide-react';
 import toast from 'react-hot-toast';
 import JobCard from '../components/JobCard';
+import JobDetailModal from '../components/JobDetailModal';
 import jobService from '../services/jobService';
 import api from '../services/api';
 import useAuthStore from '../hooks/useAuthStore';
@@ -43,6 +44,7 @@ function Dashboard() {
   });
   const [savedJobIds, setSavedJobIds] = useState(new Set());
   const [trackingMap, setTrackingMap] = useState({});
+  const [selectedJob, setSelectedJob] = useState(null);
   
   const { user } = useAuthStore();
 
@@ -218,7 +220,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="pb-4">
+    <div className="pb-6">
       <SEO 
         title="Job Dashboard - Latest Tech Jobs | JobFinder+"
         description={`Browse ${pagination.total || '1000+'} verified tech jobs from Accenture, TCS, Infosys, and top startups. Updated daily with remote and India-eligible opportunities.`}
@@ -226,89 +228,80 @@ function Dashboard() {
         url="https://jobfinderplus.vercel.app/dashboard"
         structuredData={structuredData}
       />
-      {/* Header */}
-      <div className="mb-4 md:mb-6">
-        <div className="flex flex-wrap items-center gap-2 md:gap-3">
-          <h1 className="text-xl md:text-2xl font-bold text-white">
-            Welcome, {user?.name?.split(' ')[0] || 'User'}! 👋
+      
+      {/* Hero Header */}
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white via-white to-dark-300 bg-clip-text text-transparent">
+            Welcome back, {user?.name?.split(' ')[0] || 'User'}! 
           </h1>
-          {/* Badge based on plan */}
-          {user?.paymentVerified && user?.plan === 'PRO_PLUS' && (
-            <div className="flex items-center gap-1.5">
-              <svg className="w-5 h-5 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-              </svg>
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-                <span className="text-white font-bold text-[9px]">★</span>
-              </div>
-            </div>
-          )}
-          {user?.paymentVerified && user?.plan === 'AI' && (
-            <div className="flex items-center gap-1.5">
-              <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-              </svg>
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                <span className="text-white font-bold text-[8px]">AI</span>
-              </div>
-            </div>
-          )}
-          {user?.paymentVerified && user?.plan === 'BASIC_PLUS' && (
-            <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
+          <span className="text-2xl md:text-3xl">👋</span>
+          {/* Plan Badge */}
+          {user?.paymentVerified && user?.plan !== 'BASIC' && (
+            <span className={`px-3 py-1 rounded-lg text-xs font-bold ${
+              user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
+              user?.plan === 'PRO_PLUS' ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-400 border border-orange-500/30' :
+              user?.plan === 'AI' ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/30' :
+              'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 border border-blue-500/30'
+            }`}>
+              {user?.plan === 'ULTIMATE' ? '∞ Ultimate' : 
+               user?.plan === 'PRO_PLUS' ? '★ Pro Plus' : 
+               user?.plan === 'AI' ? '✨ AI Pro' : '⚡ Plus'}
+            </span>
           )}
         </div>
-        <p className="text-dark-400 mt-1">
-          {user?.paymentVerified && user?.plan === 'PRO_PLUS' 
-            ? 'Pro Plus Member - Full access to all features' 
-            : user?.paymentVerified && user?.plan === 'AI' 
-              ? 'AI Pro Member - Full access to all jobs & AI matching' 
-              : user?.paymentVerified && user?.plan === 'BASIC_PLUS'
-                ? 'Plus Member - Access all jobs with your premium subscription'
-                : 'Upgrade to see all job listings'}
+        <p className="text-dark-400 mt-2 text-sm md:text-base">
+          {user?.paymentVerified && user?.plan === 'ULTIMATE' 
+            ? 'Unlimited AI job matching & professional LaTeX resumes at your fingertips' 
+            : user?.paymentVerified && user?.plan === 'PRO_PLUS' 
+              ? 'Full access to premium features and priority support' 
+              : user?.paymentVerified && user?.plan === 'AI' 
+                ? 'AI-powered job matching to find your perfect role' 
+                : user?.paymentVerified && user?.plan === 'BASIC_PLUS'
+                  ? 'Access to all job listings and resume tools'
+                  : 'Upgrade to unlock all features and job listings'}
         </p>
       </div>
 
-      {/* Sync Status Banner */}
-      <div className="card p-3 md:p-4 mb-4 md:mb-6 bg-gradient-to-r from-dark-800 to-dark-700 border-dark-600">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 md:gap-4">
-          <div className="flex items-center gap-3 md:gap-4">
-            <div className="p-2 md:p-3 bg-primary-500/20 rounded-lg">
-              <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-primary-400" />
+      {/* Stats Banner */}
+      <div className="card p-4 md:p-5 mb-6 bg-gradient-to-r from-primary-500/10 via-dark-800/50 to-orange-500/10 border-primary-500/20">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="p-3 bg-gradient-to-br from-primary-500/20 to-orange-500/20 rounded-xl">
+              <TrendingUp className="w-6 h-6 text-primary-400" />
             </div>
             <div>
               {syncStatus.jobsAddedToday > 0 ? (
                 <>
-                  <h3 className="text-base md:text-lg font-semibold text-white">
+                  <h3 className="text-lg md:text-xl font-bold text-white">
                     {syncStatus.jobsAddedToday} New Jobs Today! 🎉
                   </h3>
-                  <p className="text-dark-400 text-xs md:text-sm hidden sm:block">
-                    Fresh opportunities available
+                  <p className="text-dark-400 text-sm">
+                    Fresh opportunities waiting for you
                   </p>
                 </>
               ) : (
                 <>
-                  <h3 className="text-base md:text-lg font-semibold text-white">
-                    No new jobs posted today
+                  <h3 className="text-lg md:text-xl font-bold text-white">
+                    Browse {syncStatus.totalJobs}+ Jobs
                   </h3>
-                  <p className="text-dark-400 text-xs md:text-sm">
+                  <p className="text-dark-400 text-sm">
                     Check back later for fresh opportunities
                   </p>
                 </>
               )}
             </div>
           </div>
-          <div className="flex items-center gap-3 md:gap-4 text-xs md:text-sm text-dark-400">
-            <div className="flex items-center gap-1.5 md:gap-2">
-              <Briefcase className="w-3.5 h-3.5 md:w-4 md:h-4" />
-              <span>{syncStatus.totalJobs} total</span>
+          <div className="flex items-center gap-4 text-sm text-dark-400">
+            <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg">
+              <Briefcase className="w-4 h-4 text-primary-400" />
+              <span className="font-medium text-white">{syncStatus.totalJobs}</span>
+              <span>total</span>
             </div>
             {syncStatus.lastSyncAt && (
-              <div className="flex items-center gap-1.5 md:gap-2">
-                <Clock className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                <span className="hidden sm:inline">Updated {new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
-                <span className="sm:hidden">{new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
+              <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg">
+                <Clock className="w-4 h-4 text-primary-400" />
+                <span>Updated {new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
               </div>
             )}
           </div>
@@ -334,7 +327,7 @@ function Dashboard() {
 
             {/* Location */}
             <div className="relative w-full md:w-48">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-400" />
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500" />
               <input
                 type="text"
                 value={location}
@@ -348,28 +341,28 @@ function Dashboard() {
             <button
               type="button"
               onClick={() => setShowFilters(!showFilters)}
-              className="btn-secondary flex items-center gap-2"
+              className="btn-secondary flex items-center gap-2 relative"
             >
               <Filter className="w-4 h-4" />
-              Filters
-              {(selectedSource !== 'All' || selectedType !== 'All' || selectedCategory !== 'All') && (
-                <span className="w-2 h-2 bg-primary-500 rounded-full" />
+              <span className="hidden sm:inline">Filters</span>
+              {(selectedSource !== 'All' || selectedType !== 'All' || selectedCategory !== 'All' || indiaEligible || remoteOnly) && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full border-2 border-dark-800" />
               )}
             </button>
 
             {/* Search button */}
-            <button type="submit" className="btn-primary whitespace-nowrap">
-              <Search className="w-4 h-4 md:hidden" />
+            <button type="submit" className="btn-primary whitespace-nowrap flex items-center gap-2">
+              <Search className="w-4 h-4" />
               <span className="hidden md:inline">Search</span>
             </button>
           </div>
 
           {/* Expandable filters */}
           {showFilters && (
-            <div className="flex flex-wrap gap-4 pt-4 border-t border-dark-700">
+            <div className="flex flex-wrap gap-4 pt-4 mt-4 border-t border-dark-700/50">
               {/* Type filter */}
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm text-dark-400 mb-1">Job Type</label>
+                <label className="block text-sm text-dark-400 mb-2 font-medium">Job Type</label>
                 <select
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
@@ -383,7 +376,7 @@ function Dashboard() {
 
               {/* Category filter */}
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm text-dark-400 mb-1">Category</label>
+                <label className="block text-sm text-dark-400 mb-2 font-medium">Category</label>
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
@@ -397,7 +390,7 @@ function Dashboard() {
 
               {/* Source filter */}
               <div className="flex-1 min-w-[150px]">
-                <label className="block text-sm text-dark-400 mb-1">Source</label>
+                <label className="block text-sm text-dark-400 mb-2 font-medium">Source</label>
                 <select
                   value={selectedSource}
                   onChange={(e) => setSelectedSource(e.target.value)}
@@ -414,10 +407,14 @@ function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setIndiaEligible(!indiaEligible)}
-                  className={`btn-secondary flex items-center gap-2 ${indiaEligible ? 'bg-orange-500/20 border-orange-500 text-orange-400' : ''}`}
+                  className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 font-medium ${
+                    indiaEligible 
+                      ? 'bg-orange-500/15 border-orange-500/50 text-orange-400' 
+                      : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-orange-500/30 hover:text-orange-400'
+                  }`}
                 >
-                  <Globe className="w-4 h-4" />
-                  India Eligible
+                  <span>🇮🇳</span>
+                  India
                 </button>
               </div>
 
@@ -426,10 +423,14 @@ function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setRemoteOnly(!remoteOnly)}
-                  className={`btn-secondary flex items-center gap-2 ${remoteOnly ? 'bg-blue-500/20 border-blue-500 text-blue-400' : ''}`}
+                  className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 font-medium ${
+                    remoteOnly 
+                      ? 'bg-cyan-500/15 border-cyan-500/50 text-cyan-400' 
+                      : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-cyan-500/30 hover:text-cyan-400'
+                  }`}
                 >
-                  <Wifi className="w-4 h-4" />
-                  Remote Only
+                  <span>🌐</span>
+                  Remote
                 </button>
               </div>
 
@@ -445,10 +446,10 @@ function Dashboard() {
                     setIndiaEligible(false);
                     setRemoteOnly(false);
                   }}
-                  className="btn-ghost flex items-center gap-2 text-dark-400 hover:text-white"
+                  className="px-4 py-3 rounded-xl text-dark-500 hover:text-red-400 hover:bg-red-500/10 transition-all flex items-center gap-2"
                 >
                   <X className="w-4 h-4" />
-                  Clear All
+                  Clear
                 </button>
               </div>
             </div>
@@ -536,6 +537,7 @@ function Dashboard() {
                 onTrack={user ? handleTrackJob : null}
                 isTracking={!!trackingMap[job.id]}
                 trackingStatus={trackingMap[job.id]}
+                onViewDetails={() => setSelectedJob(job)}
               />
             ))}
           </div>
@@ -565,6 +567,26 @@ function Dashboard() {
             </div>
           )}
         </>
+      )}
+
+      {/* Job Detail Modal */}
+      {selectedJob && (
+        <JobDetailModal
+          jobId={selectedJob.id}
+          onClose={() => setSelectedJob(null)}
+          onSaveToggle={(jobId, saved) => {
+            if (saved) {
+              setSavedJobIds(prev => new Set(prev).add(jobId));
+            } else {
+              setSavedJobIds(prev => {
+                const newSet = new Set(prev);
+                newSet.delete(jobId);
+                return newSet;
+              });
+            }
+          }}
+          isSaved={savedJobIds.has(selectedJob.id)}
+        />
       )}
     </div>
   );

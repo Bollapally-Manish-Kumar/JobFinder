@@ -11,7 +11,8 @@ const PLAN_HIERARCHY = {
   BASIC: 0,
   BASIC_PLUS: 1,
   AI: 2,
-  PRO_PLUS: 3
+  PRO_PLUS: 3,
+  ULTIMATE: 4
 };
 
 // Feature to minimum plan mapping
@@ -19,8 +20,10 @@ const FEATURE_ACCESS = {
   viewAllJobs: 'BASIC_PLUS',    // ₹10+
   resumeBuilder: 'BASIC_PLUS',  // ₹10+
   aiJobMatch: 'AI',             // ₹20+
-  atsScore: 'PRO_PLUS',         // ₹30 only
-  skillGap: 'PRO_PLUS'          // ₹30 only
+  atsScore: 'PRO_PLUS',         // ₹30+
+  skillGap: 'PRO_PLUS',         // ₹30+
+  latexResume: 'ULTIMATE',      // ₹50 only
+  unlimitedAiMatch: 'ULTIMATE'  // ₹50 only
 };
 
 /**
@@ -139,6 +142,11 @@ export const requireAI = requirePlan('AI');
 export const requireProPlus = requirePlan('PRO_PLUS');
 
 /**
+ * Middleware: Require ULTIMATE plan (₹50)
+ */
+export const requireUltimate = requirePlan('ULTIMATE');
+
+/**
  * Get user's accessible features
  */
 export const getUserFeatures = (user) => {
@@ -151,6 +159,8 @@ export const getUserFeatures = (user) => {
     aiJobMatch: isAdmin || hasFeatureAccess(user, 'aiJobMatch'),
     atsScore: isAdmin || hasFeatureAccess(user, 'atsScore'),
     skillGap: isAdmin || hasFeatureAccess(user, 'skillGap'),
+    latexResume: isAdmin || hasFeatureAccess(user, 'latexResume'),
+    unlimitedAiMatch: isAdmin || hasFeatureAccess(user, 'unlimitedAiMatch'),
     plan: user.plan,
     isAdmin,
     expiresAt: user.expiresAt,
@@ -166,6 +176,7 @@ export default {
   requireBasicPlus,
   requireAI,
   requireProPlus,
+  requireUltimate,
   hasFeatureAccess,
   getUserFeatures,
   checkAndDowngradeExpired

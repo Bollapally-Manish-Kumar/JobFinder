@@ -12,10 +12,11 @@ datasource db {
 
 // Plan enum for subscription tiers
 enum Plan {
-  BASIC       // Free - View 1 job only
-  BASIC_PLUS  // ₹10 - All jobs + resume builder
-  AI          // ₹20 - Everything + AI Job Match
-  PRO_PLUS    // ₹30 - Everything + ATS Score + Skill Gap
+  BASIC       // Free - 1 AI match trial
+  BASIC_PLUS  // ₹10 - All jobs + 3 AI matches
+  AI          // ₹20 - Everything + 5 AI matches
+  PRO_PLUS    // ₹30 - Everything + 6 AI matches
+  ULTIMATE    // ₹50 - Unlimited AI matches + LaTeX resume generation
 }
 
 // User model for authentication and subscription
@@ -31,6 +32,13 @@ model User {
   paymentVerified Boolean   @default(false) // Admin verified payment
   paidAt          DateTime? // When payment was verified
   expiresAt       DateTime? // When subscription expires (30 days after paidAt)
+  
+  // Resume for AI Job Matching
+  resumeText      String?   // Extracted text from uploaded resume PDF
+  resumeUploadedAt DateTime? // When resume was last uploaded
+  aiMatchCount    Int       @default(0) // Number of AI matches used
+  aiMatchResetAt  DateTime? // When AI match count was last reset (on plan upgrade)
+  
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 

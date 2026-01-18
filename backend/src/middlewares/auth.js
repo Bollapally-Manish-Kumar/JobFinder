@@ -151,7 +151,7 @@ export const requireAIPlan = (req, res, next) => {
   }
   
   const hasAIAccess = req.user.paymentVerified && 
-    ['AI', 'PRO_PLUS'].includes(req.user.plan) &&
+    ['AI', 'PRO_PLUS', 'ULTIMATE'].includes(req.user.plan) &&
     req.user.expiresAt && 
     new Date() < new Date(req.user.expiresAt);
   
@@ -160,7 +160,7 @@ export const requireAIPlan = (req, res, next) => {
       error: 'AI Job Match plan required (₹20/month)',
       code: 'AI_PLAN_REQUIRED',
       currentPlan: req.user.plan,
-      requiredPlan: 'AI or PRO_PLUS',
+      requiredPlan: 'AI, PRO_PLUS, or ULTIMATE',
       upgrade: true
     });
   }

@@ -2,10 +2,11 @@
  * Payment Controller - Plan-Based Subscription System
  * 
  * Plans:
- * - BASIC: ₹0 (Free) - View 1 job only
- * - BASIC_PLUS: ₹10 - All jobs + resume builder  
- * - AI: ₹20 - Everything + AI Job Match
- * - PRO_PLUS: ₹30 - Everything + ATS Score + Skill Gap
+ * - BASIC: ₹0 (Free) - 1 AI match trial
+ * - BASIC_PLUS: ₹10 - 3 AI matches
+ * - AI: ₹20 - 5 AI matches
+ * - PRO_PLUS: ₹30 - 6 AI matches
+ * - ULTIMATE: ₹50 - Unlimited AI + LaTeX resume
  * 
  * IMPORTANT: NO AUTO-UNLOCK
  * All payments require admin approval before access is granted
@@ -21,19 +22,29 @@ const PLANS = {
     amount: 10,
     days: 30,
     name: 'Basic Plus',
-    features: ['All jobs', 'Resume builder', 'Save jobs']
+    aiMatches: 3,
+    features: ['3 AI job matches', 'Unlimited job access', 'Resume builder', 'Save & track jobs']
   },
   AI: {
     amount: 20,
     days: 30,
-    name: 'AI Job Match',
-    features: ['All Basic Plus features', 'AI job matching', 'Personalized recommendations']
+    name: 'AI Pro',
+    aiMatches: 5,
+    features: ['5 AI job matches', 'All Basic Plus features', 'Match score analysis', 'Skills gap insights']
   },
   PRO_PLUS: {
     amount: 30,
     days: 30,
     name: 'Pro Plus',
-    features: ['All AI features', 'ATS score analysis', 'Skill gap insights']
+    aiMatches: 6,
+    features: ['6 AI job matches', 'All AI Pro features', 'Priority support', 'Early access']
+  },
+  ULTIMATE: {
+    amount: 50,
+    days: 30,
+    name: 'Ultimate',
+    aiMatches: 'Unlimited',
+    features: ['Unlimited AI matches', 'LaTeX resume generator', 'Job-specific resumes', 'All Pro Plus features']
   }
 };
 
@@ -88,7 +99,7 @@ export const submitUTR = asyncHandler(async (req, res) => {
   // Validate plan
   if (!PLANS[planKey]) {
     return res.status(400).json({
-      error: 'Invalid plan. Choose BASIC_PLUS, AI, or PRO_PLUS',
+      error: 'Invalid plan. Choose BASIC_PLUS, AI, PRO_PLUS, or ULTIMATE',
       validPlans: Object.keys(PLANS)
     });
   }
@@ -233,17 +244,17 @@ export const checkAiAccess = asyncHandler(async (req, res) => {
     select: { plan: true, paymentVerified: true, expiresAt: true }
   });
 
-  // AI access requires AI or PRO_PLUS plan with verified payment
+  // AI access requires AI, PRO_PLUS, or ULTIMATE plan with verified payment
   const hasAccess = 
     user.paymentVerified && 
     user.expiresAt && 
     new Date() < new Date(user.expiresAt) &&
-    ['AI', 'PRO_PLUS'].includes(user.plan);
+    ['AI', 'PRO_PLUS', 'ULTIMATE'].includes(user.plan);
 
   res.json({ 
     hasAccess,
     plan: user.plan,
-    requiredPlan: 'AI or PRO_PLUS'
+    requiredPlan: 'AI, PRO_PLUS, or ULTIMATE'
   });
 });
 
@@ -371,14 +382,16 @@ export const approvePayment = asyncHandler(async (req, res) => {
     }
   });
 
-  // ✅ NOW unlock access for user
+  // ✅ NOW unlock access for user and reset AI match count
   await prisma.user.update({
     where: { id: payment.userId },
     data: {
       plan: payment.plan,
       paymentVerified: true,
       paidAt: paidAt,
-      expiresAt: expiresAt
+      expiresAt: expiresAt,
+      aiMatchCount: 0, // Reset AI match count on plan upgrade
+      aiMatchResetAt: paidAt
     }
   });
 

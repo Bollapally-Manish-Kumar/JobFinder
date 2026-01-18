@@ -32,6 +32,24 @@ export const jobService = {
     return response.data;
   },
 
+  // Get job details with resume match analysis
+  getJobDetails: async (jobId) => {
+    const response = await api.get(`/jobs/${jobId}/details`);
+    return response.data;
+  },
+
+  // Quick check if match is available for a job
+  getQuickMatch: async (jobId) => {
+    const response = await api.get(`/jobs/${jobId}/quick-match`);
+    return response.data;
+  },
+
+  // Generate LaTeX resume tailored for a job (ULTIMATE only)
+  generateLatexResume: async (jobId) => {
+    const response = await api.post(`/jobs/${jobId}/generate-latex`);
+    return response.data;
+  },
+
   // Get saved jobs
   getSavedJobs: async () => {
     const response = await api.get('/jobs/user/saved');

@@ -35,7 +35,8 @@ export const GROQ_MODEL = 'llama-3.3-70b-versatile';
  * @returns {Promise<string>} - The generated text response
  */
 export const generateCompletion = async (prompt, options = {}) => {
-  const { temperature = 0.7, max_tokens = 4096 } = options;
+  const { temperature = 0.7, max_tokens, maxTokens } = options;
+  const tokenLimit = max_tokens || maxTokens || 4096;
 
   const groq = getGroqClient();
   
@@ -48,7 +49,7 @@ export const generateCompletion = async (prompt, options = {}) => {
       }
     ],
     temperature,
-    max_tokens
+    max_tokens: tokenLimit
   });
 
   return completion.choices[0]?.message?.content || '';
