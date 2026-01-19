@@ -45,7 +45,7 @@ function Dashboard() {
   const [savedJobIds, setSavedJobIds] = useState(new Set());
   const [trackingMap, setTrackingMap] = useState({});
   const [selectedJob, setSelectedJob] = useState(null);
-  
+
   const { user } = useAuthStore();
 
   // Fetch sync status
@@ -86,9 +86,9 @@ function Dashboard() {
       if (searchQuery) queryFilters.search = searchQuery;
       if (indiaEligible) queryFilters.isIndiaEligible = 'true';
       if (remoteOnly) queryFilters.isRemote = 'true';
-      
+
       const data = await jobService.getJobs(page, 20, queryFilters);
-      
+
       setJobs(data.jobs);
       setPagination(data.pagination);
     } catch (error) {
@@ -221,42 +221,42 @@ function Dashboard() {
 
   return (
     <div className="pb-6">
-      <SEO 
+      <SEO
         title="Job Dashboard - Latest Tech Jobs | JobFinder+"
         description={`Browse ${pagination.total || '1000+'} verified tech jobs from Accenture, TCS, Infosys, and top startups. Updated daily with remote and India-eligible opportunities.`}
         keywords="tech jobs, IT jobs India, software developer jobs, remote jobs, fresher jobs, job dashboard, Accenture careers, TCS jobs, Infosys hiring"
         url="https://jobfinderplus.vercel.app/dashboard"
         structuredData={structuredData}
       />
-      
+
       {/* Hero Header */}
       <div className="mb-6 md:mb-8">
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white via-white to-dark-300 bg-clip-text text-transparent">
-            Welcome back, {user?.name?.split(' ')[0] || 'User'}! 
+          <h1 className="text-2xl md:text-3xl font-bold">
+            <span className="text-white">Welcome back, </span>
+            <span className="animate-gradient-text">{user?.name?.split(' ')[0] || 'User'}!</span>
           </h1>
           <span className="text-2xl md:text-3xl">👋</span>
           {/* Plan Badge */}
           {user?.paymentVerified && user?.plan !== 'BASIC' && (
-            <span className={`px-3 py-1 rounded-lg text-xs font-bold ${
-              user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
+            <span className={`px-3 py-1 rounded-lg text-xs font-bold ${user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
               user?.plan === 'PRO_PLUS' ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-400 border border-orange-500/30' :
-              user?.plan === 'AI' ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/30' :
-              'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 border border-blue-500/30'
-            }`}>
-              {user?.plan === 'ULTIMATE' ? '∞ Ultimate' : 
-               user?.plan === 'PRO_PLUS' ? '★ Pro Plus' : 
-               user?.plan === 'AI' ? '✨ AI Pro' : '⚡ Plus'}
+                user?.plan === 'AI' ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/30' :
+                  'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 border border-blue-500/30'
+              }`}>
+              {user?.plan === 'ULTIMATE' ? '∞ Ultimate' :
+                user?.plan === 'PRO_PLUS' ? '★ Pro Plus' :
+                  user?.plan === 'AI' ? '✨ AI Pro' : '⚡ Plus'}
             </span>
           )}
         </div>
         <p className="text-dark-400 mt-2 text-sm md:text-base">
-          {user?.paymentVerified && user?.plan === 'ULTIMATE' 
-            ? 'Unlimited AI job matching & professional LaTeX resumes at your fingertips' 
-            : user?.paymentVerified && user?.plan === 'PRO_PLUS' 
-              ? 'Full access to premium features and priority support' 
-              : user?.paymentVerified && user?.plan === 'AI' 
-                ? 'AI-powered job matching to find your perfect role' 
+          {user?.paymentVerified && user?.plan === 'ULTIMATE'
+            ? 'Unlimited AI job matching & professional LaTeX resumes at your fingertips'
+            : user?.paymentVerified && user?.plan === 'PRO_PLUS'
+              ? 'Full access to premium features and priority support'
+              : user?.paymentVerified && user?.plan === 'AI'
+                ? 'AI-powered job matching to find your perfect role'
                 : user?.paymentVerified && user?.plan === 'BASIC_PLUS'
                   ? 'Access to all job listings and resume tools'
                   : 'Upgrade to unlock all features and job listings'}
@@ -264,17 +264,28 @@ function Dashboard() {
       </div>
 
       {/* Stats Banner */}
-      <div className="card p-4 md:p-5 mb-6 bg-gradient-to-r from-primary-500/10 via-dark-800/50 to-orange-500/10 border-primary-500/20">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="relative card p-4 md:p-5 mb-6 overflow-hidden">
+        {/* Animated gradient border */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-purple-500/10 to-orange-500/20 opacity-50" />
+        <div className="absolute inset-[1px] bg-dark-800/95 rounded-2xl" />
+
+        <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-primary-500/20 to-orange-500/20 rounded-xl">
-              <TrendingUp className="w-6 h-6 text-primary-400" />
+            <div className="relative">
+              <div className="p-3 bg-gradient-to-br from-primary-500/20 to-orange-500/20 rounded-xl">
+                <TrendingUp className="w-6 h-6 text-primary-400" />
+              </div>
+              {syncStatus.jobsAddedToday > 0 && (
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping" />
+              )}
             </div>
             <div>
               {syncStatus.jobsAddedToday > 0 ? (
                 <>
-                  <h3 className="text-lg md:text-xl font-bold text-white">
-                    {syncStatus.jobsAddedToday} New Jobs Today! 🎉
+                  <h3 className="text-lg md:text-xl font-bold">
+                    <span className="text-white">{syncStatus.jobsAddedToday}</span>
+                    <span className="animate-gradient-text"> New Jobs Today!</span>
+                    <span className="ml-1">🎉</span>
                   </h3>
                   <p className="text-dark-400 text-sm">
                     Fresh opportunities waiting for you
@@ -293,13 +304,13 @@ function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4 text-sm text-dark-400">
-            <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg">
+            <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg border border-dark-600/50 hover:border-primary-500/30 transition-colors">
               <Briefcase className="w-4 h-4 text-primary-400" />
               <span className="font-medium text-white">{syncStatus.totalJobs}</span>
               <span>total</span>
             </div>
             {syncStatus.lastSyncAt && (
-              <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg">
+              <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg border border-dark-600/50">
                 <Clock className="w-4 h-4 text-primary-400" />
                 <span>Updated {new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
               </div>
@@ -309,8 +320,12 @@ function Dashboard() {
       </div>
 
       {/* Search and filters */}
-      <div className="card p-3 md:p-4 mb-4 md:mb-6">
-        <form onSubmit={handleSearch} className="flex flex-col gap-4">
+      <div className="relative card p-4 md:p-5 mb-4 md:mb-6 overflow-hidden">
+        {/* Subtle gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-transparent to-purple-500/5" />
+        <div className="absolute inset-[1px] bg-dark-800/90 rounded-2xl" />
+
+        <form onSubmit={handleSearch} className="relative flex flex-col gap-4">
           {/* Search row */}
           <div className="flex flex-col md:flex-row gap-4">
             {/* Search input */}
@@ -407,11 +422,10 @@ function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setIndiaEligible(!indiaEligible)}
-                  className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 font-medium ${
-                    indiaEligible 
-                      ? 'bg-orange-500/15 border-orange-500/50 text-orange-400' 
-                      : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-orange-500/30 hover:text-orange-400'
-                  }`}
+                  className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 font-medium ${indiaEligible
+                    ? 'bg-orange-500/15 border-orange-500/50 text-orange-400'
+                    : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-orange-500/30 hover:text-orange-400'
+                    }`}
                 >
                   <span>🇮🇳</span>
                   India
@@ -423,11 +437,10 @@ function Dashboard() {
                 <button
                   type="button"
                   onClick={() => setRemoteOnly(!remoteOnly)}
-                  className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 font-medium ${
-                    remoteOnly 
-                      ? 'bg-cyan-500/15 border-cyan-500/50 text-cyan-400' 
-                      : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-cyan-500/30 hover:text-cyan-400'
-                  }`}
+                  className={`px-4 py-3 rounded-xl border transition-all flex items-center gap-2 font-medium ${remoteOnly
+                    ? 'bg-cyan-500/15 border-cyan-500/50 text-cyan-400'
+                    : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-cyan-500/30 hover:text-cyan-400'
+                    }`}
                 >
                   <span>🌐</span>
                   Remote

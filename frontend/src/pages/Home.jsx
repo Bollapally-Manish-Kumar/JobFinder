@@ -5,10 +5,10 @@
 
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { 
+import {
   Zap,
-  CheckCircle, 
-  Rocket, 
+  CheckCircle,
+  Rocket,
   Target,
   Brain,
   FileText,
@@ -75,7 +75,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-dark-900 overflow-x-hidden">
-      <SEO 
+      <SEO
         title="JobFinder+ | AI-Powered Job Aggregator for Tech Careers"
         description="Not just another job board. AI aggregates jobs from 50+ MNCs, analyzes your resume, and shows match scores. Find your perfect tech job faster."
         keywords="AI job matching, job aggregator, tech jobs India, resume analyzer, Accenture jobs, TCS careers, Infosys hiring, AI resume, job match score"
@@ -86,15 +86,22 @@ function Home() {
 
       {/* HERO - Unique Split Design */}
       <section className="relative min-h-[90vh] lg:min-h-screen pt-20 flex items-center overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-900 to-purple-900/20" />
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/20 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/15 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary-500/5 to-purple-500/5 rounded-full blur-3xl" />
-          
+        {/* Animated Background with Mesh Gradient */}
+        <div className="absolute inset-0 mesh-gradient">
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-900/95 to-purple-900/20" />
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/25 rounded-full blur-[100px] animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary-500/10 to-purple-500/10 rounded-full blur-3xl" />
+
+          {/* Floating Particles */}
+          <div className="particle w-2 h-2 bg-primary-500/30 top-[20%] left-[10%]" style={{ animationDelay: '0s' }} />
+          <div className="particle w-3 h-3 bg-purple-500/25 top-[30%] right-[15%]" style={{ animationDelay: '2s' }} />
+          <div className="particle w-2 h-2 bg-pink-500/30 bottom-[25%] left-[20%]" style={{ animationDelay: '4s' }} />
+          <div className="particle w-4 h-4 bg-primary-500/20 top-[60%] right-[25%]" style={{ animationDelay: '1s' }} />
+          <div className="particle w-2 h-2 bg-cyan-500/25 top-[40%] left-[30%]" style={{ animationDelay: '3s' }} />
+
           {/* Grid pattern */}
-          <div className="absolute inset-0 opacity-[0.02]" style={{
+          <div className="absolute inset-0 opacity-[0.03]" style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)`,
             backgroundSize: '60px 60px'
           }} />
@@ -118,16 +125,16 @@ function Home() {
                 Every Job.
                 <br />
                 <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-primary-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                  <span className="animate-gradient-text">
                     One Place.
                   </span>
                   <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
-                    <path d="M2 10C50 4 150 4 298 10" stroke="url(#gradient)" strokeWidth="3" strokeLinecap="round"/>
+                    <path d="M2 10C50 4 150 4 298 10" stroke="url(#gradient)" strokeWidth="3" strokeLinecap="round" />
                     <defs>
                       <linearGradient id="gradient" x1="0" y1="0" x2="300" y2="0">
-                        <stop stopColor="#f97316"/>
-                        <stop offset="0.5" stopColor="#a855f7"/>
-                        <stop offset="1" stopColor="#ec4899"/>
+                        <stop stopColor="#f97316" />
+                        <stop offset="0.5" stopColor="#a855f7" />
+                        <stop offset="1" stopColor="#ec4899" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -140,8 +147,8 @@ function Home() {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start mb-8 sm:mb-10">
-                <Link 
-                  to="/register" 
+                <Link
+                  to="/register"
                   className="group relative px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl font-semibold text-white overflow-hidden transition-all hover:shadow-lg hover:shadow-primary-500/25 hover:scale-[1.02] text-sm sm:text-base"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
@@ -150,8 +157,8 @@ function Home() {
                   </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </Link>
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-white border border-dark-700 hover:border-dark-600 hover:bg-dark-800/50 transition-all flex items-center justify-center gap-2 text-sm sm:text-base"
                 >
                   <Play className="w-4 h-4" />
@@ -161,18 +168,18 @@ function Home() {
 
               {/* Stats */}
               <div className="flex flex-wrap items-center gap-4 sm:gap-8 justify-center lg:justify-start">
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-white">{jobCount}+</div>
+                <div className="text-center group">
+                  <div className="text-2xl sm:text-3xl font-bold text-white stat-glow group-hover:scale-110 transition-transform">{jobCount}+</div>
                   <div className="text-xs sm:text-sm text-dark-400">Active Jobs</div>
                 </div>
-                <div className="w-px h-8 sm:h-10 bg-dark-700" />
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-white">{companyCount}+</div>
+                <div className="w-px h-8 sm:h-10 bg-gradient-to-b from-transparent via-dark-600 to-transparent" />
+                <div className="text-center group">
+                  <div className="text-2xl sm:text-3xl font-bold text-white stat-glow group-hover:scale-110 transition-transform">{companyCount}+</div>
                   <div className="text-xs sm:text-sm text-dark-400">Companies</div>
                 </div>
-                <div className="w-px h-8 sm:h-10 bg-dark-700" />
-                <div className="text-center">
-                  <div className="text-2xl sm:text-3xl font-bold text-white">{userCount}+</div>
+                <div className="w-px h-8 sm:h-10 bg-gradient-to-b from-transparent via-dark-600 to-transparent" />
+                <div className="text-center group">
+                  <div className="text-2xl sm:text-3xl font-bold text-white stat-glow group-hover:scale-110 transition-transform">{userCount}+</div>
                   <div className="text-xs sm:text-sm text-dark-400">Users</div>
                 </div>
               </div>
@@ -221,7 +228,7 @@ function Home() {
                       <div className="w-3 h-3 rounded-full bg-green-500" />
                       <span className="ml-2 text-dark-400 text-xs">All Jobs • Live</span>
                     </div>
-                    
+
                     {/* Aggregation Stats */}
                     <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl p-4 border border-green-500/20 mb-4">
                       <div className="flex items-center justify-between mb-3">
@@ -306,38 +313,63 @@ function Home() {
       </section>
 
       {/* WHERE WE GET JOBS FROM */}
-      <section className="py-12 sm:py-16 bg-dark-800/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-12 sm:py-16 relative overflow-hidden">
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-800/50 to-dark-900" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary-500/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
-              We Aggregate Jobs From
+              We Aggregate Jobs From <span className="animate-gradient-text">50+ Sources</span>
             </h2>
             <p className="text-dark-400 mt-2 text-sm sm:text-base">So you don't have to visit each one</p>
           </div>
-          
+
           <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2 sm:gap-4">
             {jobSources.map((source, i) => (
-              <div key={i} className="bg-dark-800/50 rounded-lg sm:rounded-xl p-2 sm:p-4 border border-dark-700/50 hover:border-primary-500/30 transition-all text-center group">
-                <div className={`w-8 h-8 sm:w-12 sm:h-12 mx-auto rounded-lg sm:rounded-xl bg-gradient-to-br ${source.color} flex items-center justify-center mb-1 sm:mb-2 group-hover:scale-110 transition-transform`}>
+              <div
+                key={i}
+                className="group relative bg-dark-800/50 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-4 border border-dark-700/50 hover:border-primary-500/40 transition-all duration-300 text-center hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-500/10"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                {/* Glow effect on hover */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg sm:rounded-xl overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${source.color} opacity-10`} />
+                </div>
+                <div className={`relative w-10 h-10 sm:w-14 sm:h-14 mx-auto rounded-lg sm:rounded-xl bg-gradient-to-br ${source.color} flex items-center justify-center mb-1 sm:mb-2 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
                   <span className="text-white font-bold text-xs sm:text-sm">{source.logo}</span>
                 </div>
-                <p className="text-dark-400 text-[10px] sm:text-xs truncate hidden sm:block">{source.name}</p>
+                <p className="relative text-dark-400 text-[10px] sm:text-xs truncate hidden sm:block group-hover:text-white transition-colors">{source.name}</p>
               </div>
             ))}
           </div>
-          
-          <p className="text-center text-dark-500 text-xs sm:text-sm mt-4 sm:mt-6">+ 40 more sources being scraped daily</p>
+
+          <p className="text-center text-dark-500 text-xs sm:text-sm mt-6 sm:mt-8">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800/50 border border-dark-700/50">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              + 40 more sources being scraped daily
+            </span>
+          </p>
         </div>
       </section>
 
       {/* WHAT MAKES US DIFFERENT */}
-      <section className="py-12 sm:py-20 relative">
+      <section className="py-12 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-dark-800/30 via-dark-900 to-dark-900" />
+        {/* Animated background orbs */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-[150px] animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }} />
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10 sm:mb-16">
-            <span className="text-primary-400 font-medium text-xs sm:text-sm tracking-wider uppercase">Features</span>
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 font-medium text-xs sm:text-sm tracking-wider uppercase mb-4">
+              <Sparkles className="w-4 h-4" />
+              Features
+            </span>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mt-2">
-              More Than Just Job Listings
+              More Than Just <span className="animate-gradient-text">Job Listings</span>
             </h2>
             <p className="text-dark-400 mt-3 sm:mt-4 max-w-2xl mx-auto text-sm sm:text-base">
               We don't just show jobs. We help you land them.
@@ -345,56 +377,57 @@ function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* Card 1 */}
-            <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-500/20 to-orange-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-dark-800/50 backdrop-blur-sm rounded-2xl p-5 sm:p-8 border border-dark-700/50 hover:border-primary-500/30 transition-all h-full">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center mb-4 sm:mb-6">
-                  <Target className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+            {/* Card 1 - Real-Time Aggregation */}
+            <div className="group relative perspective-1000">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-orange-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
+              <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-primary-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-primary-500/20">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-primary-500/30">
+                  <Target className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">Real-Time Aggregation</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-primary-400 transition-colors">Real-Time Aggregation</h3>
                 <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
                   Our scrapers run every few hours, pulling fresh jobs from 50+ company career pages.
                 </p>
-                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-primary-400 text-xs sm:text-sm font-medium">
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-primary-400 text-xs sm:text-sm font-medium group-hover:translate-x-2 transition-transform">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                   <span>Updated hourly</span>
                   <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
                 </div>
               </div>
             </div>
 
-            {/* Card 2 */}
-            <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-dark-800/50 backdrop-blur-sm rounded-2xl p-5 sm:p-8 border border-dark-700/50 hover:border-purple-500/30 transition-all h-full">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 sm:mb-6">
-                  <Brain className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+            {/* Card 2 - AI Resume Matching */}
+            <div className="group relative perspective-1000">
+              <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
+              <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-purple-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-purple-500/20">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-purple-500/30">
+                  <Brain className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">AI Resume Matching</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-purple-400 transition-colors">AI Resume Matching</h3>
                 <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
                   Upload your resume. Our AI extracts skills and tells you how well you match each job.
                 </p>
-                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-purple-400 text-xs sm:text-sm font-medium">
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-purple-400 text-xs sm:text-sm font-medium group-hover:translate-x-2 transition-transform">
                   <span>Smart AI Analysis</span>
-                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 animate-pulse" />
                 </div>
               </div>
             </div>
 
-            {/* Card 3 */}
-            <div className="group relative sm:col-span-2 md:col-span-1">
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative bg-dark-800/50 backdrop-blur-sm rounded-2xl p-5 sm:p-8 border border-dark-700/50 hover:border-green-500/30 transition-all h-full">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4 sm:mb-6">
-                  <FileCode className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+            {/* Card 3 - LaTeX Resume Builder */}
+            <div className="group relative sm:col-span-2 md:col-span-1 perspective-1000">
+              <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
+              <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-green-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-green-500/20">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-green-500/30">
+                  <FileCode className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">LaTeX Resume Builder</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-green-400 transition-colors">LaTeX Resume Builder</h3>
                 <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
                   Generate ATS-friendly professional resumes in LaTeX format.
                 </p>
-                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-green-400 text-xs sm:text-sm font-medium">
-                  <span>Ultimate Plan</span>
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-green-400 text-xs sm:text-sm font-medium group-hover:translate-x-2 transition-transform">
                   <Star className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span>Ultimate Plan</span>
                 </div>
               </div>
             </div>
@@ -415,7 +448,7 @@ function Home() {
           <div className="relative">
             {/* Timeline line */}
             <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-primary-500 via-purple-500 to-green-500 -translate-y-1/2" />
-            
+
             <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
               {[
                 {
@@ -568,7 +601,7 @@ function Home() {
       <section className="py-12 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 via-primary-500/10 to-purple-500/10" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[200px] sm:h-[400px] bg-green-500/10 rounded-full blur-[100px] sm:blur-[150px]" />
-        
+
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-green-500/10 border border-green-500/20 mb-4 sm:mb-6">
             <Target className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
@@ -582,12 +615,12 @@ function Home() {
             </span>
           </h2>
           <p className="text-sm sm:text-lg text-dark-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
-            Every job from Accenture, TCS, Infosys & 50+ companies — in one place. 
+            Every job from Accenture, TCS, Infosys & 50+ companies — in one place.
             <br className="hidden sm:block" />
             <span className="text-green-400">Never miss an opportunity again.</span>
           </p>
-          <Link 
-            to="/register" 
+          <Link
+            to="/register"
             className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl font-semibold text-white hover:shadow-lg hover:shadow-green-500/25 hover:scale-[1.02] transition-all text-sm sm:text-base"
           >
             View All Jobs Free

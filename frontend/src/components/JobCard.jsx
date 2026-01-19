@@ -22,34 +22,34 @@ function stripHtml(html) {
 // Helper function to check if job is new (scraped within last 2 hours AND posted within 7 days)
 function isNewJob(createdAt, postedAt) {
   if (!createdAt) return false;
-  
+
   const now = new Date();
   const created = new Date(createdAt);
   const createdDiffHours = (now - created) / (1000 * 60 * 60);
-  
+
   // Must be scraped/added within last 2 hours
   if (createdDiffHours > 2) return false;
-  
+
   // If postedAt exists, must be posted within last 7 days (not old jobs)
   if (postedAt) {
     const posted = new Date(postedAt);
     const postedDiffDays = (now - posted) / (1000 * 60 * 60 * 24);
     if (postedDiffDays > 7) return false;
   }
-  
+
   return true;
 }
 
 // Helper function to format freshness
 function getFreshness(postedAt) {
   if (!postedAt) return null;
-  
+
   const posted = new Date(postedAt);
   const now = new Date();
   const diffMs = now - posted;
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  
+
   if (diffHours < 24) {
     return { text: 'Today', color: 'text-emerald-400', bg: 'bg-emerald-500/15', icon: '🔥' };
   } else if (diffDays === 1) {
@@ -82,10 +82,9 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
   };
 
   return (
-    <div 
-      className={`group card p-5 relative overflow-hidden transition-all duration-300 ${
-        isNew && !isLocked ? 'ring-2 ring-primary-500/30 bg-gradient-to-br from-primary-500/5 to-transparent' : ''
-      } ${!isLocked && onViewDetails ? 'cursor-pointer hover:border-primary-500/40 hover:bg-dark-800/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary-500/10' : ''}`}
+    <div
+      className={`group card p-5 relative overflow-hidden transition-all duration-300 ${isNew && !isLocked ? 'ring-2 ring-primary-500/40 bg-gradient-to-br from-primary-500/5 via-transparent to-purple-500/5' : ''
+        } ${!isLocked && onViewDetails ? 'cursor-pointer card-lift hover:border-primary-500/40' : ''}`}
       onClick={handleCardClick}
     >
       {/* Locked overlay */}
@@ -122,7 +121,7 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
               <span className="text-sm text-primary-400 font-medium truncate">{job.company}</span>
             </div>
           </div>
-          
+
           {/* Badges */}
           <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
             <div className="flex items-center gap-1.5">
@@ -186,7 +185,7 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
               <span className="hidden sm:inline">Details</span>
             </button>
           )}
-          
+
           <a
             href={job.url || '#'}
             target="_blank"
@@ -197,7 +196,7 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
             <span>Apply</span>
             <ExternalLink className="w-4 h-4" />
           </a>
-          
+
           {/* Track Application Button */}
           {onTrack && (
             <button
@@ -205,11 +204,10 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
                 e.stopPropagation();
                 onTrack(job.id);
               }}
-              className={`p-2.5 rounded-xl border transition-all ${
-                isTracking 
-                  ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-400' 
+              className={`p-2.5 rounded-xl border transition-all ${isTracking
+                  ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-400'
                   : 'bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-emerald-500/50 hover:text-emerald-400'
-              }`}
+                }`}
               title={isTracking ? `Tracking: ${trackingStatus}` : 'Track Application'}
             >
               {isTracking ? (
@@ -219,18 +217,17 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
               )}
             </button>
           )}
-          
+
           {showSaveButton && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onSave?.(job.id);
               }}
-              className={`p-2.5 rounded-xl border transition-all ${
-                isSaved 
-                  ? 'bg-primary-500/15 border-primary-500/50 text-primary-400' 
+              className={`p-2.5 rounded-xl border transition-all ${isSaved
+                  ? 'bg-primary-500/15 border-primary-500/50 text-primary-400'
                   : 'bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-primary-500/50 hover:text-primary-400'
-              }`}
+                }`}
             >
               {isSaved ? (
                 <BookmarkCheck className="w-5 h-5" />

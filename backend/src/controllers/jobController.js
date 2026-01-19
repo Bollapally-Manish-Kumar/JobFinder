@@ -15,12 +15,12 @@ const blurJobData = (job, index, hasPaidAccess) => {
   if (hasPaidAccess) {
     return { ...job, isLocked: false };
   }
-  
+
   // Free users: only first job is fully visible
   if (index === 0) {
     return { ...job, isLocked: false };
   }
-  
+
   // Blur remaining jobs for free users
   return {
     id: job.id,
@@ -46,29 +46,29 @@ export const getJobs = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 20;
   const skip = (page - 1) * limit;
-  
+
   // Filter parameters
   const { source, location, company, type, category, search, isIndiaEligible, isRemote } = req.query;
 
   // Build filter
   const where = {};
-  
+
   if (source) where.source = source;
-  if (company) where.company = { contains: company };
+  if (company) where.company = { contains: company, mode: 'insensitive' };
   if (type) where.type = type;
   if (category) where.category = category;
-  if (location) where.location = { contains: location };
-  
+  if (location) where.location = { contains: location, mode: 'insensitive' };
+
   // Boolean filters
   if (isIndiaEligible === 'true') where.isIndiaEligible = true;
   if (isRemote === 'true') where.isRemote = true;
-  
+
   // Search across title, company, description
   if (search) {
     where.OR = [
-      { title: { contains: search } },
-      { company: { contains: search } },
-      { description: { contains: search } }
+      { title: { contains: search, mode: 'insensitive' } },
+      { company: { contains: search, mode: 'insensitive' } },
+      { description: { contains: search, mode: 'insensitive' } }
     ];
   }
 
@@ -210,7 +210,7 @@ export const getJobById = asyncHandler(async (req, res) => {
 
   // For unpaid users, check if they can view this job
   const hasPaidAccess = req.user?.paymentVerified && req.user?.plan !== 'BASIC';
-  
+
   res.json({
     job: {
       ...job,

@@ -60,11 +60,11 @@ export async function runAllScrapers() {
   for (const scraper of scrapers) {
     try {
       console.log(`\n📡 [${scraper.name}] Fetching from API...`);
-      
+
       // Support both .run() and .scrape() methods
       const scrapeMethod = scraper.run || scraper.scrape;
       const result = await scrapeMethod.call(scraper);
-      
+
       results.push({
         source: scraper.name,
         found: result.found || 0,
@@ -81,7 +81,7 @@ export async function runAllScrapers() {
         saved: 0
       });
     }
-    
+
     // Respect rate limits - delay between API calls
     await new Promise(resolve => setTimeout(resolve, 2000));
   }
@@ -92,10 +92,10 @@ export async function runAllScrapers() {
   console.log('📊 SYNC SUMMARY');
   console.log('═══════════════════════════════════════════');
   console.log('');
-  
+
   console.log('Source          | Found | Saved | Status');
   console.log('----------------|-------|-------|--------');
-  
+
   for (const result of results) {
     const status = result.error ? '❌ Error' : '✅ OK';
     const found = String(result.found || 0).padStart(5);
@@ -103,11 +103,11 @@ export async function runAllScrapers() {
     const name = result.source.padEnd(15);
     console.log(`${name} | ${found} | ${saved} | ${status}`);
   }
-  
+
   console.log('----------------|-------|-------|--------');
   console.log(`${'TOTAL'.padEnd(15)} | ${String(totalFound).padStart(5)} | ${String(totalSaved).padStart(5)} |`);
   console.log('');
-  
+
   if (totalSaved === 0 && totalFound === 0) {
     console.log('ℹ️  No new jobs found from APIs');
   } else if (totalSaved === 0) {
@@ -115,7 +115,7 @@ export async function runAllScrapers() {
   } else {
     console.log(`✅ Added ${totalSaved} new jobs to database`);
   }
-  
+
   console.log(`Completed at: ${new Date().toLocaleString()}`);
   console.log('═══════════════════════════════════════════');
 
