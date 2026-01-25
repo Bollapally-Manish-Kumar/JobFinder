@@ -464,35 +464,27 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                   </div>
                 </div>
 
-                {/* Right Column - Sidebar (AI Analysis) */}
+                {/* Right Column - Sidebar (AI Tools) */}
                 <div className="lg:col-span-4 space-y-6">
-                  {/* Match Analysis */}
-                  <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-dark-700/50">
-                    <div className="p-5">
-                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-primary-500" />
-                        AI Analysis
-                      </h3>
-                      {renderMatchScore()}
-                    </div>
-                  </div>
-
-                  {/* LaTeX Resume Generator - ULTIMATE only */}
+                  {/* LaTeX Resume Generator - ULTIMATE primary feature */}
                   {user?.plan === 'ULTIMATE' && (
-                    <div className="bg-gradient-to-br from-emerald-900/10 to-teal-900/10 backdrop-blur-sm p-5 rounded-2xl border border-emerald-500/20">
-                      <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-                        <FileCode className="w-5 h-5 text-emerald-400" />
-                        Tailored Resume
-                      </h3>
+                    <div className="bg-gradient-to-br from-emerald-900/10 to-teal-900/10 backdrop-blur-sm p-5 rounded-2xl border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                          <FileCode className="w-5 h-5 text-emerald-400" />
+                          Tailored Resume
+                        </h3>
+                        <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 uppercase tracking-tighter">Ultimate</span>
+                      </div>
                       <p className="text-dark-400 text-sm mb-4">
-                        Generate a LaTeX resume tailored for this job.
+                        Generate a professional LaTeX resume perfectly tailored for this job posting.
                       </p>
 
                       {!latexCode ? (
                         <button
                           onClick={handleGenerateLatex}
                           disabled={generatingLatex}
-                          className="btn-primary w-full bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2"
+                          className="btn-primary w-full bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2 py-2.5"
                         >
                           {generatingLatex ? (
                             <>
@@ -502,7 +494,7 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                           ) : (
                             <>
                               <FileCode className="w-4 h-4" />
-                              Generate LaTeX
+                              Generate LaTeX Resume
                             </>
                           )}
                         </button>
@@ -511,17 +503,17 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                           <div className="flex gap-2">
                             <button
                               onClick={copyLatexToClipboard}
-                              className="btn-secondary flex-1 flex items-center justify-center gap-2 text-xs"
+                              className="btn-secondary flex-1 flex items-center justify-center gap-2 text-xs py-2"
                             >
-                              <Copy className="w-3 h-3" />
-                              Copy
+                              <Copy className="w-3.5 h-3.5" />
+                              Copy Code
                             </button>
                             <button
                               onClick={downloadLatex}
-                              className="btn-primary flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2 text-xs"
+                              className="btn-primary flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2 text-xs py-2"
                             >
-                              <Download className="w-3 h-3" />
-                              .tex
+                              <Download className="w-3.5 h-3.5" />
+                              Download .tex
                             </button>
                           </div>
                           <div className="bg-dark-900/50 rounded-lg p-3 max-h-32 overflow-y-auto border border-dark-700/50">
@@ -541,7 +533,7 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                         <div className="flex items-center gap-3">
                           <FileCode className="w-5 h-5 text-emerald-400" />
                           <div>
-                            <p className="text-white text-sm font-medium">Auto-Resume Gen</p>
+                            <p className="text-white text-sm font-medium">Tailored LaTeX Resume</p>
                             <p className="text-dark-400 text-xs">Unlock with Ultimate Plan</p>
                           </div>
                         </div>
@@ -551,6 +543,17 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                       </div>
                     </div>
                   )}
+
+                  {/* Match Analysis */}
+                  <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-dark-700/50">
+                    <div className="p-5">
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-primary-500" />
+                        Detailed Analysis
+                      </h3>
+                      {renderMatchScore()}
+                    </div>
+                  </div>
 
                   {/* AI Usage Info */}
                   {aiUsage && (
