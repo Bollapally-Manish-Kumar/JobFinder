@@ -3,12 +3,12 @@
  */
 
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Briefcase, 
-  Bookmark, 
-  FileText, 
-  CreditCard, 
+import {
+  LayoutDashboard,
+  Briefcase,
+  Bookmark,
+  FileText,
+  CreditCard,
   LogOut,
   Search,
   BadgeCheck,
@@ -52,7 +52,7 @@ function Layout({ children }) {
     <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-900 to-dark-800">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
@@ -72,7 +72,7 @@ function Layout({ children }) {
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-white to-dark-300 bg-clip-text text-transparent">JobFinder+</span>
           </Link>
-          <button 
+          <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-lg transition-all"
           >
@@ -145,47 +145,34 @@ function Layout({ children }) {
           </div>
         </div>
 
-        {/* Search */}
-        <div className="px-5 pb-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full bg-dark-700/50 border border-dark-600/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder:text-dark-500 focus:outline-none focus:border-primary-500/50 focus:bg-dark-700 transition-all"
-            />
-          </div>
-        </div>
-
         {/* Navigation */}
         <nav className="px-4 py-2 flex-1 overflow-y-auto">
           <div className="space-y-1">
-          {navigation.map((item) => {
-            const isActive = location.pathname === item.href;
-            return (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${
-                  isActive 
-                    ? 'bg-gradient-to-r from-primary-500/15 to-orange-500/10 text-primary-400 shadow-lg shadow-primary-500/5' 
-                    : 'text-dark-400 hover:bg-dark-700/50 hover:text-white'
-                }`}
-              >
-                <item.icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${isActive || item.premium ? 'text-primary-400' : ''}`} />
-                <span className="flex-1">{item.name}</span>
-                {item.premium && (
-                  <span className="px-2 py-0.5 text-[10px] font-bold bg-gradient-to-r from-primary-500 to-orange-500 text-white rounded-md shadow-sm">
-                    PRO
-                  </span>
-                )}
-                {isActive && <ChevronRight className="w-4 h-4 text-primary-400" />}
-              </Link>
-            );
-          })}
+            {navigation.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${isActive
+                      ? 'bg-gradient-to-r from-primary-500/15 to-orange-500/10 text-primary-400 shadow-lg shadow-primary-500/5'
+                      : 'text-dark-400 hover:bg-dark-700/50 hover:text-white'
+                    }`}
+                >
+                  <item.icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${isActive || item.premium ? 'text-primary-400' : ''}`} />
+                  <span className="flex-1">{item.name}</span>
+                  {item.premium && (
+                    <span className="px-2 py-0.5 text-[10px] font-bold bg-gradient-to-r from-primary-500 to-orange-500 text-white rounded-md shadow-sm">
+                      PRO
+                    </span>
+                  )}
+                  {isActive && <ChevronRight className="w-4 h-4 text-primary-400" />}
+                </Link>
+              );
+            })}
           </div>
-          
+
           {/* Admin link - only visible to admin */}
           {(user?.role === 'ADMIN' || user?.email === ADMIN_EMAIL) && (
             <>
@@ -203,11 +190,10 @@ function Layout({ children }) {
               <Link
                 to="/manage-jfp-9030405493"
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  location.pathname === '/manage-jfp-9030405493' 
-                    ? 'bg-gradient-to-r from-yellow-500/15 to-orange-500/10 text-yellow-400' 
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${location.pathname === '/manage-jfp-9030405493'
+                    ? 'bg-gradient-to-r from-yellow-500/15 to-orange-500/10 text-yellow-400'
                     : 'text-dark-400 hover:bg-dark-700/50 hover:text-white'
-                }`}
+                  }`}
               >
                 <Shield className="w-5 h-5 text-yellow-400" />
                 <span>Legacy Payments</span>
@@ -242,9 +228,9 @@ function Layout({ children }) {
             >
               <Menu className="w-6 h-6" />
             </button>
-            
+
             <div className="flex-1 lg:flex-none" />
-            
+
             {/* Payment badge - show for free users or those with unverified payments */}
             {user?.role !== 'ADMIN' && (!user?.paymentVerified || user?.plan === 'BASIC') && (
               <Link
