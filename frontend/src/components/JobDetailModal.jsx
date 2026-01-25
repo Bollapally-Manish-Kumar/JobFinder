@@ -342,187 +342,197 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                 </button>
               </div>
             ) : (
-              <div className="p-6 space-y-6">
-                {/* Job Header */}
-                <div>
-                  <h1 className="text-2xl font-bold text-white mb-2">{job.title}</h1>
-                  <p className="text-lg text-primary-400 font-medium mb-4">{job.company}</p>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 p-4 md:p-6">
+                {/* Left Column - Main Details & Description */}
+                <div className="lg:col-span-8 space-y-6">
+                  {/* Job Header Card */}
+                  <div className="bg-dark-800/50 backdrop-blur-sm p-5 rounded-2xl border border-dark-700/50">
+                    <h1 className="text-2xl font-bold text-white mb-2">{job.title}</h1>
+                    <p className="text-lg text-primary-400 font-medium mb-4">{job.company}</p>
 
-                  {/* Metadata */}
-                  <div className="flex flex-wrap gap-3 mb-4">
-                    {job.location && (
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700 text-dark-300 text-sm">
-                        <MapPin className="w-4 h-4" />
-                        {job.location}
-                      </span>
-                    )}
-                    {job.type && (
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700 text-dark-300 text-sm">
-                        <Briefcase className="w-4 h-4" />
-                        {job.type.replace('_', ' ')}
-                      </span>
-                    )}
-                    {job.experience && (
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700 text-dark-300 text-sm">
-                        <Clock className="w-4 h-4" />
-                        {job.experience}
-                      </span>
-                    )}
-                    {job.salary && (
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/20 text-green-400 text-sm">
-                        <DollarSign className="w-4 h-4" />
-                        {job.salary}
-                      </span>
-                    )}
-                    {job.isRemote && (
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-400 text-sm">
-                        <Globe className="w-4 h-4" />
-                        Remote
-                      </span>
-                    )}
-                    {job.isIndiaEligible && (
-                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/20 text-orange-400 text-sm">
-                        <MapPin className="w-4 h-4" />
-                        India Eligible
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Source */}
-                  <p className="text-dark-500 text-sm">
-                    Source: {job.source} • Posted {job.postedAt ? new Date(job.postedAt).toLocaleDateString() : 'Recently'}
-                  </p>
-                </div>
-
-                {/* Match Analysis - Full Width */}
-                <div className="w-full">
-                  {renderMatchScore()}
-                </div>
-
-                {/* Description */}
-                <div className="card p-6">
-                  <h3 className="text-lg font-semibold text-white mb-4">Job Description</h3>
-                  <div
-                    className="prose prose-invert prose-sm max-w-none text-dark-300 leading-relaxed
-                      prose-p:my-3 prose-strong:text-white prose-ul:my-2 prose-li:my-1
-                      prose-headings:text-white prose-headings:mt-4 prose-headings:mb-2"
-                    dangerouslySetInnerHTML={{
-                      __html: job.description || '<p>No description available. Click "Apply Now" to view full details on the company website.</p>'
-                    }}
-                  />
-                </div>
-
-                {/* LaTeX Resume Generator - ULTIMATE only */}
-                {user?.plan === 'ULTIMATE' && (
-                  <div className="card p-6 bg-gradient-to-br from-emerald-900/20 to-teal-900/20 border-emerald-500/30">
-                    <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-                      <FileCode className="w-5 h-5 text-emerald-400" />
-                      Generate Tailored Resume
-                    </h3>
-                    <p className="text-dark-400 text-sm mb-4">
-                      Create a LaTeX resume specifically tailored for this job posting.
-                    </p>
-
-                    {!latexCode ? (
-                      <button
-                        onClick={handleGenerateLatex}
-                        disabled={generatingLatex}
-                        className="btn-primary bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center gap-2"
-                      >
-                        {generatingLatex ? (
-                          <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            Generating...
-                          </>
-                        ) : (
-                          <>
-                            <FileCode className="w-4 h-4" />
-                            Generate LaTeX Resume
-                          </>
-                        )}
-                      </button>
-                    ) : (
-                      <div className="space-y-3">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={copyLatexToClipboard}
-                            className="btn-secondary flex items-center gap-2"
-                          >
-                            <Copy className="w-4 h-4" />
-                            Copy Code
-                          </button>
-                          <button
-                            onClick={downloadLatex}
-                            className="btn-primary bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center gap-2"
-                          >
-                            <Download className="w-4 h-4" />
-                            Download .tex
-                          </button>
-                        </div>
-                        <div className="bg-dark-800 rounded-lg p-4 max-h-48 overflow-y-auto">
-                          <pre className="text-xs text-dark-300 font-mono whitespace-pre-wrap break-all">
-                            {latexCode.substring(0, 500)}...
-                          </pre>
-                        </div>
-                        <p className="text-xs text-dark-500">
-                          💡 Compile this LaTeX code using Overleaf or any LaTeX editor
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Show LaTeX upgrade prompt for non-ULTIMATE users */}
-                {user?.plan !== 'ULTIMATE' && match && !match.accessDenied && !match.resumeRequired && (
-                  <div className="card p-4 bg-gradient-to-r from-emerald-900/10 to-teal-900/10 border-emerald-500/20">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <FileCode className="w-5 h-5 text-emerald-400" />
-                        <div>
-                          <p className="text-white text-sm font-medium">Want a tailored LaTeX resume?</p>
-                          <p className="text-dark-400 text-xs">Upgrade to Ultimate (₹50) for this feature</p>
-                        </div>
-                      </div>
-                      <Link to="/payment" className="text-emerald-400 text-sm hover:underline">
-                        Upgrade →
-                      </Link>
+                    {/* Metadata */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {job.location && (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
+                          <MapPin className="w-3.5 h-3.5" />
+                          {job.location}
+                        </span>
+                      )}
+                      {job.type && (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
+                          <Briefcase className="w-3.5 h-3.5" />
+                          {job.type.replace('_', ' ')}
+                        </span>
+                      )}
+                      {job.experience && (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
+                          <Clock className="w-3.5 h-3.5" />
+                          {job.experience}
+                        </span>
+                      )}
+                      {job.salary && (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 text-sm border border-green-500/20">
+                          <DollarSign className="w-3.5 h-3.5" />
+                          {job.salary}
+                        </span>
+                      )}
+                      {job.isRemote && (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-sm border border-blue-500/20">
+                          <Globe className="w-3.5 h-3.5" />
+                          Remote
+                        </span>
+                      )}
+                      {/* Match Badge for Mobile/Quick View */}
+                      {match && !match.error && !match.accessDenied && (
+                        <span className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border ${match.score >= 80 ? 'bg-green-500/10 text-green-400 border-green-500/20' :
+                            match.score >= 60 ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
+                              'bg-red-500/10 text-red-400 border-red-500/20'
+                          }`}>
+                          <Target className="w-3.5 h-3.5" />
+                          {match.score}% Match
+                        </span>
+                      )}
                     </div>
-                  </div>
-                )}
 
-                {/* AI Usage Info */}
-                {aiUsage && (
-                  <div className="text-center text-sm text-dark-500">
-                    AI Matches: {aiUsage.isUnlimited ? '∞ Unlimited' : `${aiUsage.used}/${aiUsage.limit} used`}
-                    {!aiUsage.isUnlimited && aiUsage.remaining <= 1 && aiUsage.remaining > 0 && (
-                      <span className="text-yellow-400 ml-2">• {aiUsage.remaining} remaining</span>
-                    )}
+                    {/* Source */}
+                    <p className="text-dark-500 text-xs md:text-sm">
+                      Source: {job.source} • Posted {job.postedAt ? new Date(job.postedAt).toLocaleDateString() : 'Recently'}
+                    </p>
                   </div>
-                )}
 
-                {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleApply}
-                    className="btn-primary flex-1 flex items-center justify-center gap-2"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    Apply Now
-                  </button>
-                  <button
-                    onClick={handleSaveToggle}
-                    disabled={saving}
-                    className={`btn-secondary flex items-center gap-2 ${isSaved ? 'text-primary-400 border-primary-500' : ''}`}
-                  >
-                    {saving ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : isSaved ? (
-                      <BookmarkCheck className="w-4 h-4" />
-                    ) : (
-                      <Bookmark className="w-4 h-4" />
-                    )}
-                    {isSaved ? 'Saved' : 'Save'}
-                  </button>
+                  {/* Description Card */}
+                  <div className="bg-dark-800/50 backdrop-blur-sm p-5 rounded-2xl border border-dark-700/50">
+                    <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-primary-500" />
+                      Job Description
+                    </h3>
+                    <div
+                      className="prose prose-invert prose-sm max-w-none text-dark-300 leading-relaxed
+                        prose-p:my-3 prose-strong:text-white prose-ul:my-2 prose-li:my-1
+                        prose-headings:text-white prose-headings:mt-4 prose-headings:mb-2"
+                      dangerouslySetInnerHTML={{
+                        __html: job.description || '<p>No description available. Click "Apply Now" to view full details on the company website.</p>'
+                      }}
+                    />
+                  </div>
+
+                  {/* Action Buttons - Sticky on mobile */}
+                  <div className="sticky bottom-0 lg:static bg-dark-900/95 lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none p-4 lg:p-0 border-t border-dark-700 lg:border-0 -mx-4 -mb-4 lg:mx-0 lg:mb-0 z-20 flex gap-3">
+                    <button
+                      onClick={handleApply}
+                      className="btn-primary flex-1 flex items-center justify-center gap-2 py-3 md:py-2"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Apply Now
+                    </button>
+                    <button
+                      onClick={handleSaveToggle}
+                      disabled={saving}
+                      className={`btn-secondary flex items-center gap-2 py-3 md:py-2 ${isSaved ? 'text-primary-400 border-primary-500' : ''}`}
+                    >
+                      {saving ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : isSaved ? (
+                        <BookmarkCheck className="w-4 h-4" />
+                      ) : (
+                        <Bookmark className="w-4 h-4" />
+                      )}
+                      {isSaved ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Right Column - Sidebar (AI Analysis) */}
+                <div className="lg:col-span-4 space-y-6">
+                  {/* Match Analysis */}
+                  <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-dark-700/50 overflow-hidden">
+                    {renderMatchScore()}
+                  </div>
+
+                  {/* LaTeX Resume Generator - ULTIMATE only */}
+                  {user?.plan === 'ULTIMATE' && (
+                    <div className="bg-gradient-to-br from-emerald-900/10 to-teal-900/10 backdrop-blur-sm p-5 rounded-2xl border border-emerald-500/20">
+                      <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
+                        <FileCode className="w-5 h-5 text-emerald-400" />
+                        Tailored Resume
+                      </h3>
+                      <p className="text-dark-400 text-sm mb-4">
+                        Generate a LaTeX resume tailored for this job.
+                      </p>
+
+                      {!latexCode ? (
+                        <button
+                          onClick={handleGenerateLatex}
+                          disabled={generatingLatex}
+                          className="btn-primary w-full bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2"
+                        >
+                          {generatingLatex ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              Generating...
+                            </>
+                          ) : (
+                            <>
+                              <FileCode className="w-4 h-4" />
+                              Generate LaTeX
+                            </>
+                          )}
+                        </button>
+                      ) : (
+                        <div className="space-y-3">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={copyLatexToClipboard}
+                              className="btn-secondary flex-1 flex items-center justify-center gap-2 text-xs"
+                            >
+                              <Copy className="w-3 h-3" />
+                              Copy
+                            </button>
+                            <button
+                              onClick={downloadLatex}
+                              className="btn-primary flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2 text-xs"
+                            >
+                              <Download className="w-3 h-3" />
+                              .tex
+                            </button>
+                          </div>
+                          <div className="bg-dark-900/50 rounded-lg p-3 max-h-32 overflow-y-auto border border-dark-700/50">
+                            <pre className="text-[10px] text-dark-400 font-mono whitespace-pre-wrap break-all">
+                              {latexCode.substring(0, 500)}...
+                            </pre>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Show LaTeX upgrade prompt for non-ULTIMATE users */}
+                  {user?.plan !== 'ULTIMATE' && match && !match.accessDenied && !match.resumeRequired && (
+                    <div className="bg-gradient-to-r from-emerald-900/10 to-teal-900/10 backdrop-blur-sm p-4 rounded-xl border border-emerald-500/20">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <FileCode className="w-5 h-5 text-emerald-400" />
+                          <div>
+                            <p className="text-white text-sm font-medium">Auto-Resume Gen</p>
+                            <p className="text-dark-400 text-xs">Unlock with Ultimate Plan</p>
+                          </div>
+                        </div>
+                        <Link to="/payment" className="text-emerald-400 text-xs font-bold uppercase hover:underline">
+                          Upgrade
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* AI Usage Info */}
+                  {aiUsage && (
+                    <div className="text-center text-xs text-dark-500">
+                      AI Usage: {aiUsage.isUnlimited ? '∞ Unlimited' : `${aiUsage.used}/${aiUsage.limit}`}
+                      {!aiUsage.isUnlimited && aiUsage.remaining <= 1 && aiUsage.remaining > 0 && (
+                        <span className="text-yellow-400 ml-1">• {aiUsage.remaining} left</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}

@@ -173,7 +173,14 @@ function Layout({ children }) {
             <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold text-white truncate">{user?.name || 'User'}</div>
               <div className="text-xs text-dark-400 truncate flex items-center gap-1">
-                <p>{user?.plan === 'BASIC' ? 'Free Plan' : 'Premium'}</p>
+                <p>
+                  {user?.role === 'ADMIN' ? 'Administrator' :
+                    user?.plan === 'ULTIMATE' ? 'Ultimate Plan' :
+                      user?.plan === 'PRO_PLUS' ? 'Pro Plus' :
+                        user?.plan === 'AI' ? 'AI Plan' :
+                          user?.plan === 'BASIC_PLUS' ? 'Basic Plus' :
+                            'Free Plan'}
+                </p>
               </div>
             </div>
             <button
