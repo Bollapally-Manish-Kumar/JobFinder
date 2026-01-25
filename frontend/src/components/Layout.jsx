@@ -207,21 +207,20 @@ function Layout({ children }) {
               <Menu className="w-6 h-6" />
             </button>
 
-            {/* Spacer for mobile, or Left side content if needed */}
-            <div className="flex-1 lg:flex-none" />
-
-            {/* Right Side Actions - Always visible to fill space */}
-            <div className="flex items-center gap-4">
-              {/* Tagline */}
+            {/* Center Area - Tagline (Visible on all devices, centered on mobile) */}
+            <div className="flex-1 flex justify-center items-center pointer-events-none">
               <div
-                className="hidden lg:block text-xl text-white mr-2 border-r border-dark-800 pr-4"
+                className="text-lg md:text-xl text-white opacity-90 transition-opacity"
                 style={{ fontFamily: '"Dancing Script", cursive' }}
               >
                 We find the jobs you miss.
               </div>
+            </div>
 
+            {/* Right Side Actions */}
+            <div className="flex items-center gap-2 md:gap-4">
               {/* Date Display */}
-              <div className="hidden md:flex items-center gap-2 text-sm font-medium text-dark-400 border-r border-dark-800 pr-4 mr-1">
+              <div className="hidden md:flex items-center gap-2 text-sm font-medium text-dark-400 border-l border-dark-800 pl-4 ml-1">
                 <span className="text-white">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                 </span>
