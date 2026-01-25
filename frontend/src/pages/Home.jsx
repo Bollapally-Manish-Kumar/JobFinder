@@ -42,16 +42,16 @@ const useCounter = (end, duration = 2000) => {
   return count;
 };
 
-// Job sources we aggregate from
+// Job sources we aggregate from - with brand colors
 const jobSources = [
-  { name: 'Accenture Careers', logo: 'A', color: 'from-purple-500 to-violet-600' },
-  { name: 'TCS NextStep', logo: 'T', color: 'from-blue-500 to-cyan-500' },
-  { name: 'Infosys Careers', logo: 'I', color: 'from-orange-500 to-red-500' },
-  { name: 'Wipro Careers', logo: 'W', color: 'from-green-500 to-emerald-500' },
-  { name: 'LinkedIn Jobs', logo: 'in', color: 'from-blue-600 to-blue-700' },
-  { name: 'Naukri.com', logo: 'N', color: 'from-blue-400 to-cyan-400' },
-  { name: 'Indeed', logo: 'I', color: 'from-indigo-500 to-purple-500' },
-  { name: 'AngelList', logo: 'A', color: 'from-black to-gray-800' },
+  { name: 'Accenture', logo: 'A', bgColor: 'bg-[#A100FF]' },
+  { name: 'TCS', logo: 'T', bgColor: 'bg-[#0052C2]' },
+  { name: 'Infosys', logo: 'I', bgColor: 'bg-[#007CC3]' },
+  { name: 'Wipro', logo: 'W', bgColor: 'bg-[#3F1D74]' },
+  { name: 'LinkedIn', logo: 'in', bgColor: 'bg-[#0A66C2]' },
+  { name: 'Naukri', logo: 'N', bgColor: 'bg-gradient-to-br from-[#4285F4] to-[#EA4335]' },
+  { name: 'Indeed', logo: 'I', bgColor: 'bg-[#2164F3]' },
+  { name: 'Wellfound', logo: 'W', bgColor: 'bg-black' },
 ];
 
 function Home() {
@@ -86,19 +86,25 @@ function Home() {
 
       {/* HERO - Unique Split Design */}
       <section className="relative min-h-[90vh] lg:min-h-screen pt-20 flex items-center overflow-hidden">
-        {/* Animated Background with Mesh Gradient */}
+        {/* Animated Background with Enhanced Mesh Gradient */}
         <div className="absolute inset-0 mesh-gradient">
           <div className="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-900/95 to-purple-900/20" />
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/25 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary-500/10 to-purple-500/10 rounded-full blur-3xl" />
+
+          {/* Glowing orbs */}
+          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/30 rounded-full blur-[100px] animate-pulse" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/25 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-primary-500/15 to-purple-500/15 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-pink-500/15 rounded-full blur-[80px] float-slow" />
+          <div className="absolute bottom-1/3 left-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-[60px] float-slow" style={{ animationDelay: '2s' }} />
 
           {/* Floating Particles */}
-          <div className="particle w-2 h-2 bg-primary-500/30 top-[20%] left-[10%]" style={{ animationDelay: '0s' }} />
-          <div className="particle w-3 h-3 bg-purple-500/25 top-[30%] right-[15%]" style={{ animationDelay: '2s' }} />
-          <div className="particle w-2 h-2 bg-pink-500/30 bottom-[25%] left-[20%]" style={{ animationDelay: '4s' }} />
-          <div className="particle w-4 h-4 bg-primary-500/20 top-[60%] right-[25%]" style={{ animationDelay: '1s' }} />
-          <div className="particle w-2 h-2 bg-cyan-500/25 top-[40%] left-[30%]" style={{ animationDelay: '3s' }} />
+          <div className="particle w-2 h-2 bg-primary-500/40 top-[20%] left-[10%]" style={{ animationDelay: '0s' }} />
+          <div className="particle w-3 h-3 bg-purple-500/35 top-[30%] right-[15%]" style={{ animationDelay: '2s' }} />
+          <div className="particle w-2 h-2 bg-pink-500/40 bottom-[25%] left-[20%]" style={{ animationDelay: '4s' }} />
+          <div className="particle w-4 h-4 bg-primary-500/30 top-[60%] right-[25%]" style={{ animationDelay: '1s' }} />
+          <div className="particle w-2 h-2 bg-cyan-500/35 top-[40%] left-[30%]" style={{ animationDelay: '3s' }} />
+          <div className="particle w-3 h-3 bg-orange-500/25 top-[15%] right-[30%]" style={{ animationDelay: '5s' }} />
+          <div className="particle w-2 h-2 bg-emerald-500/30 bottom-[40%] right-[10%]" style={{ animationDelay: '1.5s' }} />
 
           {/* Grid pattern */}
           <div className="absolute inset-0 opacity-[0.03]" style={{
@@ -111,15 +117,7 @@ function Home() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left - Content */}
             <div className="text-center lg:text-left">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 mb-6">
-                <Zap className="w-4 h-4 text-green-400" />
-                <span className="text-sm font-medium text-green-400">For Students & Freshers</span>
-                <span className="flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-              </div>
+
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
                 Every Job.
@@ -166,20 +164,20 @@ function Home() {
                 </Link>
               </div>
 
-              {/* Stats */}
-              <div className="flex flex-wrap items-center gap-4 sm:gap-8 justify-center lg:justify-start">
-                <div className="text-center group">
-                  <div className="text-2xl sm:text-3xl font-bold text-white stat-glow group-hover:scale-110 transition-transform">{jobCount}+</div>
+              {/* Stats with glow effects */}
+              <div className="flex flex-wrap items-center gap-4 sm:gap-8 justify-center lg:justify-start stagger-fade">
+                <div className="text-center group cursor-default">
+                  <div className="text-2xl sm:text-3xl font-bold text-white text-glow group-hover:scale-110 transition-transform">{jobCount}+</div>
                   <div className="text-xs sm:text-sm text-dark-400">Active Jobs</div>
                 </div>
-                <div className="w-px h-8 sm:h-10 bg-gradient-to-b from-transparent via-dark-600 to-transparent" />
-                <div className="text-center group">
-                  <div className="text-2xl sm:text-3xl font-bold text-white stat-glow group-hover:scale-110 transition-transform">{companyCount}+</div>
+                <div className="w-px h-8 sm:h-10 bg-gradient-to-b from-transparent via-primary-500/30 to-transparent" />
+                <div className="text-center group cursor-default">
+                  <div className="text-2xl sm:text-3xl font-bold text-white text-glow group-hover:scale-110 transition-transform">{companyCount}+</div>
                   <div className="text-xs sm:text-sm text-dark-400">Companies</div>
                 </div>
-                <div className="w-px h-8 sm:h-10 bg-gradient-to-b from-transparent via-dark-600 to-transparent" />
-                <div className="text-center group">
-                  <div className="text-2xl sm:text-3xl font-bold text-white stat-glow group-hover:scale-110 transition-transform">{userCount}+</div>
+                <div className="w-px h-8 sm:h-10 bg-gradient-to-b from-transparent via-purple-500/30 to-transparent" />
+                <div className="text-center group cursor-default">
+                  <div className="text-2xl sm:text-3xl font-bold text-white text-glow group-hover:scale-110 transition-transform">{userCount}+</div>
                   <div className="text-xs sm:text-sm text-dark-400">Users</div>
                 </div>
               </div>
@@ -203,8 +201,8 @@ function Home() {
                     }}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${source.color} flex items-center justify-center`}>
-                        <span className="text-white font-bold text-xs">{source.logo}</span>
+                      <div className={`w-10 h-10 rounded-full ${source.bgColor} flex items-center justify-center border border-white/10`}>
+                        <span className="text-white font-bold text-sm">{source.logo}</span>
                       </div>
                       <div>
                         <div className="text-white font-medium text-sm">{source.name}</div>
@@ -334,12 +332,12 @@ function Home() {
                 className="group relative bg-dark-800/50 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-4 border border-dark-700/50 hover:border-primary-500/40 transition-all duration-300 text-center hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-500/10"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
-                {/* Glow effect on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg sm:rounded-xl overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${source.color} opacity-10`} />
+                {/* Hover effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full overflow-hidden">
+                  <div className={`absolute inset-0 ${source.bgColor} opacity-10`} />
                 </div>
-                <div className={`relative w-10 h-10 sm:w-14 sm:h-14 mx-auto rounded-lg sm:rounded-xl bg-gradient-to-br ${source.color} flex items-center justify-center mb-1 sm:mb-2 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
-                  <span className="text-white font-bold text-xs sm:text-sm">{source.logo}</span>
+                <div className={`relative w-10 h-10 sm:w-14 sm:h-14 mx-auto rounded-full ${source.bgColor} flex items-center justify-center mb-1 sm:mb-2 group-hover:scale-110 transition-all duration-300 shadow-lg border border-white/10`}>
+                  <span className="text-white font-bold text-xs sm:text-base">{source.logo}</span>
                 </div>
                 <p className="relative text-dark-400 text-[10px] sm:text-xs truncate hidden sm:block group-hover:text-white transition-colors">{source.name}</p>
               </div>
@@ -603,10 +601,7 @@ function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[200px] sm:h-[400px] bg-green-500/10 rounded-full blur-[100px] sm:blur-[150px]" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-green-500/10 border border-green-500/20 mb-4 sm:mb-6">
-            <Target className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" />
-            <span className="text-xs sm:text-sm font-medium text-green-400">For Students & Freshers</span>
-          </div>
+
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
             Stop Missing Jobs.
             <br />
