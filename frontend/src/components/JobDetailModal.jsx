@@ -8,7 +8,7 @@ import {
   X, MapPin, Briefcase, Clock, DollarSign, ExternalLink,
   Bookmark, BookmarkCheck, Loader2, Target, CheckCircle,
   XCircle, AlertCircle, Lock, TrendingUp, Sparkles, FileText,
-  FileCode, Download, Copy
+  FileCode, Download, Copy, Globe
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import jobService from '../services/jobService';
@@ -16,11 +16,11 @@ import useAuthStore from '../hooks/useAuthStore';
 
 // Match level colors and labels
 const MATCH_LEVELS = {
-  PERFECT_MATCH: { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Perfect Match', emoji: '🎯' },
-  STRONG_MATCH: { color: 'text-emerald-400', bg: 'bg-emerald-500/20', label: 'Strong Match', emoji: '💪' },
-  GOOD_MATCH: { color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Good Match', emoji: '👍' },
-  PARTIAL_MATCH: { color: 'text-yellow-400', bg: 'bg-yellow-500/20', label: 'Partial Match', emoji: '🔄' },
-  WEAK_MATCH: { color: 'text-red-400', bg: 'bg-red-500/20', label: 'Needs Work', emoji: '📈' }
+  PERFECT_MATCH: { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Perfect Match', icon: <Target className="w-4 h-4" /> },
+  STRONG_MATCH: { color: 'text-emerald-400', bg: 'bg-emerald-500/20', label: 'Strong Match', icon: <Sparkles className="w-4 h-4" /> },
+  GOOD_MATCH: { color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Good Match', icon: <CheckCircle className="w-4 h-4" /> },
+  PARTIAL_MATCH: { color: 'text-yellow-400', bg: 'bg-yellow-500/20', label: 'Partial Match', icon: <Clock className="w-4 h-4" /> },
+  WEAK_MATCH: { color: 'text-red-400', bg: 'bg-red-500/20', label: 'Needs Work', icon: <AlertCircle className="w-4 h-4" /> }
 };
 
 function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved }) {
@@ -238,7 +238,7 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
 
         {/* Match Level Badge */}
         <div className={`text-center mb-4 py-2 px-4 rounded-full ${levelInfo.bg} inline-flex items-center gap-2 mx-auto`}>
-          <span>{levelInfo.emoji}</span>
+          <span>{levelInfo.icon}</span>
           <span className={`font-semibold ${levelInfo.color}`}>{levelInfo.label}</span>
         </div>
 
@@ -375,18 +375,20 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                       </span>
                     )}
                     {job.isRemote && (
-                      <span className="px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-400 text-sm">
-                        🌐 Remote
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/20 text-blue-400 text-sm">
+                        <Globe className="w-4 h-4" />
+                        Remote
                       </span>
                     )}
                     {job.isIndiaEligible && (
-                      <span className="px-3 py-1.5 rounded-full bg-orange-500/20 text-orange-400 text-sm">
-                        🇮🇳 India Eligible
+                      <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-500/20 text-orange-400 text-sm">
+                        <MapPin className="w-4 h-4" />
+                        India Eligible
                       </span>
                     )}
                   </div>
 
-                    {/* Source */}
+                  {/* Source */}
                   <p className="text-dark-500 text-sm">
                     Source: {job.source} • Posted {job.postedAt ? new Date(job.postedAt).toLocaleDateString() : 'Recently'}
                   </p>
@@ -400,12 +402,12 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                 {/* Description */}
                 <div className="card p-6">
                   <h3 className="text-lg font-semibold text-white mb-4">Job Description</h3>
-                  <div 
+                  <div
                     className="prose prose-invert prose-sm max-w-none text-dark-300 leading-relaxed
                       prose-p:my-3 prose-strong:text-white prose-ul:my-2 prose-li:my-1
                       prose-headings:text-white prose-headings:mt-4 prose-headings:mb-2"
-                    dangerouslySetInnerHTML={{ 
-                      __html: job.description || '<p>No description available. Click "Apply Now" to view full details on the company website.</p>' 
+                    dangerouslySetInnerHTML={{
+                      __html: job.description || '<p>No description available. Click "Apply Now" to view full details on the company website.</p>'
                     }}
                   />
                 </div>
@@ -420,7 +422,7 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                     <p className="text-dark-400 text-sm mb-4">
                       Create a LaTeX resume specifically tailored for this job posting.
                     </p>
-                    
+
                     {!latexCode ? (
                       <button
                         onClick={handleGenerateLatex}

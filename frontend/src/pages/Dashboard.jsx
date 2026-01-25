@@ -3,7 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Search, Filter, MapPin, Briefcase, RefreshCw, ChevronLeft, ChevronRight, X, Clock, TrendingUp, Globe, Wifi } from 'lucide-react';
+import { Search, Filter, MapPin, Briefcase, RefreshCw, ChevronLeft, ChevronRight, X, Clock, TrendingUp, Globe, Wifi, BadgeCheck, Star, Sparkles, Zap, Infinity as InfinityIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import JobCard from '../components/JobCard';
 import JobDetailModal from '../components/JobDetailModal';
@@ -129,7 +129,7 @@ function Dashboard() {
     }
     try {
       if (trackingMap[jobId]) {
-        toast('Already tracking this job!', { icon: '📋' });
+        toast('Already tracking this job!');
         return;
       }
       await api.post('/applications', { jobId, status: 'APPLIED' });
@@ -137,7 +137,7 @@ function Dashboard() {
       toast.success('Added to Application Tracker!');
     } catch (error) {
       if (error.response?.data?.error === 'Already tracking this job') {
-        toast('Already tracking this job!', { icon: '📋' });
+        toast('Already tracking this job!');
       } else {
         toast.error(error.response?.data?.error || 'Failed to track application');
       }
@@ -236,17 +236,16 @@ function Dashboard() {
             <span className="text-white">Welcome back, </span>
             <span className="animate-gradient-text">{user?.name?.split(' ')[0] || 'User'}!</span>
           </h1>
-          <span className="text-2xl md:text-3xl">👋</span>
           {/* Plan Badge */}
           {user?.paymentVerified && user?.plan !== 'BASIC' && (
-            <span className={`px-3 py-1 rounded-lg text-xs font-bold ${user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
+            <span className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 ${user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
               user?.plan === 'PRO_PLUS' ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-400 border border-orange-500/30' :
                 user?.plan === 'AI' ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/30' :
                   'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 border border-blue-500/30'
               }`}>
-              {user?.plan === 'ULTIMATE' ? '∞ Ultimate' :
-                user?.plan === 'PRO_PLUS' ? '★ Pro Plus' :
-                  user?.plan === 'AI' ? '✨ AI Pro' : '⚡ Plus'}
+              {user?.plan === 'ULTIMATE' ? <><InfinityIcon className="w-3.5 h-3.5" /> Ultimate</> :
+                user?.plan === 'PRO_PLUS' ? <><Star className="w-3.5 h-3.5" /> Pro Plus</> :
+                  user?.plan === 'AI' ? <><Sparkles className="w-3.5 h-3.5" /> AI Pro</> : <><Zap className="w-3.5 h-3.5" /> Plus</>}
             </span>
           )}
         </div>
@@ -263,59 +262,69 @@ function Dashboard() {
         </p>
       </div>
 
-      {/* Stats Banner */}
-      <div className="relative card p-4 md:p-5 mb-6 overflow-hidden">
-        {/* Animated gradient border */}
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-500/20 via-purple-500/10 to-orange-500/20 opacity-50" />
-        <div className="absolute inset-[1px] bg-dark-800/95 rounded-2xl" />
-
-        <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <div className="p-3 bg-gradient-to-br from-primary-500/20 to-orange-500/20 rounded-xl">
-                <TrendingUp className="w-6 h-6 text-primary-400" />
-              </div>
-              {syncStatus.jobsAddedToday > 0 && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-ping" />
-              )}
-            </div>
+      {/* Stats Grid - Modern Modular Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        {/* Card 1: New Jobs - High Priority */}
+        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-5 border border-dark-700/50 hover:border-emerald-500/30 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
+          <div className="relative flex justify-between items-start">
             <div>
-              {syncStatus.jobsAddedToday > 0 ? (
-                <>
-                  <h3 className="text-lg md:text-xl font-bold">
-                    <span className="text-white">{syncStatus.jobsAddedToday}</span>
-                    <span className="animate-gradient-text"> New Jobs Today!</span>
-                    <span className="ml-1">🎉</span>
-                  </h3>
-                  <p className="text-dark-400 text-sm">
-                    Fresh opportunities waiting for you
-                  </p>
-                </>
-              ) : (
-                <>
-                  <h3 className="text-lg md:text-xl font-bold text-white">
-                    Browse {syncStatus.totalJobs}+ Jobs
-                  </h3>
-                  <p className="text-dark-400 text-sm">
-                    Check back later for fresh opportunities
-                  </p>
-                </>
-              )}
+              <p className="text-dark-400 text-sm font-medium mb-1">Added Today</p>
+              <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+                {syncStatus.jobsAddedToday}
+                {syncStatus.jobsAddedToday > 0 && (
+                  <span className="flex h-2 w-2 relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                )}
+              </h3>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
+              <TrendingUp className="w-5 h-5 text-emerald-400" />
             </div>
           </div>
-          <div className="flex items-center gap-4 text-sm text-dark-400">
-            <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg border border-dark-600/50 hover:border-primary-500/30 transition-colors">
-              <Briefcase className="w-4 h-4 text-primary-400" />
-              <span className="font-medium text-white">{syncStatus.totalJobs}</span>
-              <span>total</span>
+          <p className="text-xs text-dark-500 mt-3 font-medium flex items-center gap-1">
+            <span className="text-emerald-400">Live Updates</span> from 50+ sources
+          </p>
+        </div>
+
+        {/* Card 2: Total Jobs - Database Size */}
+        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-5 border border-dark-700/50 hover:border-purple-500/30 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
+          <div className="relative flex justify-between items-start">
+            <div>
+              <p className="text-dark-400 text-sm font-medium mb-1">Active Jobs</p>
+              <h3 className="text-2xl font-bold text-white">
+                {syncStatus.totalJobs > 0 ? (syncStatus.totalJobs / 1000).toFixed(1) + 'k+' : '0'}
+              </h3>
             </div>
-            {syncStatus.lastSyncAt && (
-              <div className="flex items-center gap-2 bg-dark-700/50 px-3 py-1.5 rounded-lg border border-dark-600/50">
-                <Clock className="w-4 h-4 text-primary-400" />
-                <span>Updated {new Date(syncStatus.lastSyncAt).toLocaleDateString()}</span>
-              </div>
-            )}
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
+              <Briefcase className="w-5 h-5 text-purple-400" />
+            </div>
           </div>
+          <p className="text-xs text-dark-500 mt-3 font-medium flex items-center gap-1">
+            <span className="text-purple-400">Verified</span> opportunities
+          </p>
+        </div>
+
+        {/* Card 3: Activity - Personal Stats */}
+        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-5 border border-dark-700/50 hover:border-orange-500/30 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
+          <div className="relative flex justify-between items-start">
+            <div>
+              <p className="text-dark-400 text-sm font-medium mb-1">Your Saved</p>
+              <h3 className="text-2xl font-bold text-white">
+                {savedJobIds.size}
+              </h3>
+            </div>
+            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 group-hover:scale-110 transition-transform">
+              <Clock className="w-5 h-5 text-orange-400" />
+            </div>
+          </div>
+          <p className="text-xs text-dark-500 mt-3 font-medium flex items-center gap-1">
+            <span className="text-orange-400">Track</span> your applications
+          </p>
         </div>
       </div>
 
@@ -427,7 +436,7 @@ function Dashboard() {
                     : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-orange-500/30 hover:text-orange-400'
                     }`}
                 >
-                  <span>🇮🇳</span>
+                  <MapPin className="w-4 h-4" />
                   India
                 </button>
               </div>
@@ -442,7 +451,7 @@ function Dashboard() {
                     : 'bg-dark-700/50 border-dark-600/50 text-dark-400 hover:border-cyan-500/30 hover:text-cyan-400'
                     }`}
                 >
-                  <span>🌐</span>
+                  <Globe className="w-4 h-4" />
                   Remote
                 </button>
               </div>
@@ -491,13 +500,13 @@ function Dashboard() {
               )}
               {indiaEligible && (
                 <span className="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm flex items-center gap-1">
-                  🇮🇳 India Eligible
+                  <MapPin className="w-3 h-3" /> India Eligible
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setIndiaEligible(false)} />
                 </span>
               )}
               {remoteOnly && (
                 <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-sm flex items-center gap-1">
-                  🌐 Remote
+                  <Globe className="w-3 h-3" /> Remote
                   <X className="w-3 h-3 cursor-pointer" onClick={() => setRemoteOnly(false)} />
                 </span>
               )}

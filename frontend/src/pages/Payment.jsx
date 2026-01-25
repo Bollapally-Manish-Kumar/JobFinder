@@ -9,9 +9,9 @@
  */
 
 import { useState, useEffect } from 'react';
-import { 
-  CheckCircle, 
-  Smartphone, 
+import {
+  CheckCircle,
+  Smartphone,
   Calendar,
   Shield,
   Sparkles,
@@ -94,7 +94,7 @@ const PLANS = {
     features: [
       'Unlimited AI job matches',
       'All Pro Plus features',
-      '🆕 LaTeX resume generator',
+      'New: LaTeX resume generator',
       'Job-specific tailored resumes',
       'ATS-optimized formatting',
       'Priority AI processing'
@@ -112,7 +112,7 @@ function Payment() {
   const [upiDetails, setUpiDetails] = useState(null);
   const [qrData, setQrData] = useState(null);
   const [qrImageError, setQrImageError] = useState(false);
-  
+
   const { user, updateUser } = useAuthStore();
 
   // Fetch initial data
@@ -207,11 +207,11 @@ function Payment() {
     }
 
     setLoading(true);
-    
+
     try {
       const plan = PLANS[selectedPlan];
       const result = await paymentService.submitUTR(utr.trim(), selectedPlan, plan.price);
-      
+
       if (result.success) {
         toast.success(result.message, { duration: 5000 });
         setShowPaymentModal(false);
@@ -236,16 +236,16 @@ function Payment() {
 
   // Payment Modal
   const planDetails = selectedPlan ? PLANS[selectedPlan] : null;
-  
+
   // Use GitHub raw URL for reliable QR image access (always works)
   const GITHUB_QR_URL = 'https://raw.githubusercontent.com/Bollapally-Manish-Kumar/JobFinder/main/backend/uploads/qr/payment-qr.jpg';
   // Only use API URL if it's a full HTTP URL, otherwise use GitHub
   const fullQrUrl = (qrData?.qrUrl && qrData.qrUrl.startsWith('http')) ? qrData.qrUrl : GITHUB_QR_URL;
-  
+
   const paymentModalContent = showPaymentModal && planDetails && (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
       <div className="bg-dark-800 rounded-2xl max-w-md w-full p-6 relative max-h-[90vh] overflow-y-auto">
-        <button 
+        <button
           onClick={() => setShowPaymentModal(false)}
           className="absolute top-4 right-4 text-dark-400 hover:text-white"
         >
@@ -266,9 +266,9 @@ function Payment() {
           {/* QR Code Display - Always show */}
           {!qrImageError && (
             <div className="bg-white rounded-lg p-4 mb-4 flex flex-col items-center">
-              <img 
-                src={fullQrUrl} 
-                alt="Payment QR Code" 
+              <img
+                src={fullQrUrl}
+                alt="Payment QR Code"
                 className="w-48 h-48 object-contain"
                 onError={(e) => {
                   console.error('QR image failed to load:', fullQrUrl);
@@ -370,7 +370,7 @@ function Payment() {
     return (
       <div>
         <h1 className="text-2xl font-bold text-white mb-6">Subscription Status</h1>
-        
+
         {pendingNotice}
 
         <div className="grid lg:grid-cols-2 gap-8">
@@ -431,7 +431,7 @@ function Payment() {
           {currentPlan !== 'ULTIMATE' && (
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-white">Upgrade Your Plan</h3>
-              
+
               {Object.entries(PLANS)
                 .filter(([planId]) => {
                   const planOrder = ['BASIC', 'BASIC_PLUS', 'AI', 'PRO_PLUS', 'ULTIMATE'];
@@ -491,13 +491,12 @@ function Payment() {
                       </td>
                       <td className="px-4 py-3 text-sm text-white">₹{payment.amount}</td>
                       <td className="px-4 py-3">
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          payment.status === 'verified' 
-                            ? 'bg-green-500/20 text-green-400' 
+                        <span className={`px-2 py-1 rounded text-xs font-medium ${payment.status === 'verified'
+                            ? 'bg-green-500/20 text-green-400'
                             : payment.status === 'rejected'
-                            ? 'bg-red-500/20 text-red-400'
-                            : 'bg-yellow-500/20 text-yellow-400'
-                        }`}>
+                              ? 'bg-red-500/20 text-red-400'
+                              : 'bg-yellow-500/20 text-yellow-400'
+                          }`}>
                           {payment.status}
                         </span>
                       </td>
@@ -520,7 +519,7 @@ function Payment() {
     <div>
       <h1 className="text-2xl font-bold text-white mb-2">Choose Your Plan</h1>
       <p className="text-dark-400 mb-8">Pay via UPI • Admin verified • 30 days access</p>
-      
+
       {pendingNotice}
 
       <div className="grid lg:grid-cols-3 gap-6">
@@ -528,18 +527,18 @@ function Payment() {
           const IconComponent = plan.icon;
           const isProPlus = planId === 'PRO_PLUS';
           return (
-            <div 
-              key={planId} 
+            <div
+              key={planId}
               className={`card p-6 relative overflow-hidden ${plan.recommended ? 'border-2 border-purple-500/50' : ''} ${isProPlus ? 'border-2 border-yellow-500/50' : ''}`}
             >
               <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r ${plan.gradient} opacity-20 rounded-full blur-3xl`} />
-              
+
               {plan.recommended && (
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">
                   RECOMMENDED
                 </div>
               )}
-              
+
               {isProPlus && (
                 <div className="absolute top-4 right-4">
                   <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full">
@@ -547,7 +546,7 @@ function Payment() {
                   </span>
                 </div>
               )}
-              
+
               <div className="relative">
                 <div className="flex items-center gap-2 mb-4">
                   <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${plan.gradient} flex items-center justify-center`}>
@@ -555,7 +554,7 @@ function Payment() {
                   </div>
                   <h2 className="text-lg font-bold text-white">{plan.name}</h2>
                 </div>
-                
+
                 {/* Price */}
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
@@ -628,13 +627,12 @@ function Payment() {
                     </td>
                     <td className="px-4 py-3 text-sm text-white">₹{payment.amount}</td>
                     <td className="px-4 py-3">
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        payment.status === 'verified' 
-                          ? 'bg-green-500/20 text-green-400' 
+                      <span className={`px-2 py-1 rounded text-xs font-medium ${payment.status === 'verified'
+                          ? 'bg-green-500/20 text-green-400'
                           : payment.status === 'rejected'
-                          ? 'bg-red-500/20 text-red-400'
-                          : 'bg-yellow-500/20 text-yellow-400'
-                      }`}>
+                            ? 'bg-red-500/20 text-red-400'
+                            : 'bg-yellow-500/20 text-yellow-400'
+                        }`}>
                         {payment.status}
                       </span>
                     </td>

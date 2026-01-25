@@ -2,7 +2,7 @@
  * JobCard Component - Modern job listing card with glassmorphism
  */
 
-import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check, Eye, Sparkles } from 'lucide-react';
+import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check, Eye, Sparkles, Flame, Calendar, Coins, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // Helper to strip HTML tags from description
@@ -51,13 +51,13 @@ function getFreshness(postedAt) {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
   if (diffHours < 24) {
-    return { text: 'Today', color: 'text-emerald-400', bg: 'bg-emerald-500/15', icon: '🔥' };
+    return { text: 'Today', color: 'text-emerald-400', bg: 'bg-emerald-500/15', icon: <Flame className="w-3 h-3" /> };
   } else if (diffDays === 1) {
-    return { text: 'Yesterday', color: 'text-emerald-400', bg: 'bg-emerald-500/15', icon: '✨' };
+    return { text: 'Yesterday', color: 'text-emerald-400', bg: 'bg-emerald-500/15', icon: <Sparkles className="w-3 h-3" /> };
   } else if (diffDays <= 3) {
-    return { text: `${diffDays}d ago`, color: 'text-amber-400', bg: 'bg-amber-500/15', icon: '⏰' };
+    return { text: `${diffDays}d ago`, color: 'text-amber-400', bg: 'bg-amber-500/15', icon: <Clock className="w-3 h-3" /> };
   } else if (diffDays <= 7) {
-    return { text: `${diffDays}d ago`, color: 'text-orange-400', bg: 'bg-orange-500/15', icon: '📅' };
+    return { text: `${diffDays}d ago`, color: 'text-orange-400', bg: 'bg-orange-500/15', icon: <Calendar className="w-3 h-3" /> };
   } else if (diffDays <= 14) {
     return { text: '1w ago', color: 'text-dark-400', bg: 'bg-dark-700/50', icon: null };
   } else if (diffDays <= 30) {
@@ -156,8 +156,9 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
             </div>
           )}
           {job.salary && (
-            <span className="text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-lg text-sm">
-              💰 {job.salary}
+            <span className="flex items-center gap-1.5 text-emerald-400 font-medium bg-emerald-500/10 px-2.5 py-1 rounded-lg text-sm">
+              <Coins className="w-3.5 h-3.5" />
+              {job.salary}
             </span>
           )}
         </div>
@@ -205,8 +206,8 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
                 onTrack(job.id);
               }}
               className={`p-2.5 rounded-xl border transition-all ${isTracking
-                  ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-400'
-                  : 'bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-emerald-500/50 hover:text-emerald-400'
+                ? 'bg-emerald-500/15 border-emerald-500/50 text-emerald-400'
+                : 'bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-emerald-500/50 hover:text-emerald-400'
                 }`}
               title={isTracking ? `Tracking: ${trackingStatus}` : 'Track Application'}
             >
@@ -225,8 +226,8 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
                 onSave?.(job.id);
               }}
               className={`p-2.5 rounded-xl border transition-all ${isSaved
-                  ? 'bg-primary-500/15 border-primary-500/50 text-primary-400'
-                  : 'bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-primary-500/50 hover:text-primary-400'
+                ? 'bg-primary-500/15 border-primary-500/50 text-primary-400'
+                : 'bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-primary-500/50 hover:text-primary-400'
                 }`}
             >
               {isSaved ? (
@@ -242,13 +243,13 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
         {(job.isIndiaEligible || job.isRemote || job.verified) && (
           <div className="mt-4 pt-4 border-t border-dark-700/50 flex flex-wrap gap-2">
             {job.isIndiaEligible && (
-              <span className="px-2.5 py-1 bg-orange-500/15 text-orange-400 rounded-lg text-xs font-medium">
-                🇮🇳 India
+              <span className="px-2.5 py-1 bg-orange-500/15 text-orange-400 rounded-lg text-xs font-medium flex items-center gap-1">
+                <MapPin className="w-3 h-3" /> India
               </span>
             )}
             {job.isRemote && (
-              <span className="px-2.5 py-1 bg-cyan-500/15 text-cyan-400 rounded-lg text-xs font-medium">
-                🌐 Remote
+              <span className="px-2.5 py-1 bg-cyan-500/15 text-cyan-400 rounded-lg text-xs font-medium flex items-center gap-1">
+                <Globe className="w-3 h-3" /> Remote
               </span>
             )}
             {job.verified && (

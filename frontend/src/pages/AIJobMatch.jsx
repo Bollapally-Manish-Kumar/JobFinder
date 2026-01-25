@@ -1,14 +1,9 @@
-/**
- * AI Job Match Page
- * Premium feature (₹20) - Upload resume (PDF or text) and get top 5 matching jobs
- */
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Sparkles, Upload, FileText, Target, TrendingUp, 
-  CheckCircle, XCircle, AlertCircle, ExternalLink, 
-  Loader2, IndianRupee, Lock, RefreshCw, File
+import {
+  Sparkles, Upload, FileText, Target, TrendingUp,
+  CheckCircle, XCircle, AlertCircle, ExternalLink,
+  Loader2, IndianRupee, Lock, RefreshCw, File, Globe, MapPin
 } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -93,7 +88,7 @@ function AIJobMatch() {
 
     try {
       const response = await api.post('/ai-match/analyze', { resumeText });
-      
+
       if (response.data.success) {
         setResults(response.data.matches);
         setResumeProfile(response.data.resumeProfile);
@@ -154,9 +149,9 @@ function AIJobMatch() {
     console.error('Analysis error:', error);
     const errorData = error.response?.data;
     const status = error.response?.status;
-    
+
     if (status === 429) {
-      toast.error('🚫 AI service limit reached. Please try again in a few minutes.', { duration: 5000 });
+      toast.error('AI service limit reached. Please try again in a few minutes.', { duration: 5000 });
     } else if (status === 503) {
       toast.error('AI service is not configured. Please contact support.');
     } else if (status === 400) {
@@ -199,7 +194,7 @@ function AIJobMatch() {
 
     try {
       const response = await api.post('/ai-match/analyze', { resumeText });
-      
+
       if (response.data.success) {
         setResults(response.data.matches);
         setResumeProfile(response.data.resumeProfile);
@@ -209,13 +204,13 @@ function AIJobMatch() {
       }
     } catch (error) {
       console.error('Analysis error:', error);
-      
+
       // Handle specific error types
       const errorData = error.response?.data;
       const status = error.response?.status;
-      
+
       if (status === 429) {
-        toast.error('🚫 AI service limit reached. Please try again in a few minutes.', { duration: 5000 });
+        toast.error('AI service limit reached. Please try again in a few minutes.', { duration: 5000 });
       } else if (status === 503) {
         toast.error('AI service is not configured. Please contact support.');
       } else {
@@ -254,13 +249,13 @@ function AIJobMatch() {
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
-          
+
           <h1 className="text-3xl font-bold text-white mb-4">
-            AI Job Match 🤖
+            AI Job Match
           </h1>
-          
+
           <p className="text-dark-400 mb-8 max-w-md mx-auto">
-            Upload your resume and let AI find the perfect job matches for you. 
+            Upload your resume and let AI find the perfect job matches for you.
             Get match percentages, reasons why jobs fit, and skills to improve.
           </p>
 
@@ -311,15 +306,15 @@ function AIJobMatch() {
                 </div>
               </div>
             </div>
-            
-            <Link 
+
+            <Link
               to="/payment"
               className="btn-primary px-8 py-3 text-lg flex items-center gap-2"
             >
               <Lock className="w-5 h-5" />
               Unlock AI Job Match
             </Link>
-            
+
             <p className="text-sm text-dark-500">
               Secure payment via UPI
             </p>
@@ -331,7 +326,7 @@ function AIJobMatch() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <SEO 
+      <SEO
         title="AI Job Matching - Find Perfect Jobs for Your Resume | JobFinder+"
         description="Upload your resume and let AI find the best matching tech jobs. Premium AI-powered job matching using advanced algorithms. Get personalized job recommendations instantly."
         keywords="AI job matching, resume analyzer, job recommendations, AI career matching, smart job search, personalized job search, ML job matching"
@@ -344,7 +339,7 @@ function AIJobMatch() {
           <span className="text-sm font-medium">Premium Feature</span>
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">
-          AI Job Match 🤖
+          AI Job Match
         </h1>
         <p className="text-dark-400">
           Paste or upload your resume to find the best matching jobs
@@ -357,22 +352,20 @@ function AIJobMatch() {
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setUploadMethod('text')}
-            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
-              uploadMethod === 'text' 
-                ? 'bg-primary-500 text-white' 
+            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'text'
+                ? 'bg-primary-500 text-white'
                 : 'bg-dark-700 text-dark-400 hover:text-white'
-            }`}
+              }`}
           >
             <FileText className="w-4 h-4" />
             Paste Text
           </button>
           <button
             onClick={() => setUploadMethod('pdf')}
-            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${
-              uploadMethod === 'pdf' 
-                ? 'bg-primary-500 text-white' 
+            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'pdf'
+                ? 'bg-primary-500 text-white'
                 : 'bg-dark-700 text-dark-400 hover:text-white'
-            }`}
+              }`}
           >
             <File className="w-4 h-4" />
             Upload PDF
@@ -398,14 +391,14 @@ function AIJobMatch() {
                 />
               </label>
             </div>
-            
+
             <textarea
               value={resumeText}
               onChange={(e) => setResumeText(e.target.value)}
               placeholder="Paste your resume text here... Include your skills, experience, education, and projects."
               className="input w-full h-64 text-sm resize-none"
             />
-            
+
             <div className="flex items-center justify-between mt-4">
               <span className="text-sm text-dark-500">
                 {resumeText.length} characters
@@ -440,7 +433,7 @@ function AIJobMatch() {
                 Upload PDF Resume
               </h2>
             </div>
-            
+
             {/* Drag & Drop Zone */}
             <label className="block w-full p-8 border-2 border-dashed border-dark-600 rounded-xl hover:border-primary-500 transition-colors cursor-pointer text-center mb-4">
               <input
@@ -485,7 +478,7 @@ function AIJobMatch() {
                   <span className="text-primary-400">{Math.round(uploadProgress)}%</span>
                 </div>
                 <div className="w-full bg-dark-700 rounded-full h-2">
-                  <div 
+                  <div
                     className="bg-primary-500 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   />
@@ -511,8 +504,8 @@ function AIJobMatch() {
               )}
             </button>
 
-            <p className="text-xs text-dark-500 text-center mt-3">
-              📝 Your PDF is processed securely and deleted immediately after analysis
+            <p className="text-xs text-dark-500 text-center mt-3 flex items-center justify-center gap-1">
+              <FileText className="w-3 h-3" /> Your PDF is processed securely and deleted immediately after analysis
             </p>
           </>
         )}
@@ -573,7 +566,7 @@ function AIJobMatch() {
             <Target className="w-6 h-6 text-primary-400" />
             Top {results.length} Matching Jobs
           </h2>
-          
+
           {results.length === 0 ? (
             <div className="card p-8 text-center">
               <AlertCircle className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
@@ -601,10 +594,16 @@ function AIJobMatch() {
                         <div className="flex items-center gap-3 mt-1 text-sm text-dark-400">
                           <span>{match.job.location}</span>
                           {match.job.isRemote && (
-                            <span className="text-cyan-400">🌐 Remote</span>
+                            <span className="flex items-center gap-1 text-cyan-400">
+                              <Globe className="w-3 h-3" />
+                              Remote
+                            </span>
                           )}
                           {match.job.isIndiaEligible && (
-                            <span className="text-orange-400">🇮🇳 India</span>
+                            <span className="flex items-center gap-1 text-orange-400">
+                              <MapPin className="w-3 h-3" />
+                              India
+                            </span>
                           )}
                         </div>
                       </div>

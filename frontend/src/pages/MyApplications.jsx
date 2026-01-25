@@ -5,10 +5,10 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Briefcase, Clock, CheckCircle, XCircle, MessageSquare, 
+import {
+  Briefcase, Clock, CheckCircle, XCircle, MessageSquare,
   ArrowRight, ExternalLink, Trash2, Filter, BarChart2,
-  Send, Users, Award, X
+  Send, Users, Award, X, Globe, ClipboardList
 } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -82,7 +82,7 @@ function MyApplications() {
 
   const deleteApplication = async (id) => {
     if (!confirm('Remove this application from tracker?')) return;
-    
+
     try {
       await api.delete(`/applications/${id}`);
       toast.success('Application removed');
@@ -105,8 +105,8 @@ function MyApplications() {
     }
   };
 
-  const filteredApplications = filter === 'ALL' 
-    ? applications 
+  const filteredApplications = filter === 'ALL'
+    ? applications
     : applications.filter(app => app.status === filter);
 
   const formatDate = (date) => {
@@ -129,8 +129,9 @@ function MyApplications() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">
-          📋 My Applications
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <ClipboardList className="w-8 h-8 text-white" />
+          My Applications
         </h1>
         <p className="text-dark-400">
           Track your job applications and monitor your progress
@@ -139,7 +140,7 @@ function MyApplications() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-        <div 
+        <div
           onClick={() => setFilter('ALL')}
           className={`card p-4 cursor-pointer transition-all ${filter === 'ALL' ? 'ring-2 ring-primary-500' : ''}`}
         >
@@ -153,9 +154,9 @@ function MyApplications() {
             </div>
           </div>
         </div>
-        
+
         {Object.entries(STATUS_CONFIG).map(([status, config]) => (
-          <div 
+          <div
             key={status}
             onClick={() => setFilter(status)}
             className={`card p-4 cursor-pointer transition-all ${filter === status ? `ring-2 ${config.border}` : ''}`}
@@ -194,7 +195,7 @@ function MyApplications() {
           {filteredApplications.map((app) => {
             const config = STATUS_CONFIG[app.status];
             const StatusIcon = config.icon;
-            
+
             return (
               <div key={app.id} className="card p-5">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -219,13 +220,16 @@ function MyApplications() {
                           {app.job.isRemote && (
                             <>
                               <span>•</span>
-                              <span className="text-cyan-400">🌐 Remote</span>
+                              <span className="flex items-center gap-1 text-cyan-400">
+                                <Globe className="w-3 h-3" />
+                                Remote
+                              </span>
                             </>
                           )}
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Notes */}
                     {editingNotes === app.id ? (
                       <div className="mt-3 ml-11">
@@ -236,13 +240,13 @@ function MyApplications() {
                           className="input w-full h-20 text-sm"
                         />
                         <div className="flex gap-2 mt-2">
-                          <button 
+                          <button
                             onClick={() => saveNotes(app.id)}
                             className="btn-primary text-xs px-3 py-1"
                           >
                             Save
                           </button>
-                          <button 
+                          <button
                             onClick={() => setEditingNotes(null)}
                             className="btn-ghost text-xs px-3 py-1"
                           >
@@ -251,11 +255,12 @@ function MyApplications() {
                         </div>
                       </div>
                     ) : app.notes ? (
-                      <div 
+                      <div
                         onClick={() => { setEditingNotes(app.id); setNoteText(app.notes); }}
-                        className="mt-3 ml-11 p-2 bg-dark-700 rounded text-sm text-dark-300 cursor-pointer hover:bg-dark-600"
+                        className="mt-3 ml-11 p-2 bg-dark-700 rounded text-sm text-dark-300 cursor-pointer hover:bg-dark-600 flex items-center gap-2"
                       >
-                        📝 {app.notes}
+                        <MessageSquare className="w-3 h-3" />
+                        {app.notes}
                       </div>
                     ) : (
                       <button

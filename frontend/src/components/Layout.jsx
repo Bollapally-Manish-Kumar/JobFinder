@@ -18,7 +18,9 @@ import {
   Sparkles,
   Shield,
   User,
-  ChevronRight
+  ChevronRight,
+  Bell,
+  Settings
 } from 'lucide-react';
 import { useState } from 'react';
 import useAuthStore from '../hooks/useAuthStore';
@@ -49,7 +51,7 @@ function Layout({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-900 to-dark-800">
+    <div className="min-h-screen bg-[#0F1115] text-white">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
@@ -58,169 +60,138 @@ function Layout({ children }) {
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Polished Premium Design (Orange Theme) */}
       <aside className={`
-        fixed top-0 left-0 z-50 h-full w-72 bg-dark-800/95 backdrop-blur-xl border-r border-dark-700/50
-        transform transition-transform duration-300 lg:translate-x-0 shadow-2xl shadow-black/20
+        fixed top-0 left-0 z-50 h-full w-72 bg-[#0F1115] border-r border-dark-800
+        transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-5 border-b border-dark-700/50">
-          <Link to="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center shadow-lg shadow-primary-500/25">
-              <span className="text-white font-bold text-base">J+</span>
+        {/* Logo Area */}
+        <div className="flex items-center gap-3 h-20 px-6 mb-2 border-b border-dark-800/50">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform">
+              <span className="text-white font-bold text-sm">J+</span>
             </div>
-            <span className="text-xl font-bold bg-gradient-to-r from-white to-dark-300 bg-clip-text text-transparent">JobFinder+</span>
+            <span className="text-lg font-bold text-white tracking-tight group-hover:text-orange-400 transition-colors">
+              JobFinder<span className="text-orange-500">+</span>
+            </span>
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 text-dark-400 hover:text-white hover:bg-dark-700/50 rounded-lg transition-all"
+            className="lg:hidden ml-auto text-dark-400 hover:text-white"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* User info */}
-        <div className="p-5 border-b border-dark-700/50">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/25">
-              <span className="text-white font-bold text-lg">
-                {user?.name?.charAt(0) || user?.email?.charAt(0) || 'U'}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-white truncate">
-                  {user?.name || 'User'}
-                </p>
-                {/* Badge based on plan */}
-                {user?.paymentVerified && user?.plan === 'ULTIMATE' && (
-                  <>
-                    {/* Emerald badge for Ultimate (₹50) */}
-                    <BadgeCheck className="w-4 h-4 text-emerald-400" />
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-[8px]">∞</span>
-                    </div>
-                  </>
-                )}
-                {user?.paymentVerified && user?.plan === 'PRO_PLUS' && (
-                  <>
-                    {/* Crown badge for Pro Plus (₹30) */}
-                    <BadgeCheck className="w-4 h-4 text-orange-400" />
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-[8px]">★</span>
-                    </div>
-                  </>
-                )}
-                {user?.paymentVerified && user?.plan === 'AI' && (
-                  <>
-                    {/* Gold badge for AI plan (₹20) */}
-                    <BadgeCheck className="w-4 h-4 text-yellow-400" />
-                    <div className="w-4 h-4 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                      <span className="text-white font-bold text-[8px]">AI</span>
-                    </div>
-                  </>
-                )}
-                {user?.paymentVerified && user?.plan === 'BASIC_PLUS' && (
-                  /* Blue badge for Basic Plus (₹10) */
-                  <BadgeCheck className="w-4 h-4 text-blue-400" />
-                )}
-              </div>
-              {user?.paymentVerified && user?.plan !== 'BASIC' && (
-                <div className="flex items-center gap-1.5 text-xs mt-1">
-                  {user?.plan === 'ULTIMATE' ? (
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 font-medium">Ultimate</span>
-                  ) : user?.plan === 'PRO_PLUS' ? (
-                    <span className="px-2 py-0.5 rounded-md bg-orange-500/15 text-orange-400 font-medium">Pro Plus</span>
-                  ) : user?.plan === 'AI' ? (
-                    <span className="px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-400 font-medium">AI Pro</span>
-                  ) : user?.plan === 'BASIC_PLUS' ? (
-                    <span className="px-2 py-0.5 rounded-md bg-blue-500/15 text-blue-400 font-medium">Plus</span>
-                  ) : (
-                    <span className="px-2 py-0.5 rounded-md bg-dark-600/50 text-dark-400 font-medium">Free</span>
-                  )}
-                </div>
-              )}
+        {/* Navigation Wrapper */}
+        <div className="px-4 py-6 space-y-8 overflow-y-auto h-[calc(100vh-160px)] scrollbar-hide">
+
+          {/* Main Menu */}
+          <div>
+            <div className="text-[11px] font-bold text-dark-500 px-3 uppercase tracking-wider mb-3">Menu</div>
+            <div className="space-y-1">
+              {navigation.map((item) => {
+                const isActive = location.pathname === item.href;
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`
+                      flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                      ${isActive
+                        ? 'bg-gradient-to-r from-orange-600 to-orange-500 text-white shadow-lg shadow-orange-500/20'
+                        : 'text-dark-400 hover:text-white hover:bg-dark-800'
+                      }
+                    `}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-dark-400 group-hover:text-white'}`} />
+                    <span>{item.name}</span>
+                    {item.premium && !isActive && (
+                      <span className="ml-auto text-[10px] font-bold text-orange-400 bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/20 opacity-70">
+                        PRO
+                      </span>
+                    )}
+                    {item.premium && isActive && (
+                      <span className="ml-auto text-[10px] font-bold text-white/90 bg-white/20 px-1.5 py-0.5 rounded">
+                        PRO
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
           </div>
-        </div>
 
-        {/* Navigation */}
-        <nav className="px-4 py-2 flex-1 overflow-y-auto">
-          <div className="space-y-1">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
+          {/* Admin Section */}
+          {(user?.email === ADMIN_EMAIL || user?.role === 'ADMIN') && (
+            <div>
+              <div className="text-[11px] font-bold text-dark-500 px-3 uppercase tracking-wider mb-3">Admin</div>
+              <div className="space-y-1">
                 <Link
-                  key={item.name}
-                  to={item.href}
+                  to="/admin-dashboard"
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${isActive
-                      ? 'bg-gradient-to-r from-primary-500/15 to-orange-500/10 text-primary-400 shadow-lg shadow-primary-500/5'
-                      : 'text-dark-400 hover:bg-dark-700/50 hover:text-white'
-                    }`}
+                  className={`
+                      flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                      ${location.pathname === '/admin-dashboard'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-500/20'
+                      : 'text-dark-400 hover:text-white hover:bg-dark-800'
+                    }
+                    `}
                 >
-                  <item.icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${isActive || item.premium ? 'text-primary-400' : ''}`} />
-                  <span className="flex-1">{item.name}</span>
-                  {item.premium && (
-                    <span className="px-2 py-0.5 text-[10px] font-bold bg-gradient-to-r from-primary-500 to-orange-500 text-white rounded-md shadow-sm">
-                      PRO
-                    </span>
-                  )}
-                  {isActive && <ChevronRight className="w-4 h-4 text-primary-400" />}
+                  <Shield className="w-4 h-4" />
+                  <span>Dashboard</span>
                 </Link>
-              );
-            })}
-          </div>
-
-          {/* Admin link - only visible to admin */}
-          {(user?.role === 'ADMIN' || user?.email === ADMIN_EMAIL) && (
-            <>
-              <Link
-                to="/admin-dashboard"
-                onClick={() => setSidebarOpen(false)}
-                className={`sidebar-link border-t border-dark-600 mt-2 pt-2 ${location.pathname === '/admin-dashboard' ? 'active' : ''}`}
-              >
-                <Shield className="w-5 h-5 text-green-400" />
-                <span>Admin Dashboard</span>
-                <span className="ml-auto px-1.5 py-0.5 text-[10px] font-semibold bg-green-500/20 text-green-400 rounded">
-                  NEW
-                </span>
-              </Link>
-              <Link
-                to="/manage-jfp-9030405493"
-                onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${location.pathname === '/manage-jfp-9030405493'
-                    ? 'bg-gradient-to-r from-yellow-500/15 to-orange-500/10 text-yellow-400'
-                    : 'text-dark-400 hover:bg-dark-700/50 hover:text-white'
-                  }`}
-              >
-                <Shield className="w-5 h-5 text-yellow-400" />
-                <span>Legacy Payments</span>
-                <span className="ml-auto px-2 py-0.5 text-[10px] font-bold bg-yellow-500/20 text-yellow-400 rounded-md">
-                  ADMIN
-                </span>
-              </Link>
-            </>
+                <Link
+                  to="/manage-jfp-9030405493"
+                  onClick={() => setSidebarOpen(false)}
+                  className={`
+                      flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                      ${location.pathname === '/manage-jfp-9030405493'
+                      ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 text-white shadow-lg shadow-yellow-500/20'
+                      : 'text-dark-400 hover:text-white hover:bg-dark-800'
+                    }
+                    `}
+                >
+                  <Shield className="w-4 h-4" />
+                  <span>Legacy</span>
+                </Link>
+              </div>
+            </div>
           )}
-        </nav>
-
-        {/* Logout button at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-dark-700/50 bg-dark-800/50 backdrop-blur-sm">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all font-medium"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Logout</span>
-          </button>
         </div>
+
+        {/* Bottom User Section - Floating Card */}
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="bg-dark-800/50 backdrop-blur-md border border-dark-700/50 rounded-2xl p-3 flex items-center gap-3 group hover:border-dark-600 transition-colors">
+            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-orange-500 to-red-500 flex items-center justify-center text-xs font-bold text-white shadow-lg">
+              {user?.name?.charAt(0) || 'U'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-sm font-semibold text-white truncate">{user?.name || 'User'}</div>
+              <div className="text-xs text-dark-400 truncate flex items-center gap-1">
+                <p>{user?.plan === 'BASIC' ? 'Free Plan' : 'Premium'}</p>
+              </div>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="p-1.5 text-dark-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+              title="Sign out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
       </aside>
 
       {/* Main content */}
       <div className="lg:pl-72">
         {/* Top header */}
-        <header className="sticky top-0 z-30 h-16 bg-dark-900/80 backdrop-blur-xl border-b border-dark-700/50">
+        <header className="sticky top-0 z-30 h-16 bg-[#0F1115]/80 backdrop-blur-md border-b border-dark-800/50">
           <div className="flex items-center justify-between h-full px-4 md:px-6">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -229,19 +200,49 @@ function Layout({ children }) {
               <Menu className="w-6 h-6" />
             </button>
 
+            {/* Spacer for mobile, or Left side content if needed */}
             <div className="flex-1 lg:flex-none" />
 
-            {/* Payment badge - show for free users or those with unverified payments */}
-            {user?.role !== 'ADMIN' && (!user?.paymentVerified || user?.plan === 'BASIC') && (
-              <Link
-                to="/payment"
-                className="flex items-center gap-2 bg-gradient-to-r from-primary-500 to-orange-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:scale-[1.02] transition-all"
+            {/* Right Side Actions - Always visible to fill space */}
+            <div className="flex items-center gap-4">
+              {/* Tagline */}
+              <div
+                className="hidden lg:block text-xl text-white mr-2 border-r border-dark-800 pr-4"
+                style={{ fontFamily: '"Dancing Script", cursive' }}
               >
-                <Sparkles className="w-4 h-4" />
-                <span className="hidden sm:inline">Upgrade from</span>
-                <span>₹10/mo</span>
-              </Link>
-            )}
+                We find the jobs you miss.
+              </div>
+
+              {/* Date Display */}
+              <div className="hidden md:flex items-center gap-2 text-sm font-medium text-dark-400 border-r border-dark-800 pr-4 mr-1">
+                <span className="text-white">
+                  {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <button className="p-2 text-dark-400 hover:text-white hover:bg-dark-800/50 rounded-lg transition-all relative group">
+                <div className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full border border-[#0F1115]" />
+                <Bell className="w-5 h-5" />
+              </button>
+
+              {!user?.role === 'ADMIN' && (
+                <button className="p-2 text-dark-400 hover:text-white hover:bg-dark-800/50 rounded-lg transition-all">
+                  <Settings className="w-5 h-5" />
+                </button>
+              )}
+
+              {/* Payment badge - only for non-premium */}
+              {user?.role !== 'ADMIN' && (!user?.paymentVerified || user?.plan === 'BASIC') && (
+                <Link
+                  to="/payment"
+                  className="flex items-center gap-2 bg-gradient-to-r from-primary-500 to-orange-500 text-white text-sm font-semibold px-4 py-2 rounded-xl shadow-lg shadow-primary-500/25 hover:shadow-xl hover:scale-[1.02] transition-all ml-2"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span className="hidden sm:inline">Upgrade</span>
+                </Link>
+              )}
+            </div>
           </div>
         </header>
 
