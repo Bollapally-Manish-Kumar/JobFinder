@@ -346,58 +346,80 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                 {/* Left Column - Main Details & Description */}
                 <div className="lg:col-span-8 space-y-6">
                   {/* Job Header Card */}
-                  <div className="bg-dark-800/50 backdrop-blur-sm p-5 rounded-2xl border border-dark-700/50">
-                    <h1 className="text-2xl font-bold text-white mb-2">{job.title}</h1>
-                    <p className="text-lg text-primary-400 font-medium mb-4">{job.company}</p>
+                  <div className="bg-dark-800/50 backdrop-blur-sm p-6 rounded-2xl border border-dark-700/50">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                      <div className="min-w-0 flex-1">
+                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">{job.title}</h1>
+                        <p className="text-lg text-primary-400 font-medium mb-4">{job.company}</p>
 
-                    {/* Metadata */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {job.location && (
-                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
-                          <MapPin className="w-3.5 h-3.5" />
-                          {job.location}
-                        </span>
-                      )}
-                      {job.type && (
-                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
-                          <Briefcase className="w-3.5 h-3.5" />
-                          {job.type.replace('_', ' ')}
-                        </span>
-                      )}
-                      {job.experience && (
-                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
-                          <Clock className="w-3.5 h-3.5" />
-                          {job.experience}
-                        </span>
-                      )}
-                      {job.salary && (
-                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 text-sm border border-green-500/20">
-                          <DollarSign className="w-3.5 h-3.5" />
-                          {job.salary}
-                        </span>
-                      )}
-                      {job.isRemote && (
-                        <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-sm border border-blue-500/20">
-                          <Globe className="w-3.5 h-3.5" />
-                          Remote
-                        </span>
-                      )}
-                      {/* Match Badge for Mobile/Quick View */}
-                      {match && !match.error && !match.accessDenied && (
-                        <span className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border ${match.score >= 80 ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                            match.score >= 60 ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
-                              'bg-red-500/10 text-red-400 border-red-500/20'
-                          }`}>
-                          <Target className="w-3.5 h-3.5" />
-                          {match.score}% Match
-                        </span>
+                        {/* Metadata */}
+                        <div className="flex flex-wrap gap-2">
+                          {job.location && (
+                            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
+                              <MapPin className="w-3.5 h-3.5" />
+                              {job.location}
+                            </span>
+                          )}
+                          {job.type && (
+                            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
+                              <Briefcase className="w-3.5 h-3.5" />
+                              {job.type.replace('_', ' ')}
+                            </span>
+                          )}
+                          {job.experience && (
+                            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-dark-700/50 text-dark-300 text-sm border border-dark-600/50">
+                              <Clock className="w-3.5 h-3.5" />
+                              {job.experience}
+                            </span>
+                          )}
+                          {job.salary && (
+                            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 text-sm border border-green-500/20">
+                              <DollarSign className="w-3.5 h-3.5" />
+                              {job.salary}
+                            </span>
+                          )}
+                          {job.isRemote && (
+                            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-sm border border-blue-500/20">
+                              <Globe className="w-3.5 h-3.5" />
+                              Remote
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Prominent Match Score in Header */}
+                      {match && !match.error && !match.accessDenied && !match.resumeRequired && (
+                        <div className="flex items-center gap-4 bg-dark-700/30 p-4 rounded-2xl border border-dark-700/50 min-w-[200px]">
+                          <div className="relative w-16 h-16">
+                            <svg className="w-16 h-16 transform -rotate-90">
+                              <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-dark-700" />
+                              <circle
+                                cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent"
+                                strokeDasharray={2 * Math.PI * 28}
+                                strokeDashoffset={2 * Math.PI * 28 - (match.score / 100) * (2 * Math.PI * 28)}
+                                strokeLinecap="round"
+                                className={MATCH_LEVELS[match.level]?.color || 'text-primary-500'}
+                              />
+                            </svg>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="text-base font-bold text-white">{match.score}%</span>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-xs text-dark-400 font-medium uppercase tracking-wider">AI Match</div>
+                            <div className={`text-sm font-bold ${MATCH_LEVELS[match.level]?.color || 'text-white'}`}>
+                              {MATCH_LEVELS[match.level]?.label || 'Analyzed'}
+                            </div>
+                          </div>
+                        </div>
                       )}
                     </div>
 
-                    {/* Source */}
-                    <p className="text-dark-500 text-xs md:text-sm">
-                      Source: {job.source} • Posted {job.postedAt ? new Date(job.postedAt).toLocaleDateString() : 'Recently'}
-                    </p>
+                    <div className="mt-4 pt-4 border-t border-dark-700/50 flex justify-between items-center">
+                      <p className="text-dark-500 text-xs md:text-sm">
+                        Source: {job.source} • Posted {job.postedAt ? new Date(job.postedAt).toLocaleDateString() : 'Recently'}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Description Card */}
@@ -445,8 +467,14 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
                 {/* Right Column - Sidebar (AI Analysis) */}
                 <div className="lg:col-span-4 space-y-6">
                   {/* Match Analysis */}
-                  <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-dark-700/50 overflow-hidden">
-                    {renderMatchScore()}
+                  <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl border border-dark-700/50">
+                    <div className="p-5">
+                      <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-primary-500" />
+                        AI Analysis
+                      </h3>
+                      {renderMatchScore()}
+                    </div>
                   </div>
 
                   {/* LaTeX Resume Generator - ULTIMATE only */}
