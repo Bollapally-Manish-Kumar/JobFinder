@@ -71,9 +71,32 @@ export function detectJobType(title, description = '') {
  * @returns {string} Job category enum value
  */
 export function detectJobCategory(title, description = '') {
+  const titleLower = title.toLowerCase();
   const text = `${title} ${description}`.toLowerCase();
 
-  // AI/ML keywords (check first - more specific)
+  // Strong signal: Check Title first for Data Science/Analytics
+  if (
+    titleLower.includes('data scientist') ||
+    titleLower.includes('data engineer') ||
+    titleLower.includes('data analyst') ||
+    titleLower.includes('business analyst') ||
+    titleLower.includes('etl')
+  ) {
+    return JOB_CATEGORIES.DATA;
+  }
+
+  // Strong signal: Check Title first for AI/ML
+  if (
+    titleLower.includes('machine learning') ||
+    titleLower.includes('ai engineer') ||
+    titleLower.includes('computer vision') ||
+    titleLower.includes('nlp') ||
+    titleLower.includes('deep learning')
+  ) {
+    return JOB_CATEGORIES.AI_ML;
+  }
+
+  // AI/ML keywords in description (Secondary check)
   if (
     text.includes('machine learning') ||
     text.includes('deep learning') ||
@@ -84,20 +107,18 @@ export function detectJobCategory(title, description = '') {
     text.includes('computer vision') ||
     text.includes('neural network') ||
     text.includes('tensorflow') ||
-    text.includes('pytorch')
+    text.includes('pytorch') ||
+    text.includes('llm') ||
+    text.includes('generative ai')
   ) {
     return JOB_CATEGORIES.AI_ML;
   }
 
-  // Data keywords
+  // Data keywords in description (Secondary check)
   if (
-    text.includes('data scientist') ||
-    text.includes('data engineer') ||
-    text.includes('data analyst') ||
     text.includes('big data') ||
     text.includes('analytics') ||
     text.includes('business intelligence') ||
-    text.includes('etl') ||
     text.includes('data warehouse') ||
     text.includes('sql') ||
     text.includes('tableau') ||
@@ -152,11 +173,11 @@ export function detectJobCategory(title, description = '') {
  * @returns {boolean} Is India eligible
  */
 export function detectIndiaEligibility(location = '', description = '', isRemote = false) {
-  // Remote jobs are India eligible
-  if (isRemote) return true;
-  
+  // Remote jobs are no longer automatically India eligible
+  // if (isRemote) return true;
+
   const text = `${location} ${description}`.toLowerCase();
-  
+
   // Check for India indicators
   if (
     text.includes('india') ||
@@ -173,13 +194,11 @@ export function detectIndiaEligibility(location = '', description = '', isRemote
     text.includes('gurugram') ||
     text.includes('asia') ||
     text.includes('apac') ||
-    text.includes('worldwide') ||
-    text.includes('global') ||
-    text.includes('anywhere')
+    (isRemote && (text.includes('worldwide') || text.includes('anywhere') || text.includes('global')))
   ) {
     return true;
   }
-  
+
   return false;
 }
 
@@ -193,9 +212,9 @@ export function detectIndiaEligibility(location = '', description = '', isRemote
 export function detectRemote(location = '', description = '', rawJob = {}) {
   // Check explicit remote flag
   if (rawJob.remote === true) return true;
-  
+
   const text = `${location} ${description}`.toLowerCase();
-  
+
   return (
     text.includes('remote') ||
     text.includes('work from home') ||
@@ -214,7 +233,7 @@ export function detectRemote(location = '', description = '', rawJob = {}) {
 export function normalizeJob(rawJob, source) {
   const isRemote = detectRemote(rawJob.location || '', rawJob.description || '', rawJob);
   const isIndiaEligible = detectIndiaEligibility(rawJob.location || '', rawJob.description || '', isRemote);
-  
+
   return {
     title: rawJob.title?.trim() || 'Untitled Position',
     company: rawJob.company?.trim() || 'Unknown Company',

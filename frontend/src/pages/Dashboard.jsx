@@ -230,28 +230,28 @@ function Dashboard() {
       />
 
       {/* Hero Header */}
-      <div className="mb-6 md:mb-8">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl md:text-3xl font-bold">
+      <div className="mb-4 md:mb-8">
+        <div className="flex flex-wrap items-center gap-2 md:gap-3">
+          <h1 className="text-xl md:text-3xl font-bold">
             <span className="text-white">Welcome back, </span>
             <span className="animate-gradient-text">{user?.name?.split(' ')[0] || 'User'}!</span>
           </h1>
           {/* Plan Badge */}
           {user?.paymentVerified && user?.plan !== 'BASIC' && (
-            <span className={`px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 ${user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
+            <span className={`px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-[10px] md:text-xs font-bold flex items-center gap-1.5 ${user?.plan === 'ULTIMATE' ? 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-400 border border-emerald-500/30' :
               user?.plan === 'PRO_PLUS' ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 text-orange-400 border border-orange-500/30' :
                 user?.plan === 'AI' ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-400 border border-purple-500/30' :
                   'bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-400 border border-blue-500/30'
               }`}>
-              {user?.plan === 'ULTIMATE' ? <><InfinityIcon className="w-3.5 h-3.5" /> Ultimate</> :
-                user?.plan === 'PRO_PLUS' ? <><Star className="w-3.5 h-3.5" /> Pro Plus</> :
-                  user?.plan === 'AI' ? <><Sparkles className="w-3.5 h-3.5" /> AI Pro</> : <><Zap className="w-3.5 h-3.5" /> Plus</>}
+              {user?.plan === 'ULTIMATE' ? <><InfinityIcon className="w-3 h-3 md:w-3.5 md:h-3.5" /> Ultimate</> :
+                user?.plan === 'PRO_PLUS' ? <><Star className="w-3 h-3 md:w-3.5 md:h-3.5" /> Pro Plus</> :
+                  user?.plan === 'AI' ? <><Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5" /> AI Pro</> : <><Zap className="w-3 h-3 md:w-3.5 md:h-3.5" /> Plus</>}
             </span>
           )}
         </div>
-        <p className="text-dark-400 mt-2 text-sm md:text-base">
+        <p className="text-dark-400 mt-1 md:mt-2 text-xs md:text-base truncate md:whitespace-normal">
           {user?.paymentVerified && user?.plan === 'ULTIMATE'
-            ? 'Unlimited AI job matching & professional LaTeX resumes at your fingertips'
+            ? 'Unlimited AI job matching & professional LaTeX resumes'
             : user?.paymentVerified && user?.plan === 'PRO_PLUS'
               ? 'Full access to premium features and priority support'
               : user?.paymentVerified && user?.plan === 'AI'
@@ -262,15 +262,15 @@ function Dashboard() {
         </p>
       </div>
 
-      {/* Stats Grid - Modern Modular Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {/* Stats Grid - Modern Modular Layout - Compact Mobile */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 mb-6 md:mb-8">
         {/* Card 1: New Jobs - High Priority */}
-        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-5 border border-dark-700/50 hover:border-emerald-500/30 transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
+        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-dark-700/50 hover:border-emerald-500/30 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-16 h-16 md:w-24 md:h-24 bg-emerald-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
           <div className="relative flex justify-between items-start">
             <div>
-              <p className="text-dark-400 text-sm font-medium mb-1">Added Today</p>
-              <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+              <p className="text-dark-400 text-xs md:text-sm font-medium mb-1">Added Today</p>
+              <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
                 {syncStatus.jobsAddedToday}
                 {syncStatus.jobsAddedToday > 0 && (
                   <span className="flex h-2 w-2 relative">
@@ -280,102 +280,102 @@ function Dashboard() {
                 )}
               </h3>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
-              <TrendingUp className="w-5 h-5 text-emerald-400" />
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 group-hover:scale-110 transition-transform">
+              <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
             </div>
           </div>
-          <p className="text-xs text-dark-500 mt-3 font-medium flex items-center gap-1">
-            <span className="text-emerald-400">Live Updates</span> from 50+ sources
+          <p className="text-[10px] md:text-xs text-dark-500 mt-2 md:mt-3 font-medium flex items-center gap-1">
+            <span className="text-emerald-400">Live Updates</span>
           </p>
         </div>
 
         {/* Card 2: Total Jobs - Database Size */}
-        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-5 border border-dark-700/50 hover:border-purple-500/30 transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
+        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-dark-700/50 hover:border-purple-500/30 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-16 h-16 md:w-24 md:h-24 bg-purple-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
           <div className="relative flex justify-between items-start">
             <div>
-              <p className="text-dark-400 text-sm font-medium mb-1">Active Jobs</p>
-              <h3 className="text-2xl font-bold text-white">
+              <p className="text-dark-400 text-xs md:text-sm font-medium mb-1">Active Jobs</p>
+              <h3 className="text-xl md:text-2xl font-bold text-white">
                 {syncStatus.totalJobs > 0 ? (syncStatus.totalJobs / 1000).toFixed(1) + 'k+' : '0'}
               </h3>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
-              <Briefcase className="w-5 h-5 text-purple-400" />
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
+              <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-purple-400" />
             </div>
           </div>
-          <p className="text-xs text-dark-500 mt-3 font-medium flex items-center gap-1">
-            <span className="text-purple-400">Verified</span> opportunities
+          <p className="text-[10px] md:text-xs text-dark-500 mt-2 md:mt-3 font-medium flex items-center gap-1">
+            <span className="text-purple-400">Verified</span> jobs
           </p>
         </div>
 
-        {/* Card 3: Activity - Personal Stats */}
-        <div className="relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-5 border border-dark-700/50 hover:border-orange-500/30 transition-all duration-300">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
+        {/* Card 3: Activity - Personal Stats - Full width on mobile to fill gap */}
+        <div className="col-span-2 md:col-span-1 relative group overflow-hidden bg-dark-800/80 backdrop-blur-md rounded-2xl p-4 md:p-5 border border-dark-700/50 hover:border-orange-500/30 transition-all duration-300">
+          <div className="absolute top-0 right-0 w-16 h-16 md:w-24 md:h-24 bg-orange-500/10 rounded-full blur-2xl -mr-6 -mt-6 transition-opacity group-hover:opacity-100" />
           <div className="relative flex justify-between items-start">
             <div>
-              <p className="text-dark-400 text-sm font-medium mb-1">Your Saved</p>
-              <h3 className="text-2xl font-bold text-white">
+              <p className="text-dark-400 text-xs md:text-sm font-medium mb-1">Your Saved</p>
+              <h3 className="text-xl md:text-2xl font-bold text-white">
                 {savedJobIds.size}
               </h3>
             </div>
-            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 group-hover:scale-110 transition-transform">
-              <Clock className="w-5 h-5 text-orange-400" />
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 group-hover:scale-110 transition-transform">
+              <Clock className="w-4 h-4 md:w-5 md:h-5 text-orange-400" />
             </div>
           </div>
-          <p className="text-xs text-dark-500 mt-3 font-medium flex items-center gap-1">
-            <span className="text-orange-400">Track</span> your applications
+          <p className="text-[10px] md:text-xs text-dark-500 mt-2 md:mt-3 font-medium flex items-center gap-1">
+            <span className="text-orange-400">Track</span> job applications
           </p>
         </div>
       </div>
 
       {/* Search and filters */}
-      <div className="relative card p-4 md:p-5 mb-4 md:mb-6 overflow-hidden">
+      <div className="relative card p-3 md:p-5 mb-4 md:mb-6 overflow-hidden">
         {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-transparent to-purple-500/5" />
         <div className="absolute inset-[1px] bg-dark-800/90 rounded-2xl" />
 
-        <form onSubmit={handleSearch} className="relative flex flex-col gap-4">
-          {/* Search row */}
-          <div className="flex flex-col md:flex-row gap-4">
-            {/* Search input */}
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-400" />
+        <form onSubmit={handleSearch} className="relative flex flex-col gap-2">
+          {/* Search row - Compact Grid on mobile */}
+          <div className="grid grid-cols-4 md:flex md:flex-row gap-2 md:gap-4">
+            {/* Search input - Full width row 1 */}
+            <div className="relative col-span-4 md:flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search jobs, companies..."
-                className="input pl-10"
+                placeholder="Search jobs..."
+                className="input pl-9 py-2 text-sm h-10"
               />
             </div>
 
-            {/* Location */}
-            <div className="relative w-full md:w-48">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500" />
+            {/* Location - Half width row 2 */}
+            <div className="relative col-span-2 md:w-48">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-500" />
               <input
                 type="text"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location"
-                className="input pl-10"
+                placeholder="City"
+                className="input pl-9 py-2 text-sm h-10"
               />
             </div>
 
-            {/* Toggle filters */}
+            {/* Toggle filters - Quarter width row 2 */}
             <button
               type="button"
               onClick={() => setShowFilters(!showFilters)}
-              className="btn-secondary flex items-center gap-2 relative"
+              className="btn-secondary col-span-1 flex items-center justify-center gap-2 relative text-xs px-2 h-10"
             >
               <Filter className="w-4 h-4" />
-              <span className="hidden sm:inline">Filters</span>
+              <span className="hidden xs:inline">Filters</span>
               {(selectedSource !== 'All' || selectedType !== 'All' || selectedCategory !== 'All' || indiaEligible || remoteOnly) && (
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-primary-500 rounded-full border-2 border-dark-800" />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary-500 rounded-full border-2 border-dark-800" />
               )}
             </button>
 
-            {/* Search button */}
-            <button type="submit" className="btn-primary whitespace-nowrap flex items-center gap-2">
+            {/* Search button - Quarter width row 2 */}
+            <button type="submit" className="btn-primary col-span-1 md:w-auto flex items-center justify-center gap-2 text-sm h-10">
               <Search className="w-4 h-4" />
               <span className="hidden md:inline">Search</span>
             </button>

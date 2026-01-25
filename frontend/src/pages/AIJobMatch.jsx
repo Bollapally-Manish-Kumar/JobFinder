@@ -353,8 +353,8 @@ function AIJobMatch() {
           <button
             onClick={() => setUploadMethod('text')}
             className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'text'
-                ? 'bg-primary-500 text-white'
-                : 'bg-dark-700 text-dark-400 hover:text-white'
+              ? 'bg-primary-500 text-white'
+              : 'bg-dark-700 text-dark-400 hover:text-white'
               }`}
           >
             <FileText className="w-4 h-4" />
@@ -363,8 +363,8 @@ function AIJobMatch() {
           <button
             onClick={() => setUploadMethod('pdf')}
             className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'pdf'
-                ? 'bg-primary-500 text-white'
-                : 'bg-dark-700 text-dark-400 hover:text-white'
+              ? 'bg-primary-500 text-white'
+              : 'bg-dark-700 text-dark-400 hover:text-white'
               }`}
           >
             <File className="w-4 h-4" />
