@@ -492,10 +492,10 @@ function Payment() {
                       <td className="px-4 py-3 text-sm text-white">₹{payment.amount}</td>
                       <td className="px-4 py-3">
                         <span className={`px-2 py-1 rounded text-xs font-medium ${payment.status === 'verified'
-                            ? 'bg-green-500/20 text-green-400'
-                            : payment.status === 'rejected'
-                              ? 'bg-red-500/20 text-red-400'
-                              : 'bg-yellow-500/20 text-yellow-400'
+                          ? 'bg-green-500/20 text-green-400'
+                          : payment.status === 'rejected'
+                            ? 'bg-red-500/20 text-red-400'
+                            : 'bg-yellow-500/20 text-yellow-400'
                           }`}>
                           {payment.status}
                         </span>
@@ -628,10 +628,10 @@ function Payment() {
                     <td className="px-4 py-3 text-sm text-white">₹{payment.amount}</td>
                     <td className="px-4 py-3">
                       <span className={`px-2 py-1 rounded text-xs font-medium ${payment.status === 'verified'
-                          ? 'bg-green-500/20 text-green-400'
-                          : payment.status === 'rejected'
-                            ? 'bg-red-500/20 text-red-400'
-                            : 'bg-yellow-500/20 text-yellow-400'
+                        ? 'bg-green-500/20 text-green-400'
+                        : payment.status === 'rejected'
+                          ? 'bg-red-500/20 text-red-400'
+                          : 'bg-yellow-500/20 text-yellow-400'
                         }`}>
                         {payment.status}
                       </span>

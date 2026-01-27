@@ -145,7 +145,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Admin routes - Secret URL (not linked anywhere publicly) */}
         <Route
           path="/manage-jfp-9030405493"
@@ -157,7 +157,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        
+
         {/* Admin Dashboard - New combined admin panel */}
         <Route
           path="/admin-dashboard"

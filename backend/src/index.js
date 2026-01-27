@@ -173,7 +173,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('   POST /api/payments/submit-utr');
   console.log('   GET  /api/payments/upi-details');
   console.log('   POST /api/resume/generate');
-  
+
   // Start cron jobs after server is ready
   initializeCronJobs();
 });

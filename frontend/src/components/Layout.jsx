@@ -196,7 +196,7 @@ function Layout({ children }) {
       </aside>
 
       {/* Main content */}
-      <div className="lg:pl-72">
+      <div className="lg:pl-72 flex flex-col h-screen">
         {/* Top header */}
         <header className="sticky top-0 z-30 h-16 bg-[#0F1115]/80 backdrop-blur-md border-b border-dark-800/50">
           <div className="flex items-center justify-between h-full px-4 md:px-6">
@@ -211,7 +211,11 @@ function Layout({ children }) {
             <div className="flex-1 flex justify-center items-center pointer-events-none">
               <div
                 className="text-lg md:text-xl text-white opacity-90 transition-opacity"
-                style={{ fontFamily: '"Dancing Script", cursive' }}
+                style={{
+                  fontFamily: '"Dancing Script", cursive',
+                  WebkitTextStroke: '0.5px rgba(249, 115, 22, 0.6)',
+                  textShadow: '0 0 1px rgba(249, 115, 22, 0.3)'
+                }}
               >
                 We find the jobs you miss.
               </div>
@@ -252,8 +256,8 @@ function Layout({ children }) {
           </div>
         </header>
 
-        {/* Page content */}
-        <main className="p-4 md:p-6 lg:p-8">
+        {/* Page content - scrollable area */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           {children}
         </main>
       </div>
