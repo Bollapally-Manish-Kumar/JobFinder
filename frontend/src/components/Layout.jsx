@@ -23,6 +23,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
 
 // Regular navigation items
@@ -231,7 +232,10 @@ function Layout({ children }) {
               </div>
 
               {/* Action Buttons */}
-              <button className="p-2 text-dark-400 hover:text-white hover:bg-dark-800/50 rounded-lg transition-all relative group">
+              <button
+                onClick={() => toast('Auto Apply Agent coming soon!', { duration: 3000 })}
+                className="p-2 text-dark-400 hover:text-white hover:bg-dark-800/50 rounded-lg transition-all relative group"
+              >
                 <div className="absolute top-2 right-2 w-2 h-2 bg-orange-500 rounded-full border border-[#0F1115]" />
                 <Bell className="w-5 h-5" />
               </button>
