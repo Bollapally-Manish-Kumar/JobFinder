@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#logoGradient)"/>
+  
+  <!-- Inner glow effect -->
+  <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+  
+  <!-- G letter stylized -->
+  <path d="M60 100 
+           C60 70, 85 50, 110 50 
+           C130 50, 145 60, 150 75
+           L135 82
+           C132 72, 122 65, 110 65
+           C92 65, 78 80, 78 100
+           C78 120, 92 135, 110 135
+           C125 135, 135 125, 138 112
+           L105 112
+           L105 98
+           L155 98
+           L155 108
+           C155 135, 135 155, 105 155
+           C70 155, 60 130, 60 100Z" 
+        fill="white"/>
+  
+  <!-- AI dots/nodes representing artificial intelligence -->
+  <circle cx="145" cy="65" r="8" fill="url(#aiGradient)"/>
+  <circle cx="160" cy="85" r="5" fill="url(#aiGradient)" opacity="0.7"/>
+  <circle cx="165" cy="60" r="4" fill="url(#aiGradient)" opacity="0.5"/>
+  
+  <!-- Connection lines for AI effect -->
+  <line x1="145" y1="65" x2="160" y2="85" stroke="url(#aiGradient)" stroke-width="2" opacity="0.6"/>
+  <line x1="145" y1="65" x2="165" y2="60" stroke="url(#aiGradient)" stroke-width="1.5" opacity="0.4"/>
+</svg>
