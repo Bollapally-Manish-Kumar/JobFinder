@@ -1,4 +1,4 @@
-# JobFinder+ Robots.txt
+# GoAxon AI Robots.txt
 # Allow all search engines to crawl
 
 User-agent: *
@@ -13,4 +13,4 @@ Disallow: /admin
 Disallow: /payment
 
 # Sitemap location
-Sitemap: https://jobfinderplus.vercel.app/sitemap.xml
+Sitemap: https://www.goaxonai.in/sitemap.xml

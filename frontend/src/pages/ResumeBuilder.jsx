@@ -110,10 +110,10 @@ function ResumeBuilder() {
   return (
     <div>
       <SEO 
-        title="AI Resume Builder - Generate Professional LaTeX Resumes | JobFinder+"
+        title="AI Resume Builder - Generate Professional LaTeX Resumes | GoAxon AI"
         description="Create ATS-friendly, professional resumes with AI. Generate LaTeX-formatted resumes tailored to job descriptions. Free AI-powered resume builder for tech jobs."
         keywords="AI resume builder, LaTeX resume generator, ATS resume, professional resume maker, free resume builder, tech resume, AI CV generator"
-        url="https://jobfinderplus.vercel.app/resume-builder"
+        url="https://www.goaxonai.in/resume-builder"
       />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-white flex items-center gap-2">

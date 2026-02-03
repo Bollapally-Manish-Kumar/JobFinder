@@ -222,10 +222,10 @@ function Dashboard() {
   return (
     <div className="pb-6">
       <SEO
-        title="Job Dashboard - Latest Tech Jobs | JobFinder+"
+        title="Job Dashboard - Latest Tech Jobs | GoAxon AI"
         description={`Browse ${pagination.total || '1000+'} verified tech jobs from Accenture, TCS, Infosys, and top startups. Updated daily with remote and India-eligible opportunities.`}
         keywords="tech jobs, IT jobs India, software developer jobs, remote jobs, fresher jobs, job dashboard, Accenture careers, TCS jobs, Infosys hiring"
-        url="https://jobfinderplus.vercel.app/dashboard"
+        url="https://www.goaxonai.in/dashboard"
         structuredData={structuredData}
       />
 

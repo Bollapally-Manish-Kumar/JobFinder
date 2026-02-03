@@ -6,15 +6,15 @@
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ 
-  title = 'JobFinder+ | Find Every Job Before You Miss It',
-  description = 'Find tech jobs from top companies like Accenture, TCS, Infosys, and startups. AI-powered resume builder, job matching, and application tracking. Get hired faster with JobFinder+.',
+  title = 'GoAxon AI | Find Every Job Before You Miss It',
+  description = 'Find tech jobs from top companies like Accenture, TCS, Infosys, and startups. AI-powered resume builder, job matching, and application tracking. Get hired faster with GoAxon AI.',
   keywords = 'jobs, careers, job search, IT jobs, software jobs, fresher jobs, internships, remote jobs, AI resume builder, job matching, tech jobs, Accenture jobs, TCS jobs, Infosys jobs',
-  ogImage = 'https://jobfinderplus.vercel.app/og-image.png',
-  url = 'https://jobfinderplus.vercel.app',
+  ogImage = 'https://www.goaxonai.in/og-image.png',
+  url = 'https://www.goaxonai.in',
   type = 'website',
   structuredData = null
 }) => {
-  const fullTitle = title.includes('JobFinder+') ? title : `${title} | JobFinder+`;
+  const fullTitle = title.includes('GoAxon AI') ? title : `${title} | GoAxon AI`;
 
   return (
     <Helmet>
@@ -29,7 +29,7 @@ const SEO = ({
       <meta property="og:image" content={ogImage} />
       <meta property="og:url" content={url} />
       <meta property="og:type" content={type} />
-      <meta property="og:site_name" content="JobFinder+" />
+      <meta property="og:site_name" content="GoAxon AI" />
       
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />

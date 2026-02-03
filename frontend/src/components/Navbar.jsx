@@ -37,10 +37,10 @@ function Navbar() {
             {/* Logo - No glow */}
             <Link to="/" className="flex items-center gap-2 group">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-orange-500 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                <span className="text-white font-bold text-xs sm:text-sm">J+</span>
+                <span className="text-white font-bold text-xs sm:text-sm">GA</span>
               </div>
               <span className="text-base sm:text-lg font-bold text-white group-hover:text-orange-400 transition-colors duration-300">
-                JobFinder+
+                GoAxon AI
               </span>
             </Link>
 

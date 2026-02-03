@@ -186,10 +186,10 @@ function Payment() {
     const plan = PLANS[selectedPlan];
     if (!plan) return;
     const upiLink = paymentService.generateUpiLink(
-      upiDetails?.upiId || 'jobfinderplus@upi',
-      upiDetails?.name || 'JobFinder Plus',
+      upiDetails?.upiId || '9030405493@upi',
+      upiDetails?.name || 'GoAxon AI',
       plan.price,
-      `JobFinder+ ${plan.name} Plan`
+      `GoAxon AI ${plan.name} Plan`
     );
     window.location.href = upiLink;
   };

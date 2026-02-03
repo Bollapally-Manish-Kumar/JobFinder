@@ -50,7 +50,7 @@ const PLANS = {
 
 // UPI Details from environment variables
 const UPI_DETAILS = {
-  upiId: process.env.UPI_ID || 'jobfinderplus@upi',
+  upiId: process.env.UPI_ID || '9030405493@upi',
   name: process.env.UPI_NAME || 'JobFinder Plus',
   qrCodeUrl: '/upi-qr.png'
 };

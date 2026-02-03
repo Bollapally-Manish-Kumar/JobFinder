@@ -35,14 +35,14 @@ function Disclaimer() {
                 Not Affiliated with Employers
               </h2>
               <p>
-                JobFinder+ is an independent job aggregation platform. We are <strong className="text-white">not affiliated with, endorsed by, or officially connected</strong> to any of the companies, organizations, or employers whose job listings appear on our platform.
+                GoAxon AI is an independent job aggregation platform. We are <strong className="text-white">not affiliated with, endorsed by, or officially connected</strong> to any of the companies, organizations, or employers whose job listings appear on our platform.
               </p>
             </section>
 
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">Job Listing Sources</h2>
               <p className="mb-3">
-                All job listings displayed on JobFinder+ are sourced from publicly available APIs and official job boards, including:
+                All job listings displayed on GoAxon AI are sourced from publicly available APIs and official job boards, including:
               </p>
               <ul className="list-disc list-inside space-y-1 ml-4">
                 <li>Adzuna API</li>
@@ -58,14 +58,14 @@ function Disclaimer() {
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">Application Process</h2>
               <p>
-                When you click "Apply" on any job listing, you will be redirected to the original source or the employer's official application page. JobFinder+ does not process job applications directly. All applications are submitted directly to the employers through their official channels.
+                When you click "Apply" on any job listing, you will be redirected to the original source or the employer's official application page. GoAxon AI does not process job applications directly. All applications are submitted directly to the employers through their official channels.
               </p>
             </section>
 
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">No Guarantee of Employment</h2>
               <p>
-                JobFinder+ makes no guarantees regarding employment outcomes. We provide a platform to discover job opportunities, but hiring decisions are made solely by the respective employers.
+                GoAxon AI makes no guarantees regarding employment outcomes. We provide a platform to discover job opportunities, but hiring decisions are made solely by the respective employers.
               </p>
             </section>
 
@@ -79,7 +79,7 @@ function Disclaimer() {
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">Paid Features</h2>
               <p>
-                JobFinder+ offers premium features such as unlimited job access, AI job matching, and resume generation tools. These paid features enhance your job search experience but do not guarantee employment or interview callbacks.
+                GoAxon AI offers premium features such as unlimited job access, AI job matching, and resume generation tools. These paid features enhance your job search experience but do not guarantee employment or interview callbacks.
               </p>
             </section>
 
@@ -87,8 +87,8 @@ function Disclaimer() {
               <h2 className="text-lg font-semibold text-white mb-3">Contact Us</h2>
               <p>
                 If you have any questions or concerns about our platform, please contact us at{' '}
-                <a href="mailto:support@jobfinderplus.com" className="text-primary-400 hover:underline">
-                  support@jobfinderplus.com
+                <a href="mailto:support@goaxonai.in" className="text-primary-400 hover:underline">
+                  support@goaxonai.in
                 </a>
               </p>
             </section>

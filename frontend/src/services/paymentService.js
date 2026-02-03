@@ -112,7 +112,7 @@ export const paymentService = {
       pn: name, // Payee name
       am: amount, // Amount
       cu: 'INR', // Currency
-      tn: transactionNote || `JobFinder+ ${amount === 10 ? 'Basic' : 'AI Match'} Plan`
+      tn: transactionNote || `GoAxon AI ${amount === 10 ? 'Basic' : 'AI Match'} Plan`
     });
     return `upi://pay?${params.toString()}`;
   }

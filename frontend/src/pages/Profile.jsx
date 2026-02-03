@@ -67,7 +67,7 @@ function Profile() {
     try {
       const result = await profileService.uploadResume(file);
       toast.success('Resume uploaded successfully!');
-      
+
       // Update local profile state
       setProfile(prev => ({
         ...prev,
@@ -75,7 +75,7 @@ function Profile() {
         resumeUploadedAt: result.resumeUploadedAt,
         resumeTextPreview: result.preview
       }));
-      
+
       // Refresh user data
       refreshUser?.();
     } catch (err) {
@@ -99,7 +99,7 @@ function Profile() {
     try {
       await profileService.deleteResume();
       toast.success('Resume deleted');
-      
+
       // Update local profile state
       setProfile(prev => ({
         ...prev,
@@ -127,9 +127,9 @@ function Profile() {
   return (
     <div className="max-w-3xl mx-auto">
       <SEO
-        title="My Profile | JobFinder+"
-        description="Manage your JobFinder+ profile, upload your resume for AI job matching, and view your subscription status."
-        url="https://jobfinderplus.vercel.app/profile"
+        title="My Profile | GoAxon AI"
+        description="Manage your GoAxon AI profile, upload your resume for AI job matching, and view your subscription status."
+        url="https://www.goaxonai.in/profile"
       />
 
       {/* Header */}

@@ -63,12 +63,12 @@ function Home() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "JobFinder+",
-    "url": "https://jobfinderplus.vercel.app",
+    "name": "GoAxon AI",
+    "url": "https://www.goaxonai.in",
     "description": "AI-powered job aggregator. Find tech jobs from top MNCs. Resume analysis & smart job matching.",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://jobfinderplus.vercel.app/dashboard?q={search_term_string}",
+      "target": "https://www.goaxonai.in/dashboard?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -76,10 +76,10 @@ function Home() {
   return (
     <div className="min-h-screen bg-dark-900 overflow-x-hidden">
       <SEO
-        title="JobFinder+ | AI-Powered Job Aggregator for Tech Careers"
+        title="GoAxon AI | AI-Powered Job Aggregator for Tech Careers"
         description="Not just another job board. AI aggregates jobs from 50+ MNCs, analyzes your resume, and shows match scores. Find your perfect tech job faster."
         keywords="AI job matching, job aggregator, tech jobs India, resume analyzer, Accenture jobs, TCS careers, Infosys hiring, AI resume, job match score"
-        url="https://jobfinderplus.vercel.app"
+        url="https://www.goaxonai.in"
         structuredData={structuredData}
       />
       <Navbar />
@@ -631,10 +631,10 @@ function Home() {
           <div className="flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm sm:text-base">J+</span>
+                <span className="text-white font-bold text-sm sm:text-base">GA</span>
               </div>
               <div>
-                <span className="text-base sm:text-lg font-bold text-white">JobFinder+</span>
+                <span className="text-base sm:text-lg font-bold text-white">GoAxon AI</span>
                 <p className="text-dark-500 text-[10px] sm:text-xs">AI-Powered Job Aggregator</p>
               </div>
             </div>
@@ -650,7 +650,7 @@ function Home() {
               </Link>
             </div>
             <p className="text-dark-500 text-xs sm:text-sm text-center">
-              © {new Date().getFullYear()} JobFinder+
+              © {new Date().getFullYear()} GoAxon AI
             </p>
           </div>
         </div>

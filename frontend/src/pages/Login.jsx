@@ -75,10 +75,10 @@ function Login() {
   return (
     <div className="min-h-screen bg-dark-900 flex items-center justify-center p-4">
       <SEO 
-        title="Login - Access Your Job Dashboard | JobFinder+"
-        description="Login to JobFinder+ to access personalized job recommendations, AI resume builder, and application tracking. Secure authentication with Google OAuth."
+        title="Login - Access Your Job Dashboard | GoAxon AI"
+        description="Login to GoAxon AI to access personalized job recommendations, AI resume builder, and application tracking. Secure authentication with Google OAuth."
         keywords="login, sign in, job portal login, user authentication"
-        url="https://jobfinderplus.vercel.app/login"
+        url="https://www.goaxonai.in/login"
       />
       {/* Background effects */}
       <div className="absolute inset-0 stars-bg opacity-30" />
@@ -91,7 +91,7 @@ function Login() {
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
             <span className="text-white font-bold">J+</span>
           </div>
-          <span className="text-2xl font-bold text-white">JobFinder+</span>
+          <span className="text-2xl font-bold text-white">GoAxon AI</span>
         </Link>
 
         {/* Login card */}

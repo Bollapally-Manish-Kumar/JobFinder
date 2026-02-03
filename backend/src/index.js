@@ -1,5 +1,5 @@
 /**
- * JobFinder+ Backend Entry Point
+ * GoAxon AI Backend Entry Point
  * Express server with all routes and middleware
  */
 
@@ -64,7 +64,7 @@ app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://job-finder-two-kappa.vercel.app",
-    "https://jobfinderplus.vercel.app"
+    "https://www.goaxonai.in"
   ],
   credentials: true
 }));
@@ -161,7 +161,7 @@ app.use(errorHandler);
 
 // Start server and keep it alive
 const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 JobFinder+ API running on http://localhost:${PORT}`);
+  console.log(`🚀 GoAxon AI API running on http://localhost:${PORT}`);
   console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log('✅ Server is listening and ready!');
   console.log('');

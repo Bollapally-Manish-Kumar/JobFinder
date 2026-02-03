@@ -327,10 +327,10 @@ function AIJobMatch() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <SEO
-        title="AI Job Matching - Find Perfect Jobs for Your Resume | JobFinder+"
+        title="AI Job Matching - Find Perfect Jobs for Your Resume | GoAxon AI"
         description="Upload your resume and let AI find the best matching tech jobs. Premium AI-powered job matching using advanced algorithms. Get personalized job recommendations instantly."
         keywords="AI job matching, resume analyzer, job recommendations, AI career matching, smart job search, personalized job search, ML job matching"
-        url="https://jobfinderplus.vercel.app/ai-job-match"
+        url="https://www.goaxonai.in/ai-job-match"
       />
       {/* Header */}
       <div className="text-center mb-8">

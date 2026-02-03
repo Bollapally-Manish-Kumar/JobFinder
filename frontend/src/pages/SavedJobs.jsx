@@ -45,11 +45,11 @@ function SavedJobs() {
 
   return (
     <div>
-      <SEO 
-        title="Saved Jobs - Your Bookmarked Opportunities | JobFinder+"
+      <SEO
+        title="Saved Jobs - Your Bookmarked Opportunities | GoAxon AI"
         description="View and manage your saved job listings. Keep track of opportunities you're interested in and apply when ready."
         keywords="saved jobs, bookmarked jobs, job tracker, my jobs"
-        url="https://jobfinderplus.vercel.app/saved-jobs"
+        url="https://www.goaxonai.in/saved-jobs"
       />
       <div className="flex items-center justify-between mb-6">
         <div>
