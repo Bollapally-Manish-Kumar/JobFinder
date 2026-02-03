@@ -630,9 +630,7 @@ function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
-                <span className="text-white font-bold text-sm sm:text-base">GA</span>
-              </div>
+              <img src="/favicon.svg" alt="GoAxon AI" className="w-8 h-8 sm:w-10 sm:h-10" />
               <div>
                 <span className="text-base sm:text-lg font-bold text-white">GoAxon AI</span>
                 <p className="text-dark-500 text-[10px] sm:text-xs">AI-Powered Job Aggregator</p>

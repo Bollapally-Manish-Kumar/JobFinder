@@ -75,9 +75,7 @@ function Register() {
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
-            <span className="text-white font-bold">GA</span>
-          </div>
+          <img src="/favicon.svg" alt="GoAxon AI" className="w-10 h-10" />
           <span className="text-2xl font-bold text-white">GoAxon AI</span>
         </Link>
 

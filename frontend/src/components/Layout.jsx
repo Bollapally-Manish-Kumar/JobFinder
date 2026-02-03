@@ -70,9 +70,7 @@ function Layout({ children }) {
         {/* Logo Area */}
         <div className="flex items-center gap-3 h-20 px-6 mb-2 border-b border-dark-800/50">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20 group-hover:scale-105 transition-transform">
-              <span className="text-white font-bold text-sm">GA</span>
-            </div>
+            <img src="/favicon.svg" alt="GoAxon AI" className="w-9 h-9 group-hover:scale-105 transition-transform" />
             <span className="text-lg font-bold text-white tracking-tight group-hover:text-orange-400 transition-colors">
               GoAxon<span className="text-orange-500">AI</span>
             </span>
