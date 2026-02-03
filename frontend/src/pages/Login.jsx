@@ -89,7 +89,7 @@ function Login() {
         {/* Logo */}
         <Link to="/" className="flex items-center justify-center gap-2 mb-8">
           <img src="/favicon.svg" alt="GoAxon AI" className="w-10 h-10" />
-          <span className="text-2xl font-bold text-white">GoAxon AI</span>
+          <span className="text-2xl font-bold text-white">GoAxon <span className="text-orange-500">AI</span></span>
         </Link>
 
         {/* Login card */}

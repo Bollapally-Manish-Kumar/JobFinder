@@ -72,7 +72,7 @@ function Layout({ children }) {
           <Link to="/" className="flex items-center gap-3 group">
             <img src="/favicon.svg" alt="GoAxon AI" className="w-9 h-9 group-hover:scale-105 transition-transform" />
             <span className="text-lg font-bold text-white tracking-tight group-hover:text-orange-400 transition-colors">
-              GoAxon<span className="text-orange-500">AI</span>
+              GoAxon <span className="text-orange-500">AI</span>
             </span>
           </Link>
           <button
