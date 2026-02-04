@@ -1,41 +1,58 @@
 /**
  * SEO Component - Dynamic meta tags and structured data
- * Uses react-helmet-async for better SEO
+ * Optimized for Google Search, social sharing, and rich results
  */
 
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ 
-  title = 'GoAxonAI | Your AI Agent for Career Success',
-  description = 'Not just a job board — an AI agent that thinks for your career. AxonSearch™ scans 50+ sources, AxonMatch™ finds eligible jobs, AxonResume™ builds ATS-friendly resumes.',
-  keywords = 'AI job agent, GoAxonAI, AxonMatch, AxonSearch, career AI, resume AI, tech jobs, AI resume builder, job match score, smart job search',
+  title = 'GoAxonAI | AI-Powered Job Search & Career Agent',
+  description = 'Find your dream job with AI. GoAxonAI aggregates 50+ job sources, matches jobs to your skills with AI, and builds ATS-optimized resumes. Free to start.',
+  keywords = 'AI job search, job aggregator India, AI resume builder, job matching AI, tech jobs India, remote jobs, freshers jobs, AxonMatch, AxonResume, career AI, GoAxonAI',
   ogImage = 'https://www.goaxonai.in/og-image.png',
   url = 'https://www.goaxonai.in',
   type = 'website',
-  structuredData = null
+  structuredData = null,
+  noIndex = false
 }) => {
   const fullTitle = title.includes('GoAxonAI') ? title : `${title} | GoAxonAI`;
+  
+  // Truncate description to 155 chars for Google
+  const metaDescription = description.length > 155 
+    ? description.substring(0, 152) + '...' 
+    : description;
 
   return (
     <Helmet>
-      {/* Basic Meta Tags */}
+      {/* Primary Meta Tags */}
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="title" content={fullTitle} />
+      <meta name="description" content={metaDescription} />
       <meta name="keywords" content={keywords} />
       
-      {/* Open Graph (Facebook, LinkedIn) */}
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={ogImage} />
-      <meta property="og:url" content={url} />
+      {/* Robots */}
+      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+      <meta name="googlebot" content={noIndex ? 'noindex, nofollow' : 'index, follow'} />
+      
+      {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
+      <meta property="og:url" content={url} />
+      <meta property="og:title" content={fullTitle} />
+      <meta property="og:description" content={metaDescription} />
+      <meta property="og:image" content={ogImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content="GoAxonAI - AI-Powered Job Search Platform" />
       <meta property="og:site_name" content="GoAxonAI" />
+      <meta property="og:locale" content="en_IN" />
       
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={url} />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={metaDescription} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:site" content="@GoAxonAI" />
       
       {/* Canonical URL */}
       <link rel="canonical" href={url} />

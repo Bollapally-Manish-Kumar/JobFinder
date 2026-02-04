@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
+import SEO from '../components/SEO';
 
 const STATUS_CONFIG = {
   APPLIED: {
@@ -151,6 +152,13 @@ function MyApplications() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <SEO
+        title="My Applications - Track Job Applications | GoAxonAI"
+        description="Track all your job applications in one place. Monitor application status, interviews, offers, and rejections."
+        keywords="job application tracker, application status, interview tracker, job search organizer"
+        url="https://www.goaxonai.in/my-applications"
+        noIndex={true}
+      />
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">

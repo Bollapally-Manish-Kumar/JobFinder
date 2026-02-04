@@ -75,9 +75,9 @@ function Login() {
   return (
     <div className="min-h-screen bg-dark-900 flex items-center justify-center p-4">
       <SEO 
-        title="Login - Access Your Job Dashboard | GoAxon AI"
-        description="Login to GoAxon AI to access personalized job recommendations, AI resume builder, and application tracking. Secure authentication with Google OAuth."
-        keywords="login, sign in, job portal login, user authentication"
+        title="Login - Access Your Dashboard | GoAxonAI"
+        description="Sign in to GoAxonAI to access AI job matching, resume builder, and personalized job recommendations. Continue your job search."
+        keywords="login, sign in, job portal login, GoAxonAI login"
         url="https://www.goaxonai.in/login"
       />
       {/* Background effects */}

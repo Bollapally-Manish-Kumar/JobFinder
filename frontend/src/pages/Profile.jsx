@@ -193,8 +193,9 @@ function Profile() {
     <div className="max-w-3xl mx-auto">
       <SEO
         title="My Profile | GoAxonAI"
-        description="Manage your GoAxonAI profile, upload your resume for AxonMatch™, and view your subscription status."
+        description="Manage your GoAxonAI profile and resume for AI job matching."
         url="https://www.goaxonai.in/profile"
+        noIndex={true}
       />
 
       {/* Header */}

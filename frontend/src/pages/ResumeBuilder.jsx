@@ -110,9 +110,9 @@ function ResumeBuilder() {
   return (
     <div>
       <SEO 
-        title="AxonResume™ - AI LaTeX Resume Builder | GoAxonAI"
-        description="Create ATS-friendly, professional resumes with AxonResume™. AI-powered LaTeX resume generator tailored to job descriptions."
-        keywords="AxonResume, AI resume builder, LaTeX resume generator, ATS resume, GoAxonAI, professional resume maker"
+        title="AxonResume™ - AI Resume Builder | Create ATS-Optimized Resumes"
+        description="Build professional ATS-friendly resumes with AI. AxonResume™ generates LaTeX resumes tailored to job descriptions. Stand out to recruiters."
+        keywords="AI resume builder, ATS resume, LaTeX resume generator, professional resume maker, job resume creator, GoAxonAI AxonResume"
         url="https://www.goaxonai.in/resume-builder"
       />
       <div className="mb-6">

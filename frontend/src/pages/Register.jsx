@@ -67,6 +67,12 @@ function Register() {
 
   return (
     <div className="min-h-screen bg-dark-900 flex items-center justify-center p-4">
+      <SEO 
+        title="Sign Up Free - Create Your Account | GoAxonAI"
+        description="Join GoAxonAI for free. Access AI job matching, resume builder, and 50+ job sources. Find your dream job faster with AI-powered career tools."
+        keywords="sign up, register, create account, free job portal, AI job search registration"
+        url="https://www.goaxonai.in/register"
+      />
       {/* Background effects */}
       <div className="absolute inset-0 stars-bg opacity-30" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />

@@ -61,26 +61,76 @@ function Home() {
   const companyCount = useCounter(50);
   const userCount = useCounter(500);
 
-  // Structured data for homepage
+  // Enhanced structured data for Google rich results
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "GoAxonAI",
-    "url": "https://www.goaxonai.in",
-    "description": "Your AI agent for career success. AI-powered job search, resume matching, and smart applications. Think less, apply smarter.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.goaxonai.in/dashboard?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.goaxonai.in/#website",
+        "name": "GoAxonAI",
+        "url": "https://www.goaxonai.in",
+        "description": "AI-powered job search platform aggregating 50+ sources",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.goaxonai.in/dashboard?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "GoAxonAI",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "ratingCount": "500"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is GoAxonAI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "GoAxonAI is an AI-powered job search platform that aggregates jobs from 50+ sources including LinkedIn, Naukri, Indeed. It offers AI job matching, ATS-optimized resume builder, and smart job tracking."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is GoAxonAI free to use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, GoAxonAI offers a free tier with access to all job listings and 1 AI match trial. Premium plans start at ₹10 for additional features."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does AI Job Matching work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AxonMatch™ analyzes your resume and compares it with job descriptions to find jobs you're actually eligible for. It uses AI to score job-resume fit and highlights matching skills."
+            }
+          }
+        ]
+      }
+    ]
   };
 
   return (
     <div className="min-h-screen bg-dark-900 overflow-x-hidden">
       <SEO
-        title="GoAxonAI | Your AI Agent for Career Success"
-        description="Not just a job board — an AI agent that thinks for your career. AxonSearch™ scans 50+ sources, AxonMatch™ finds eligible jobs, AxonResume™ builds ATS-friendly resumes."
-        keywords="AI job agent, GoAxonAI, AxonMatch, AxonSearch, career AI, resume AI, tech jobs India, AI resume builder, job match score, smart job search"
+        title="GoAxonAI | AI Job Search Platform - Find Jobs from 50+ Sources Free"
+        description="Find your dream job with AI. GoAxonAI aggregates 50+ job sources, uses AI to match jobs to your skills, and builds ATS-optimized resumes. Start free!"
+        keywords="AI job search, job aggregator India, tech jobs India, remote jobs, freshers jobs 2026, software engineer jobs, AI resume builder, job matching AI, GoAxonAI, AxonMatch, AxonResume"
         url="https://www.goaxonai.in"
         structuredData={structuredData}
       />

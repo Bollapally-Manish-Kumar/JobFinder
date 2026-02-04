@@ -10,8 +10,10 @@ function AxonApplyComingSoon() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <SEO
-        title="AxonApply™ Coming Soon | GoAxonAI"
-        description="AxonApply™ - AI-assisted job application agent. Coming soon to GoAxonAI."
+        title="AxonApply™ - AI Job Application Agent | Coming Soon"
+        description="AxonApply™ is an AI-assisted job application agent that fills forms, uploads resumes, and answers questions — with you in full control. Coming soon to GoAxonAI."
+        keywords="AI job application, auto apply jobs, job application automation, AxonApply, GoAxonAI"
+        url="https://www.goaxonai.in/axon-apply"
       />
 
       <div className="max-w-2xl mx-auto text-center">

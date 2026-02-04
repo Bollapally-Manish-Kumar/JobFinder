@@ -327,10 +327,10 @@ function AIJobMatch() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <SEO
-        title="AxonMatch™ - AI Job Matching | GoAxonAI"
-        description="Upload your resume and let AxonMatch™ find the best matching jobs. JD ↔ Resume intelligence that finds jobs you're actually eligible for."
-        keywords="AxonMatch, AI job matching, resume analyzer, job recommendations, AI career matching, smart job search, GoAxonAI"
-        url="https://www.goaxonai.in/ai-job-match"
+        title="AxonMatch™ - AI Job Matching | Find Jobs That Match Your Resume"
+        description="Upload your resume and let AI find the best matching jobs. AxonMatch™ analyzes your skills and experience to recommend jobs you're actually qualified for."
+        keywords="AI job matching, resume job match, job recommendations, AI career matching, resume analyzer, smart job search, GoAxonAI AxonMatch"
+        url="https://www.goaxonai.in/ai-match"
       />
       {/* Header */}
       <div className="text-center mb-8">
