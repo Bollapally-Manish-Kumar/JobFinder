@@ -1,12 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/:path((?!api/|sitemap.xml|robots.xml|favicon.svg|logo.svg|og-image.png|apple-touch-icon.png).*)",
-      "destination": "/",
-      "missing": [
-        { "type": "file" },
-        { "type": "header", "key": "x-prerender-revalidate" }
-      ]
+      "source": "/((?!api/|sitemap.xml|robots.txt|favicon.svg|logo.png|apple-touch-icon.png|og-image.png|_next/static|static|favicon.ico).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
