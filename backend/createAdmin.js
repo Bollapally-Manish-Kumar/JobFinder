@@ -8,7 +8,7 @@ const run = async () => {
     const password = await bcrypt.hash('Admin@123', 10);
     await prisma.user.create({
       data: {
-        email: 'admin@jobfinder.com',
+        email: 'admin@goaxonai.in',
         password,
         name: 'Admin',
         role: 'ADMIN',
@@ -19,7 +19,7 @@ const run = async () => {
       }
     });
     console.log('✅ Admin user created');
-    console.log('   Email: admin@jobfinder.com');
+    console.log('   Email: admin@goaxonai.in');
     console.log('   Password: Admin@123');
     console.log('   Plan: PRO_PLUS (1 year)');
   } catch (error) {

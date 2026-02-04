@@ -6,15 +6,15 @@
 import { Helmet } from 'react-helmet-async';
 
 const SEO = ({ 
-  title = 'GoAxon AI | Find Every Job Before You Miss It',
-  description = 'Find tech jobs from top companies like Accenture, TCS, Infosys, and startups. AI-powered resume builder, job matching, and application tracking. Get hired faster with GoAxon AI.',
-  keywords = 'jobs, careers, job search, IT jobs, software jobs, fresher jobs, internships, remote jobs, AI resume builder, job matching, tech jobs, Accenture jobs, TCS jobs, Infosys jobs',
+  title = 'GoAxonAI | Your AI Agent for Career Success',
+  description = 'Not just a job board — an AI agent that thinks for your career. AxonSearch™ scans 50+ sources, AxonMatch™ finds eligible jobs, AxonResume™ builds ATS-friendly resumes.',
+  keywords = 'AI job agent, GoAxonAI, AxonMatch, AxonSearch, career AI, resume AI, tech jobs, AI resume builder, job match score, smart job search',
   ogImage = 'https://www.goaxonai.in/og-image.png',
   url = 'https://www.goaxonai.in',
   type = 'website',
   structuredData = null
 }) => {
-  const fullTitle = title.includes('GoAxon AI') ? title : `${title} | GoAxon AI`;
+  const fullTitle = title.includes('GoAxonAI') ? title : `${title} | GoAxonAI`;
 
   return (
     <Helmet>
@@ -29,7 +29,7 @@ const SEO = ({
       <meta property="og:image" content={ogImage} />
       <meta property="og:url" content={url} />
       <meta property="og:type" content={type} />
-      <meta property="og:site_name" content="GoAxon AI" />
+      <meta property="og:site_name" content="GoAxonAI" />
       
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />

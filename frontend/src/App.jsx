@@ -16,6 +16,8 @@ import ResumeBuilder from './pages/ResumeBuilder';
 import SavedJobs from './pages/SavedJobs';
 import MyApplications from './pages/MyApplications';
 import AIJobMatch from './pages/AIJobMatch';
+import AxonApplyComingSoon from './pages/AxonApplyComingSoon';
+import AxonApplyInstall from './pages/AxonApplyInstall';
 import OAuthSuccess from './pages/OAuthSuccess';
 import AdminPayments from './pages/AdminPayments';
 import AdminDashboard from './pages/AdminDashboard';
@@ -73,6 +75,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/axon-apply-install" element={<AxonApplyInstall />} />
+        <Route path="/axonapply/install" element={<AxonApplyInstall />} />
 
         {/* Protected routes */}
         <Route
@@ -131,6 +135,16 @@ function App() {
             <ProtectedRoute>
               <Layout>
                 <AIJobMatch />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/axon-apply"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AxonApplyComingSoon />
               </Layout>
             </ProtectedRoute>
           }

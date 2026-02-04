@@ -1,8 +1,12 @@
-# JobFinder+ Legal Disclaimer
+# GoAxonAI Legal Disclaimer
+
+## AI-Assisted Productivity Tool Notice
+
+> ⚖️ **GoAxonAI acts as an AI-assisted productivity tool. Applications are submitted only with explicit user action.**
 
 ## Data Sources
 
-JobFinder+ aggregates job listings from **publicly available APIs** provided by third-party job boards. We do **NOT**:
+GoAxonAI aggregates job listings from **publicly available APIs** provided by third-party job boards. We do **NOT**:
 
 - Scrape company career portals
 - Use private or undocumented APIs
@@ -22,7 +26,7 @@ All job data is obtained from **official, documented APIs**:
 
 ## User Responsibilities
 
-- JobFinder+ provides **links** to official job application pages
+- GoAxonAI provides **links** to official job application pages
 - Users apply directly on the employer's website
 - We do not guarantee job availability or accuracy
 - Users should verify all job details before applying
@@ -43,7 +47,7 @@ We implement rate limiting to:
 
 ## No Warranty
 
-JobFinder+ is provided "as is" without warranty of any kind. We are not responsible for:
+GoAxonAI is provided "as is" without warranty of any kind. We are not responsible for:
 - Accuracy of job listings
 - Availability of positions
 - Actions taken by employers
@@ -51,8 +55,8 @@ JobFinder+ is provided "as is" without warranty of any kind. We are not responsi
 
 ## Contact
 
-For questions about data usage, please contact the JobFinder+ team.
+For questions about data usage, please contact support@goaxonai.in
 
 ---
 
-**Last Updated:** December 2025
+**Last Updated:** February 2026

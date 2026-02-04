@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 async function checkAdmin() {
   const user = await prisma.user.findFirst({
-    where: { email: 'admin@jobfinder.com' }
+    where: { email: 'admin@goaxonai.in' }
   });
   
   console.log('Admin user:', JSON.stringify(user, null, 2));

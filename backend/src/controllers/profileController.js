@@ -36,7 +36,16 @@ export const getProfile = asyncHandler(async (req, res) => {
       expiresAt: true,
       resumeText: true,
       resumeUploadedAt: true,
-      createdAt: true
+      createdAt: true,
+      // AxonApply profile fields
+      phone: true,
+      city: true,
+      country: true,
+      linkedin: true,
+      portfolio: true,
+      experienceYears: true,
+      currentCompany: true,
+      currentTitle: true
     }
   });
 
@@ -174,17 +183,55 @@ export const deleteResume = asyncHandler(async (req, res) => {
 });
 
 /**
- * Update user profile (name, etc.)
+ * Update user profile
  * PUT /api/profile
  */
 export const updateProfile = asyncHandler(async (req, res) => {
   const userId = req.user.id;
-  const { name } = req.body;
+  const { 
+    name, 
+    phone, 
+    city, 
+    country, 
+    linkedin, 
+    portfolio,
+    experienceYears,
+    currentCompany,
+    currentTitle
+  } = req.body;
 
   const updateData = {};
   
-  if (name && typeof name === 'string') {
-    updateData.name = name.trim().substring(0, 100);
+  // String fields with length limits
+  if (name !== undefined) {
+    updateData.name = (name || '').trim().substring(0, 100) || null;
+  }
+  if (phone !== undefined) {
+    updateData.phone = (phone || '').trim().substring(0, 20) || null;
+  }
+  if (city !== undefined) {
+    updateData.city = (city || '').trim().substring(0, 100) || null;
+  }
+  if (country !== undefined) {
+    updateData.country = (country || '').trim().substring(0, 100) || null;
+  }
+  if (linkedin !== undefined) {
+    updateData.linkedin = (linkedin || '').trim().substring(0, 200) || null;
+  }
+  if (portfolio !== undefined) {
+    updateData.portfolio = (portfolio || '').trim().substring(0, 200) || null;
+  }
+  if (currentCompany !== undefined) {
+    updateData.currentCompany = (currentCompany || '').trim().substring(0, 100) || null;
+  }
+  if (currentTitle !== undefined) {
+    updateData.currentTitle = (currentTitle || '').trim().substring(0, 100) || null;
+  }
+  
+  // Integer field
+  if (experienceYears !== undefined) {
+    const years = parseInt(experienceYears, 10);
+    updateData.experienceYears = !isNaN(years) && years >= 0 && years <= 50 ? years : null;
   }
 
   if (Object.keys(updateData).length === 0) {
@@ -199,7 +246,15 @@ export const updateProfile = asyncHandler(async (req, res) => {
     select: {
       id: true,
       name: true,
-      email: true
+      email: true,
+      phone: true,
+      city: true,
+      country: true,
+      linkedin: true,
+      portfolio: true,
+      experienceYears: true,
+      currentCompany: true,
+      currentTitle: true
     }
   });
 

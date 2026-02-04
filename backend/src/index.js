@@ -41,6 +41,7 @@ import paymentRoutes from './routes/payments.js';
 import resumeRoutes from './routes/resume.js';
 import applicationRoutes from './routes/applicationRoutes.js';
 import aiMatchRoutes from './routes/aiMatchRoutes.js';
+import axonApplyRoutes from './routes/axonApplyRoutes.js';
 import adminRoutes from './routes/admin.js';
 import profileRoutes from './routes/profile.js';
 
@@ -146,6 +147,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/resume', resumeRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/ai-match', aiMatchRoutes);
+app.use('/api/axon-apply', axonApplyRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/profile', profileRoutes);
 

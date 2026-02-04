@@ -222,9 +222,9 @@ function Dashboard() {
   return (
     <div className="pb-6">
       <SEO
-        title="Job Dashboard - Latest Tech Jobs | GoAxon AI"
-        description={`Browse ${pagination.total || '1000+'} verified tech jobs from Accenture, TCS, Infosys, and top startups. Updated daily with remote and India-eligible opportunities.`}
-        keywords="tech jobs, IT jobs India, software developer jobs, remote jobs, fresher jobs, job dashboard, Accenture careers, TCS jobs, Infosys hiring"
+        title="AxonSearch™ Dashboard - AI Job Discovery | GoAxonAI"
+        description={`Browse ${pagination.total || '1000+'} verified tech jobs. AxonSearch™ scans 50+ sources so you never miss opportunities.`}
+        keywords="AxonSearch, tech jobs, IT jobs India, software developer jobs, remote jobs, GoAxonAI, AI job search"
         url="https://www.goaxonai.in/dashboard"
         structuredData={structuredData}
       />

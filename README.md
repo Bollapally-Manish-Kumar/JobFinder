@@ -1,10 +1,27 @@
-# JobFinder+
+# GoAxonAI
 
-> 🚀 Find Every Job. Before You Miss It.
+> 🧠 Your AI Agent for Career Success | Think Less. Apply Smarter.
 
-A full-stack job aggregation platform that collects jobs from Accenture, TCS, Infosys, and other top companies - all in one place.
+A full-stack AI-powered job platform that thinks for your career. Scans 50+ sources, matches your skills, and helps you apply smarter.
 
-![JobFinder+ Screenshot](screenshot.png)
+![GoAxonAI Screenshot](screenshot.png)
+
+## 🎯 Core Features (Axon Suite™)
+
+- **⚡ AxonApply™** (MAIN): AI-assisted job application agent — fills forms, uploads resumes, you submit
+- **AxonSearch™**: AI-powered job aggregation from 50+ sources
+- **AxonMatch™**: JD ↔ Resume intelligence with match scores
+- **AxonResume™**: AI LaTeX resume builder, ATS-friendly
+- **AxonTrack**: Application tracking & follow-up reminders
+
+## ⚖️ Legal & Safe
+
+> **GoAxonAI provides AI-assisted application tools. Applications are submitted only with explicit user action.**
+
+AxonApply™ follows 3 golden rules:
+1. ✅ Agent works **inside the user's browser** (Chrome extension)
+2. ✅ Agent fills forms **with user data & permission**
+3. ✅ Final submission is **user-controlled**
 
 ## 🧠 System Architecture
 
@@ -22,10 +39,11 @@ AI Service (Gemini API)
 
 ## ✨ Features
 
-- **Job Aggregation**: Collect jobs from multiple company career pages
+- **AxonSearch™**: Aggregate jobs from 50+ company career pages automatically
+- **AxonMatch™**: AI-powered JD ↔ Resume matching with eligibility scores
+- **AxonResume™**: AI-powered LaTeX resume generator using Gemini API
+- **AxonTrack**: Track applications, resume versions, follow-ups
 - **Payment System**: ₹10/month subscription via Razorpay (UPI + Card)
-- **Blur Logic**: Free users see 1 job, paid users see all
-- **Resume Builder**: AI-powered LaTeX resume generator using Gemini API
 - **User Authentication**: JWT-based secure auth
 - **Save Jobs**: Bookmark jobs for later
 - **Responsive Design**: Works on all devices
@@ -33,7 +51,7 @@ AI Service (Gemini API)
 ## 📁 Project Structure
 
 ```
-jobfinder/
+goaxonai/
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/          # React pages
@@ -92,8 +110,8 @@ jobfinder/
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/jobfinder.git
-cd jobfinder
+git clone https://github.com/yourusername/goaxonai.git
+cd goaxonai
 ```
 
 ### 2. Set up environment variables
@@ -115,7 +133,7 @@ RAZORPAY_KEY_SECRET=your_razorpay_secret
 GEMINI_API_KEY=AIzaSyXXXXXX
 
 # SCRAPING
-USER_AGENT=JobFinderBot/1.0
+USER_AGENT=GoAxonAI/1.0
 
 # SERVER
 PORT=5000
@@ -295,8 +313,8 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 ## 📧 Support
 
-For support, email support@jobfinder.example.com or open an issue.
+For support, email support@goaxonai.in or open an issue.
 
 ---
 
-Built with ❤️ using React, Node.js, and Tailwind CSS
+Built with 🧠 by GoAxonAI | Your AI Agent for Career Success

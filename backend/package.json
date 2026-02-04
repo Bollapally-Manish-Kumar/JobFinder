@@ -1,7 +1,7 @@
 {
-  "name": "jobfinder-backend",
+  "name": "goaxonai-backend",
   "version": "1.0.0",
-  "description": "JobFinder+ Backend API",
+  "description": "GoAxonAI Backend API - Your AI Agent for Career Success",
   "main": "src/index.js",
   "type": "module",
   "scripts": {

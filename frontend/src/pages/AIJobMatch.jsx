@@ -251,12 +251,12 @@ function AIJobMatch() {
           </div>
 
           <h1 className="text-3xl font-bold text-white mb-4">
-            AI Job Match
+            AxonMatch™
           </h1>
 
           <p className="text-dark-400 mb-8 max-w-md mx-auto">
-            Upload your resume and let AI find the perfect job matches for you.
-            Get match percentages, reasons why jobs fit, and skills to improve.
+            Upload your resume and let AI find jobs you're actually eligible for.
+            Get match scores, reasons why jobs fit, and skills to improve.
           </p>
 
           <div className="bg-dark-700 rounded-xl p-6 mb-8">
@@ -312,7 +312,7 @@ function AIJobMatch() {
               className="btn-primary px-8 py-3 text-lg flex items-center gap-2"
             >
               <Lock className="w-5 h-5" />
-              Unlock AI Job Match
+              Unlock AxonMatch™
             </Link>
 
             <p className="text-sm text-dark-500">
@@ -327,9 +327,9 @@ function AIJobMatch() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <SEO
-        title="AI Job Matching - Find Perfect Jobs for Your Resume | GoAxon AI"
-        description="Upload your resume and let AI find the best matching tech jobs. Premium AI-powered job matching using advanced algorithms. Get personalized job recommendations instantly."
-        keywords="AI job matching, resume analyzer, job recommendations, AI career matching, smart job search, personalized job search, ML job matching"
+        title="AxonMatch™ - AI Job Matching | GoAxonAI"
+        description="Upload your resume and let AxonMatch™ find the best matching jobs. JD ↔ Resume intelligence that finds jobs you're actually eligible for."
+        keywords="AxonMatch, AI job matching, resume analyzer, job recommendations, AI career matching, smart job search, GoAxonAI"
         url="https://www.goaxonai.in/ai-job-match"
       />
       {/* Header */}
@@ -339,10 +339,10 @@ function AIJobMatch() {
           <span className="text-sm font-medium">Premium Feature</span>
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">
-          AI Job Match
+          AxonMatch™
         </h1>
         <p className="text-dark-400">
-          Paste or upload your resume to find the best matching jobs
+          JD ↔ Resume intelligence. Find jobs you're actually eligible for.
         </p>
       </div>
 

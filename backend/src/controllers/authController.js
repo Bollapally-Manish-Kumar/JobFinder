@@ -160,6 +160,15 @@ export const getProfile = asyncHandler(async (req, res) => {
       paidAt: true,
       expiresAt: true,
       createdAt: true,
+      // AxonApply profile fields
+      phone: true,
+      city: true,
+      country: true,
+      linkedin: true,
+      portfolio: true,
+      experienceYears: true,
+      currentCompany: true,
+      currentTitle: true,
       _count: {
         select: {
           savedJobs: true

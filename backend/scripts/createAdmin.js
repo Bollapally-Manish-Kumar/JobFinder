@@ -34,8 +34,10 @@ async function createAdmin() {
         password: hashedPassword,
         name: 'Admin',
         authProvider: 'local',
-        isPaid: true, // Admin doesn't need to pay
-        plan: 'admin',
+        role: 'ADMIN',
+        plan: 'ULTIMATE',
+        paymentVerified: true,
+        paidAt: new Date(),
         expiresAt: new Date('2099-12-31') // Never expires
       }
     });

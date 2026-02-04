@@ -33,6 +33,16 @@ model User {
   paidAt          DateTime? // When payment was verified
   expiresAt       DateTime? // When subscription expires (30 days after paidAt)
   
+  // Profile fields for AxonApply™
+  phone           String?
+  city            String?
+  country         String?   @default("India")
+  linkedin        String?
+  portfolio       String?
+  experienceYears Int?
+  currentCompany  String?
+  currentTitle    String?
+  
   // Resume for AI Job Matching
   resumeText      String?   // Extracted text from uploaded resume PDF
   resumeUploadedAt DateTime? // When resume was last uploaded
@@ -45,6 +55,7 @@ model User {
   payments        Payment[]
   savedJobs       SavedJob[]
   applications    JobApplication[]
+  axonApplyEvents AxonApplyEvent[]
   paymentRequests PaymentRequest[]
 }
 
@@ -117,6 +128,27 @@ model JobApplication {
   job       Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
 
   @@unique([userId, jobId])
+}
+
+// AxonApply Application Events (extension-based apply tracking)
+model AxonApplyEvent {
+  id             String   @id @default(uuid())
+  userId         String
+  jobTitle       String
+  company        String
+  platform       String   // e.g., Greenhouse, Lever, Company Site
+  jobUrl         String   // unique per user for idempotency
+  resumeVersion  String?  // resume name/version used
+  status         String   @default("PENDING") // APPLIED, SKIPPED, PENDING
+  decision       String?  // APPLY | SKIP | ASK_USER
+  reasonCodes    Json?    // array of reason codes
+  notes          String?
+  appliedAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobUrl])
 }
 
 // PaymentRequest model for QR-based payment system

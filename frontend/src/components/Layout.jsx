@@ -20,21 +20,28 @@ import {
   User,
   ChevronRight,
   Bell,
-  Settings
+  Settings,
+  Zap
 } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
 
-// Regular navigation items
-const navigation = [
+// Regular navigation items - grouped for cleaner UI
+const coreNav = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'AI Job Match', href: '/ai-match', icon: Sparkles, premium: true },
-  { name: 'Profile', href: '/profile', icon: User },
-  { name: 'My Applications', href: '/my-applications', icon: ClipboardList },
+  { name: 'AxonApply™', href: '/axon-apply', icon: Zap, badge: 'SOON', highlight: true },
+];
+
+const toolsNav = [
+  { name: 'AxonMatch™', href: '/ai-match', icon: Sparkles, badge: 'PRO' },
+  { name: 'AxonResume™', href: '/resume-builder', icon: FileText },
+];
+
+const accountNav = [
   { name: 'Saved Jobs', href: '/saved-jobs', icon: Bookmark },
-  { name: 'Resume Builder', href: '/resume-builder', icon: FileText },
-  { name: 'Payment', href: '/payment', icon: CreditCard },
+  { name: 'My Applications', href: '/my-applications', icon: ClipboardList },
+  { name: 'Profile', href: '/profile', icon: User },
 ];
 
 // Admin email - only this user sees admin panel
@@ -63,16 +70,17 @@ function Layout({ children }) {
 
       {/* Sidebar - Polished Premium Design (Orange Theme) */}
       <aside className={`
-        fixed top-0 left-0 z-50 h-full w-72 bg-[#0F1115] border-r border-dark-800
+        fixed top-4 left-4 z-50 h-[calc(100vh-32px)] w-72 bg-[#0F1115] border border-dark-800/80
+        rounded-3xl shadow-2xl shadow-black/40 overflow-hidden
         transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         {/* Logo Area */}
         <div className="flex items-center gap-3 h-20 px-6 mb-2 border-b border-dark-800/50">
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="/favicon.svg" alt="GoAxon AI" className="w-9 h-9 group-hover:scale-105 transition-transform" />
+            <img src="/favicon.svg" alt="GoAxonAI" className="w-9 h-9 group-hover:scale-105 transition-transform" />
             <span className="text-lg font-bold text-white tracking-tight group-hover:text-orange-400 transition-colors">
-              GoAxon <span className="text-orange-500">AI</span>
+              GoAxon<span className="text-orange-500">AI</span>
             </span>
           </Link>
           <button
@@ -84,13 +92,12 @@ function Layout({ children }) {
         </div>
 
         {/* Navigation Wrapper */}
-        <div className="px-4 py-6 space-y-8 overflow-y-auto h-[calc(100vh-160px)] scrollbar-hide">
+        <div className="px-4 py-6 space-y-6 overflow-y-auto h-[calc(100vh-160px)] scrollbar-hide">
 
-          {/* Main Menu */}
+          {/* Core Menu */}
           <div>
-            <div className="text-[11px] font-bold text-dark-500 px-3 uppercase tracking-wider mb-3">Menu</div>
             <div className="space-y-1">
-              {navigation.map((item) => {
+              {coreNav.map((item) => {
                 const isActive = location.pathname === item.href;
                 const Icon = item.icon;
 
@@ -100,25 +107,89 @@ function Layout({ children }) {
                     to={item.href}
                     onClick={() => setSidebarOpen(false)}
                     className={`
-                      flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                      relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                      ${isActive
+                        ? 'bg-gradient-to-r from-orange-600 to-orange-500 text-white shadow-lg shadow-orange-500/20'
+                        : item.highlight
+                        ? 'text-orange-400 hover:text-white hover:bg-orange-500/10 border border-orange-500/30 bg-orange-500/5'
+                        : 'text-dark-400 hover:text-white hover:bg-dark-800'
+                      }
+                    `}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : item.highlight ? 'text-orange-400' : 'text-dark-400'}`} />
+                    <span>{item.name}</span>
+                    {item.badge && !isActive && (
+                      <span className={`ml-auto text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                        item.badge === 'SOON' 
+                          ? 'text-black bg-gradient-to-r from-orange-400 to-yellow-400' 
+                          : 'text-orange-400 bg-orange-500/10 border border-orange-500/20'
+                      }`}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* AI Tools */}
+          <div>
+            <div className="text-[11px] font-bold text-dark-500 px-3 uppercase tracking-wider mb-3">AI Tools</div>
+            <div className="space-y-1">
+              {toolsNav.map((item) => {
+                const isActive = location.pathname === item.href;
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`
+                      relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
                       ${isActive
                         ? 'bg-gradient-to-r from-orange-600 to-orange-500 text-white shadow-lg shadow-orange-500/20'
                         : 'text-dark-400 hover:text-white hover:bg-dark-800'
                       }
                     `}
                   >
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-dark-400 group-hover:text-white'}`} />
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-dark-400'}`} />
                     <span>{item.name}</span>
-                    {item.premium && !isActive && (
+                    {item.badge && !isActive && (
                       <span className="ml-auto text-[10px] font-bold text-orange-400 bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/20 opacity-70">
-                        PRO
+                        {item.badge}
                       </span>
                     )}
-                    {item.premium && isActive && (
-                      <span className="ml-auto text-[10px] font-bold text-white/90 bg-white/20 px-1.5 py-0.5 rounded">
-                        PRO
-                      </span>
-                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Account */}
+          <div>
+            <div className="text-[11px] font-bold text-dark-500 px-3 uppercase tracking-wider mb-3">Account</div>
+            <div className="space-y-1">
+              {accountNav.map((item) => {
+                const isActive = location.pathname === item.href;
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    onClick={() => setSidebarOpen(false)}
+                    className={`
+                      relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                      ${isActive
+                        ? 'bg-gradient-to-r from-orange-600 to-orange-500 text-white shadow-lg shadow-orange-500/20'
+                        : 'text-dark-400 hover:text-white hover:bg-dark-800'
+                      }
+                    `}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-dark-400'}`} />
+                    <span>{item.name}</span>
                   </Link>
                 );
               })}
@@ -195,9 +266,9 @@ function Layout({ children }) {
       </aside>
 
       {/* Main content */}
-      <div className="lg:pl-72 flex flex-col h-screen">
+      <div className="lg:pl-[20rem] flex flex-col h-screen pt-4 pr-4 pb-4">
         {/* Top header */}
-        <header className="sticky top-0 z-30 h-16 bg-[#0F1115]/80 backdrop-blur-md border-b border-dark-800/50">
+        <header className="sticky top-4 z-30 h-16 bg-[#0F1115]/80 backdrop-blur-md border border-dark-800/60 rounded-2xl shadow-lg shadow-black/20">
           <div className="flex items-center justify-between h-full px-4 md:px-6">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -259,7 +330,7 @@ function Layout({ children }) {
         </header>
 
         {/* Page content - scrollable area */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 mt-4 rounded-2xl border border-dark-800/60 bg-[#0F1115]/60 shadow-xl shadow-black/20">
           {children}
         </main>
       </div>

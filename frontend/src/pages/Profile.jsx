@@ -6,7 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   User, Mail, Crown, Calendar, FileText, Upload, Trash2,
-  Loader2, CheckCircle, AlertCircle, RefreshCw, Sparkles
+  Loader2, CheckCircle, AlertCircle, RefreshCw, Sparkles,
+  Phone, MapPin, Briefcase, Building, Link as LinkIcon, Save, Edit3
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import profileService from '../services/profileService';
@@ -28,7 +29,22 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Form state for profile editing
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    city: '',
+    country: 'India',
+    linkedin: '',
+    portfolio: '',
+    experienceYears: '',
+    currentCompany: '',
+    currentTitle: ''
+  });
 
   useEffect(() => {
     fetchProfile();
@@ -39,12 +55,61 @@ function Profile() {
     try {
       const data = await profileService.getProfile();
       setProfile(data.profile);
+      // Initialize form data with profile values
+      setFormData({
+        name: data.profile?.name || '',
+        phone: data.profile?.phone || '',
+        city: data.profile?.city || '',
+        country: data.profile?.country || 'India',
+        linkedin: data.profile?.linkedin || '',
+        portfolio: data.profile?.portfolio || '',
+        experienceYears: data.profile?.experienceYears?.toString() || '',
+        currentCompany: data.profile?.currentCompany || '',
+        currentTitle: data.profile?.currentTitle || ''
+      });
     } catch (err) {
       console.error('Failed to fetch profile:', err);
       toast.error('Failed to load profile');
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSaveProfile = async () => {
+    setSaving(true);
+    try {
+      await profileService.updateProfile(formData);
+      toast.success('Profile updated successfully!');
+      setEditing(false);
+      await fetchProfile();
+      refreshUser?.();
+    } catch (err) {
+      console.error('Failed to update profile:', err);
+      toast.error(err.response?.data?.error || 'Failed to update profile');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    // Reset form to current profile values
+    setFormData({
+      name: profile?.name || '',
+      phone: profile?.phone || '',
+      city: profile?.city || '',
+      country: profile?.country || 'India',
+      linkedin: profile?.linkedin || '',
+      portfolio: profile?.portfolio || '',
+      experienceYears: profile?.experienceYears?.toString() || '',
+      currentCompany: profile?.currentCompany || '',
+      currentTitle: profile?.currentTitle || ''
+    });
+    setEditing(false);
   };
 
   const handleFileSelect = async (e) => {
@@ -127,8 +192,8 @@ function Profile() {
   return (
     <div className="max-w-3xl mx-auto">
       <SEO
-        title="My Profile | GoAxon AI"
-        description="Manage your GoAxon AI profile, upload your resume for AI job matching, and view your subscription status."
+        title="My Profile | GoAxonAI"
+        description="Manage your GoAxonAI profile, upload your resume for AxonMatch™, and view your subscription status."
         url="https://www.goaxonai.in/profile"
       />
 
@@ -146,57 +211,297 @@ function Profile() {
       <div className="space-y-6">
         {/* Account Info Card */}
         <div className="card p-6">
-          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Mail className="w-5 h-5 text-primary-500" />
-            Account Information
-          </h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+              <User className="w-5 h-5 text-primary-500" />
+              Profile Information
+            </h2>
+            {!editing ? (
+              <button
+                onClick={() => setEditing(true)}
+                className="btn-secondary text-sm flex items-center gap-2"
+              >
+                <Edit3 className="w-4 h-4" />
+                Edit
+              </button>
+            ) : (
+              <div className="flex gap-2">
+                <button
+                  onClick={handleCancelEdit}
+                  className="btn-secondary text-sm"
+                  disabled={saving}
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveProfile}
+                  className="btn-primary text-sm flex items-center gap-2"
+                  disabled={saving}
+                >
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                  Save
+                </button>
+              </div>
+            )}
+          </div>
 
-          <div className="space-y-4">
-            {/* Name */}
-            <div>
-              <label className="text-dark-400 text-sm">Name</label>
-              <p className="text-white font-medium">{profile?.name || 'Not set'}</p>
-            </div>
+          {editing ? (
+            /* Editing Mode */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Name */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Your full name"
+                  className="input w-full"
+                />
+              </div>
 
-            {/* Email */}
-            <div>
-              <label className="text-dark-400 text-sm">Email</label>
-              <p className="text-white font-medium">{profile?.email}</p>
-            </div>
+              {/* Phone */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">Phone *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  placeholder="+91 98765 43210"
+                  className="input w-full"
+                />
+              </div>
 
-            {/* Plan */}
-            <div>
-              <label className="text-dark-400 text-sm">Subscription</label>
-              <div className="flex items-center gap-3 mt-1">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${planConfig.bg} ${planConfig.color}`}>
-                  {planConfig.label}
-                </span>
-                {profile?.expiresAt && (
-                  <span className="text-dark-400 text-sm flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    Expires: {new Date(profile.expiresAt).toLocaleDateString()}
-                  </span>
-                )}
-                {profile?.plan === 'BASIC' && (
-                  <Link to="/payment" className="text-primary-400 text-sm hover:text-primary-300">
-                    Upgrade →
-                  </Link>
-                )}
+              {/* City */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">City *</label>
+                <input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                  placeholder="Mumbai, Delhi, etc."
+                  className="input w-full"
+                />
+              </div>
+
+              {/* Country */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">Country</label>
+                <input
+                  type="text"
+                  name="country"
+                  value={formData.country}
+                  onChange={handleInputChange}
+                  placeholder="India"
+                  className="input w-full"
+                />
+              </div>
+
+              {/* Current Title */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">Current Job Title</label>
+                <input
+                  type="text"
+                  name="currentTitle"
+                  value={formData.currentTitle}
+                  onChange={handleInputChange}
+                  placeholder="Software Engineer, etc."
+                  className="input w-full"
+                />
+              </div>
+
+              {/* Current Company */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">Current Company</label>
+                <input
+                  type="text"
+                  name="currentCompany"
+                  value={formData.currentCompany}
+                  onChange={handleInputChange}
+                  placeholder="Your current employer"
+                  className="input w-full"
+                />
+              </div>
+
+              {/* Experience Years */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">Years of Experience</label>
+                <input
+                  type="number"
+                  name="experienceYears"
+                  value={formData.experienceYears}
+                  onChange={handleInputChange}
+                  placeholder="0-50"
+                  min="0"
+                  max="50"
+                  className="input w-full"
+                />
+              </div>
+
+              {/* LinkedIn */}
+              <div>
+                <label className="text-dark-400 text-sm mb-1 block">LinkedIn URL</label>
+                <input
+                  type="url"
+                  name="linkedin"
+                  value={formData.linkedin}
+                  onChange={handleInputChange}
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  className="input w-full"
+                />
+              </div>
+
+              {/* Portfolio */}
+              <div className="md:col-span-2">
+                <label className="text-dark-400 text-sm mb-1 block">Portfolio / GitHub URL</label>
+                <input
+                  type="url"
+                  name="portfolio"
+                  value={formData.portfolio}
+                  onChange={handleInputChange}
+                  placeholder="https://github.com/yourprofile"
+                  className="input w-full"
+                />
               </div>
             </div>
+          ) : (
+            /* View Mode */
+            <div className="space-y-4">
+              {/* Name */}
+              <div className="flex items-center gap-3">
+                <User className="w-4 h-4 text-dark-500" />
+                <div>
+                  <label className="text-dark-500 text-xs">Name</label>
+                  <p className="text-white">{profile?.name || <span className="text-dark-500">Not set</span>}</p>
+                </div>
+              </div>
 
-            {/* Member since */}
-            <div>
-              <label className="text-dark-400 text-sm">Member Since</label>
-              <p className="text-white">
-                {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                }) : 'N/A'}
+              {/* Email */}
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-dark-500" />
+                <div>
+                  <label className="text-dark-500 text-xs">Email</label>
+                  <p className="text-white">{profile?.email}</p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-dark-500" />
+                <div>
+                  <label className="text-dark-500 text-xs">Phone</label>
+                  <p className="text-white">{profile?.phone || <span className="text-dark-500">Not set</span>}</p>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="flex items-center gap-3">
+                <MapPin className="w-4 h-4 text-dark-500" />
+                <div>
+                  <label className="text-dark-500 text-xs">Location</label>
+                  <p className="text-white">
+                    {profile?.city || profile?.country 
+                      ? `${profile?.city || ''}${profile?.city && profile?.country ? ', ' : ''}${profile?.country || ''}`
+                      : <span className="text-dark-500">Not set</span>
+                    }
+                  </p>
+                </div>
+              </div>
+
+              {/* Current Role */}
+              <div className="flex items-center gap-3">
+                <Briefcase className="w-4 h-4 text-dark-500" />
+                <div>
+                  <label className="text-dark-500 text-xs">Current Role</label>
+                  <p className="text-white">
+                    {profile?.currentTitle || profile?.currentCompany
+                      ? `${profile?.currentTitle || ''}${profile?.currentTitle && profile?.currentCompany ? ' at ' : ''}${profile?.currentCompany || ''}`
+                      : <span className="text-dark-500">Not set</span>
+                    }
+                  </p>
+                </div>
+              </div>
+
+              {/* Experience */}
+              <div className="flex items-center gap-3">
+                <Building className="w-4 h-4 text-dark-500" />
+                <div>
+                  <label className="text-dark-500 text-xs">Experience</label>
+                  <p className="text-white">
+                    {profile?.experienceYears !== null && profile?.experienceYears !== undefined
+                      ? `${profile.experienceYears} year${profile.experienceYears !== 1 ? 's' : ''}`
+                      : <span className="text-dark-500">Not set</span>
+                    }
+                  </p>
+                </div>
+              </div>
+
+              {/* Links */}
+              {(profile?.linkedin || profile?.portfolio) && (
+                <div className="flex items-center gap-3">
+                  <LinkIcon className="w-4 h-4 text-dark-500" />
+                  <div className="flex gap-4">
+                    {profile?.linkedin && (
+                      <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:text-primary-300 text-sm">
+                        LinkedIn ↗
+                      </a>
+                    )}
+                    {profile?.portfolio && (
+                      <a href={profile.portfolio} target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:text-primary-300 text-sm">
+                        Portfolio ↗
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Plan */}
+              <div className="pt-2 border-t border-dark-700">
+                <label className="text-dark-500 text-xs">Subscription</label>
+                <div className="flex items-center gap-3 mt-1">
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${planConfig.bg} ${planConfig.color}`}>
+                    {planConfig.label}
+                  </span>
+                  {profile?.expiresAt && (
+                    <span className="text-dark-400 text-sm flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      Expires: {new Date(profile.expiresAt).toLocaleDateString()}
+                    </span>
+                  )}
+                  {profile?.plan === 'BASIC' && (
+                    <Link to="/payment" className="text-primary-400 text-sm hover:text-primary-300">
+                      Upgrade →
+                    </Link>
+                  )}
+                </div>
+              </div>
+
+              {/* Member since */}
+              <div>
+                <label className="text-dark-500 text-xs">Member Since</label>
+                <p className="text-white text-sm">
+                  {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  }) : 'N/A'}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* AxonApply tip */}
+          {!editing && (!profile?.phone || !profile?.city || !profile?.name) && (
+            <div className="mt-4 p-3 bg-orange-500/10 border border-orange-500/30 rounded-lg">
+              <p className="text-orange-400 text-sm flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                Complete your profile to use AxonApply™ auto-fill on job applications.
               </p>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Resume Upload Card */}

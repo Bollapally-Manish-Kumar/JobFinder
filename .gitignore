@@ -78,3 +78,5 @@ coverage/
 *.temp
 tmp/
 temp/
+# AxonApply Extension (in development)
+axonapply-extension/

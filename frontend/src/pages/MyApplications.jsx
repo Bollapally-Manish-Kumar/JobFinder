@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import {
   Briefcase, Clock, CheckCircle, XCircle, MessageSquare,
   ArrowRight, ExternalLink, Trash2, Filter, BarChart2,
-  Send, Users, Award, X, Globe, ClipboardList
+  Send, Users, Award, X, Globe, ClipboardList, Zap, Shield, FileText
 } from 'lucide-react';
 import api from '../services/api';
 import toast from 'react-hot-toast';
@@ -48,12 +48,15 @@ function MyApplications() {
   const [applications, setApplications] = useState([]);
   const [stats, setStats] = useState({ total: 0, applied: 0, interview: 0, offer: 0, rejected: 0 });
   const [loading, setLoading] = useState(true);
+  const [axonEvents, setAxonEvents] = useState([]);
+  const [loadingAxonEvents, setLoadingAxonEvents] = useState(true);
   const [filter, setFilter] = useState('ALL');
   const [editingNotes, setEditingNotes] = useState(null);
   const [noteText, setNoteText] = useState('');
 
   useEffect(() => {
     fetchApplications();
+    fetchAxonApplyEvents();
   }, []);
 
   const fetchApplications = async () => {
@@ -66,6 +69,17 @@ function MyApplications() {
       toast.error('Failed to load applications');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchAxonApplyEvents = async () => {
+    try {
+      const response = await api.get('/axon-apply/events?limit=50');
+      setAxonEvents(response.data.events || []);
+    } catch (error) {
+      console.error('Error fetching AxonApply events:', error);
+    } finally {
+      setLoadingAxonEvents(false);
     }
   };
 
@@ -114,6 +128,16 @@ function MyApplications() {
       day: 'numeric',
       month: 'short',
       year: 'numeric'
+    });
+  };
+
+  const formatDateTime = (date) => {
+    return new Date(date).toLocaleString('en-IN', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
 
@@ -174,6 +198,68 @@ function MyApplications() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* AxonApply History */}
+      <div className="card p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Zap className="w-5 h-5 text-orange-400" />
+            <h2 className="text-lg font-semibold text-white">AxonApply™ History</h2>
+          </div>
+          <div className="text-xs text-dark-500 flex items-center gap-2">
+            <Shield className="w-4 h-4 text-green-400" />
+            User-controlled submissions only
+          </div>
+        </div>
+
+        {loadingAxonEvents ? (
+          <div className="flex items-center justify-center py-6">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
+          </div>
+        ) : axonEvents.length === 0 ? (
+          <div className="text-center py-6">
+            <FileText className="w-10 h-10 text-dark-500 mx-auto mb-2" />
+            <p className="text-dark-400 text-sm">No AxonApply™ activity yet.</p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="text-dark-400 border-b border-dark-700">
+                  <th className="text-left py-2">Job</th>
+                  <th className="text-left py-2">Company</th>
+                  <th className="text-left py-2">Platform</th>
+                  <th className="text-left py-2">Resume</th>
+                  <th className="text-left py-2">Status</th>
+                  <th className="text-left py-2">When</th>
+                </tr>
+              </thead>
+              <tbody>
+                {axonEvents.map((event) => (
+                  <tr key={event.id} className="border-b border-dark-800/50">
+                    <td className="py-2 text-white max-w-[220px] truncate">{event.jobTitle}</td>
+                    <td className="py-2 text-dark-300">{event.company}</td>
+                    <td className="py-2 text-dark-300">{event.platform}</td>
+                    <td className="py-2 text-dark-300">{event.resumeVersion || 'Default'}</td>
+                    <td className="py-2">
+                      <span className={`px-2 py-0.5 rounded text-xs ${
+                        event.status === 'APPLIED'
+                          ? 'bg-green-500/20 text-green-400'
+                          : event.status === 'SKIPPED'
+                          ? 'bg-red-500/20 text-red-400'
+                          : 'bg-yellow-500/20 text-yellow-400'
+                      }`}>
+                        {event.status}
+                      </span>
+                    </td>
+                    <td className="py-2 text-dark-400">{formatDateTime(event.appliedAt || event.updatedAt)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* Applications List */}

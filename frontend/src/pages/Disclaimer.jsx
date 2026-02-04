@@ -35,14 +35,14 @@ function Disclaimer() {
                 Not Affiliated with Employers
               </h2>
               <p>
-                GoAxon AI is an independent job aggregation platform. We are <strong className="text-white">not affiliated with, endorsed by, or officially connected</strong> to any of the companies, organizations, or employers whose job listings appear on our platform.
+                GoAxonAI is an independent job aggregation platform. We are <strong className="text-white">not affiliated with, endorsed by, or officially connected</strong> to any of the companies, organizations, or employers whose job listings appear on our platform.
               </p>
             </section>
 
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">Job Listing Sources</h2>
               <p className="mb-3">
-                All job listings displayed on GoAxon AI are sourced from publicly available APIs and official job boards, including:
+                All job listings displayed on GoAxonAI are sourced from publicly available APIs and official job boards, including:
               </p>
               <ul className="list-disc list-inside space-y-1 ml-4">
                 <li>Adzuna API</li>
@@ -58,14 +58,19 @@ function Disclaimer() {
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">Application Process</h2>
               <p>
-                When you click "Apply" on any job listing, you will be redirected to the original source or the employer's official application page. GoAxon AI does not process job applications directly. All applications are submitted directly to the employers through their official channels.
+                When you click "Apply" on any job listing, you will be redirected to the original source or the employer's official application page. GoAxonAI does not process job applications directly. All applications are submitted directly to the employers through their official channels.
               </p>
+              <div className="mt-4 p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+                <p className="text-green-400 font-medium">
+                  ⚖️ GoAxonAI acts as an <strong>AI-assisted productivity tool</strong>. Applications are submitted <strong>only with explicit user action</strong>.
+                </p>
+              </div>
             </section>
 
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">No Guarantee of Employment</h2>
               <p>
-                GoAxon AI makes no guarantees regarding employment outcomes. We provide a platform to discover job opportunities, but hiring decisions are made solely by the respective employers.
+                GoAxonAI makes no guarantees regarding employment outcomes. We provide a platform to discover job opportunities, but hiring decisions are made solely by the respective employers.
               </p>
             </section>
 
@@ -79,7 +84,7 @@ function Disclaimer() {
             <section>
               <h2 className="text-lg font-semibold text-white mb-3">Paid Features</h2>
               <p>
-                GoAxon AI offers premium features such as unlimited job access, AI job matching, and resume generation tools. These paid features enhance your job search experience but do not guarantee employment or interview callbacks.
+                GoAxonAI offers premium features such as unlimited job access, AI job matching, and resume generation tools. These paid features enhance your job search experience but do not guarantee employment or interview callbacks.
               </p>
             </section>
 

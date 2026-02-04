@@ -17,7 +17,9 @@ import {
   Star,
   ChevronRight,
   Sparkles,
-  FileCode
+  FileCode,
+  Shield,
+  MousePointer
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import SEO from '../components/SEO';
@@ -63,9 +65,9 @@ function Home() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "GoAxon AI",
+    "name": "GoAxonAI",
     "url": "https://www.goaxonai.in",
-    "description": "AI-powered job aggregator. Find tech jobs from top MNCs. Resume analysis & smart job matching.",
+    "description": "Your AI agent for career success. AI-powered job search, resume matching, and smart applications. Think less, apply smarter.",
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://www.goaxonai.in/dashboard?q={search_term_string}",
@@ -76,9 +78,9 @@ function Home() {
   return (
     <div className="min-h-screen bg-dark-900 overflow-x-hidden">
       <SEO
-        title="GoAxon AI | AI-Powered Job Aggregator for Tech Careers"
-        description="Not just another job board. AI aggregates jobs from 50+ MNCs, analyzes your resume, and shows match scores. Find your perfect tech job faster."
-        keywords="AI job matching, job aggregator, tech jobs India, resume analyzer, Accenture jobs, TCS careers, Infosys hiring, AI resume, job match score"
+        title="GoAxonAI | Your AI Agent for Career Success"
+        description="Not just a job board — an AI agent that thinks for your career. AxonSearch™ scans 50+ sources, AxonMatch™ finds eligible jobs, AxonResume™ builds ATS-friendly resumes."
+        keywords="AI job agent, GoAxonAI, AxonMatch, AxonSearch, career AI, resume AI, tech jobs India, AI resume builder, job match score, smart job search"
         url="https://www.goaxonai.in"
         structuredData={structuredData}
       />
@@ -120,11 +122,11 @@ function Home() {
 
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
-                Every Job.
+                Think Less.
                 <br />
                 <span className="relative inline-block">
                   <span className="animate-gradient-text">
-                    One Place.
+                    Apply Smarter.
                   </span>
                   <svg className="absolute -bottom-1 sm:-bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
                     <path d="M2 10C50 4 150 4 298 10" stroke="url(#gradient)" strokeWidth="3" strokeLinecap="round" />
@@ -140,7 +142,7 @@ function Home() {
               </h1>
 
               <p className="text-base sm:text-lg text-dark-300 max-w-lg mx-auto lg:mx-0 mb-8">
-                We collect jobs from <span className="text-white font-semibold">Accenture, TCS, Infosys & 50+ sources</span> — so you <span className="text-green-400 font-semibold">never miss a single opportunity</span>.
+                Your <span className="text-white font-semibold">AI brain for job hunting</span>. We scan <span className="text-primary-400 font-semibold">50+ sources</span>, match your skills, and help you <span className="text-green-400 font-semibold">apply smarter — not harder</span>.
               </p>
 
               {/* CTA Buttons */}
@@ -374,58 +376,109 @@ function Home() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* Card 1 - Real-Time Aggregation */}
+          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            {/* Card 0 - AxonApply - MAIN FEATURE */}
+            <div className="group relative perspective-1000 sm:col-span-2 md:col-span-2">
+              <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 rounded-2xl blur-lg opacity-50 group-hover:opacity-70 transition-all duration-500 animate-pulse" />
+              <div className="relative bg-gradient-to-br from-orange-500/10 to-yellow-500/10 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-orange-500/50 group-hover:border-orange-400 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-orange-500/30">
+                <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full text-black text-xs font-bold">
+                  MAIN FEATURE
+                </div>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-orange-500/30">
+                  <Zap className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-orange-400 transition-colors">
+                  AxonApply™ <span className="text-orange-400">NEW</span>
+                </h3>
+                <p className="text-dark-300 leading-relaxed text-sm sm:text-base mb-4">
+                  AI-assisted job application agent. Fills forms, uploads resumes, answers questions — <strong className="text-white">with you in control</strong>.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <span className="px-2 py-1 bg-dark-800/50 rounded text-xs text-dark-300 flex items-center gap-1">
+                    <Shield className="w-3 h-3 text-green-400" /> Legal & Safe
+                  </span>
+                  <span className="px-2 py-1 bg-dark-800/50 rounded text-xs text-dark-300 flex items-center gap-1">
+                    <MousePointer className="w-3 h-3 text-purple-400" /> You Submit
+                  </span>
+                </div>
+                <Link to="/axon-apply" className="inline-flex items-center gap-2 text-orange-400 text-sm font-medium group-hover:translate-x-2 transition-transform">
+                  <span>Try AxonApply™</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Card 1 - AxonSearch */}
             <div className="group relative perspective-1000">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-orange-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
               <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-primary-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-primary-500/20">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-primary-500/30">
                   <Target className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-primary-400 transition-colors">Real-Time Aggregation</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-primary-400 transition-colors">AxonSearch™</h3>
                 <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
-                  Our scrapers run every few hours, pulling fresh jobs from 50+ company career pages.
+                  AI-powered job aggregation from 50+ sources.
                 </p>
-                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-primary-400 text-xs sm:text-sm font-medium group-hover:translate-x-2 transition-transform">
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-primary-400 text-xs sm:text-sm font-medium">
                   <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                  <span>Updated hourly</span>
-                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span>Live</span>
                 </div>
               </div>
             </div>
 
-            {/* Card 2 - AI Resume Matching */}
+            {/* Card 2 - AxonMatch */}
             <div className="group relative perspective-1000">
               <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
               <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-purple-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-purple-500/20">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-purple-500/30">
                   <Brain className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-purple-400 transition-colors">AI Resume Matching</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-purple-400 transition-colors">AxonMatch™</h3>
                 <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
-                  Upload your resume. Our AI extracts skills and tells you how well you match each job.
+                  JD ↔ Resume match scores.
                 </p>
-                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-purple-400 text-xs sm:text-sm font-medium group-hover:translate-x-2 transition-transform">
-                  <span>Smart AI Analysis</span>
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-purple-400 text-xs sm:text-sm font-medium">
                   <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 animate-pulse" />
+                  <span>AI Powered</span>
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Card 3 - LaTeX Resume Builder */}
-            <div className="group relative sm:col-span-2 md:col-span-1 perspective-1000">
+          {/* Second Row */}
+          <div className="grid sm:grid-cols-2 gap-4 sm:gap-6 mt-6 max-w-2xl mx-auto">
+            {/* Card 3 - AxonResume */}
+            <div className="group relative perspective-1000">
               <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
               <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-green-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-green-500/20">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-green-500/30">
                   <FileCode className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-green-400 transition-colors">LaTeX Resume Builder</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-green-400 transition-colors">AxonResume™</h3>
                 <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
-                  Generate ATS-friendly professional resumes in LaTeX format.
+                  AI LaTeX resume builder. ATS-friendly.
                 </p>
-                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-green-400 text-xs sm:text-sm font-medium group-hover:translate-x-2 transition-transform">
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-green-400 text-xs sm:text-sm font-medium">
                   <Star className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>Ultimate Plan</span>
+                  <span>Ultimate</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 4 - AxonTrack */}
+            <div className="group relative perspective-1000">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur-lg opacity-0 group-hover:opacity-40 transition-all duration-500" />
+              <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-5 sm:p-8 border border-dark-700/50 group-hover:border-blue-500/50 transition-all duration-500 h-full group-hover:transform group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-blue-500/20">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg shadow-blue-500/30">
+                  <FileText className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3 group-hover:text-blue-400 transition-colors">AxonTrack</h3>
+                <p className="text-dark-400 leading-relaxed text-sm sm:text-base">
+                  Track applications, resumes, follow-ups.
+                </p>
+                <div className="mt-4 sm:mt-6 flex items-center gap-2 text-blue-400 text-xs sm:text-sm font-medium">
+                  <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span>Free</span>
                 </div>
               </div>
             </div>
@@ -580,7 +633,7 @@ function Home() {
                 </div>
               </div>
               <ul className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
-                {['Everything in AI', 'Unlimited AI', 'LaTeX resume', 'ATS-optimized', 'Priority'].map((f, i) => (
+                {['AxonApply™ Agent', 'Unlimited AI Match', 'AxonResume™', 'ATS-optimized', 'Priority'].map((f, i) => (
                   <li key={i} className="flex items-center gap-2 text-xs sm:text-sm text-dark-300">
                     <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-yellow-400 flex-shrink-0" />
                     <span className="truncate">{f}</span>
@@ -597,30 +650,39 @@ function Home() {
 
       {/* CTA Section */}
       <section className="py-12 sm:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-green-500/10 via-primary-500/10 to-purple-500/10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[200px] sm:h-[400px] bg-green-500/10 rounded-full blur-[100px] sm:blur-[150px]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-primary-500/10 to-purple-500/10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] sm:w-[800px] h-[200px] sm:h-[400px] bg-orange-500/10 rounded-full blur-[100px] sm:blur-[150px]" />
 
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
           <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white mb-4 sm:mb-6">
-            Stop Missing Jobs.
+            Find. Match. Apply.
             <br />
-            <span className="bg-gradient-to-r from-green-400 via-primary-400 to-purple-400 bg-clip-text text-transparent">
-              Start Getting Hired.
+            <span className="bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
+              All with AI.
             </span>
           </h2>
           <p className="text-sm sm:text-lg text-dark-300 mb-6 sm:mb-8 max-w-2xl mx-auto">
-            Every job from Accenture, TCS, Infosys & 50+ companies — in one place.
+            GoAxonAI helps you <strong className="text-white">find, match, and apply</strong> to jobs using AI — without spam or fake profiles.
             <br className="hidden sm:block" />
-            <span className="text-green-400">Never miss an opportunity again.</span>
+            <span className="text-green-400">Applications submitted only with your action.</span>
           </p>
-          <Link
-            to="/register"
-            className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl font-semibold text-white hover:shadow-lg hover:shadow-green-500/25 hover:scale-[1.02] transition-all text-sm sm:text-base"
-          >
-            View All Jobs Free
-            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              to="/axon-apply"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-xl font-semibold text-black hover:shadow-lg hover:shadow-orange-500/25 hover:scale-[1.02] transition-all text-sm sm:text-base"
+            >
+              <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+              Try AxonApply™
+            </Link>
+            <Link
+              to="/register"
+              className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 border border-dark-600 rounded-xl font-semibold text-white hover:bg-dark-800/50 transition-all text-sm sm:text-base"
+            >
+              View All Jobs Free
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </Link>
+          </div>
           <p className="text-dark-500 text-xs sm:text-sm mt-3 sm:mt-4">No credit card required</p>
         </div>
       </section>
@@ -628,15 +690,26 @@ function Home() {
       {/* Footer */}
       <footer className="py-8 sm:py-12 border-t border-dark-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Legal Disclaimer */}
+          <div className="mb-6 sm:mb-8 p-4 bg-dark-800/50 rounded-xl border border-dark-700 text-center">
+            <p className="text-dark-400 text-xs sm:text-sm flex items-center justify-center gap-2 flex-wrap">
+              <Shield className="w-4 h-4 text-green-400" />
+              <span>GoAxonAI provides AI-assisted application tools. Applications are submitted <strong className="text-dark-300">only with explicit user action</strong>.</span>
+            </p>
+          </div>
+
           <div className="flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <img src="/favicon.svg" alt="GoAxon AI" className="w-8 h-8 sm:w-10 sm:h-10" />
+              <img src="/favicon.svg" alt="GoAxonAI" className="w-8 h-8 sm:w-10 sm:h-10" />
               <div>
-                <span className="text-base sm:text-lg font-bold text-white">GoAxon <span className="text-orange-500">AI</span></span>
-                <p className="text-dark-500 text-[10px] sm:text-xs">AI-Powered Job Aggregator</p>
+                <span className="text-base sm:text-lg font-bold text-white">GoAxon<span className="text-orange-500">AI</span></span>
+                <p className="text-dark-500 text-[10px] sm:text-xs">Your AI Brain for Job Hunting</p>
               </div>
             </div>
             <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm">
+              <Link to="/axon-apply" className="text-orange-400 hover:text-orange-300 transition-colors font-medium">
+                AxonApply™
+              </Link>
               <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">
                 Disclaimer
               </Link>
@@ -648,7 +721,7 @@ function Home() {
               </Link>
             </div>
             <p className="text-dark-500 text-xs sm:text-sm text-center">
-              © {new Date().getFullYear()} GoAxon AI
+              © {new Date().getFullYear()} GoAxonAI
             </p>
           </div>
         </div>
