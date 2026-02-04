@@ -47,7 +47,7 @@ function App() {
     "@type": "Organization",
     "name": "GoAxonAI",
     "url": "https://www.goaxonai.in",
-    "logo": "https://www.goaxonai.in/logo.svg",
+    "logo": "https://www.goaxonai.in/logo.png",
     "sameAs": [
       "https://www.linkedin.com/company/goaxonai"
     ]

@@ -750,7 +750,7 @@ function Home() {
 
           <div className="flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
-              <img src="/favicon.svg" alt="GoAxonAI" className="w-8 h-8 sm:w-10 sm:h-10" />
+              <img src="/logo.png" alt="GoAxonAI" className="w-8 h-8 sm:w-10 sm:h-10" />
               <div>
                 <span className="text-base sm:text-lg font-bold text-white">GoAxon<span className="text-orange-500">AI</span></span>
                 <p className="text-dark-500 text-[10px] sm:text-xs">Your AI Brain for Job Hunting</p>

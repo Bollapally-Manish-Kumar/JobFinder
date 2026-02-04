@@ -78,7 +78,7 @@ function Layout({ children }) {
         {/* Logo Area */}
         <div className="flex items-center gap-3 h-20 px-6 mb-2 border-b border-dark-800/50">
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="/favicon.svg" alt="GoAxonAI" className="w-9 h-9 group-hover:scale-105 transition-transform" />
+            <img src="/logo.png" alt="GoAxonAI" className="w-9 h-9 group-hover:scale-105 transition-transform" />
             <span className="text-lg font-bold text-white tracking-tight group-hover:text-orange-400 transition-colors">
               GoAxon<span className="text-orange-500">AI</span>
             </span>

@@ -36,7 +36,7 @@ function Navbar() {
           <div className="flex items-center justify-between">
             {/* Logo - No glow */}
             <Link to="/" className="flex items-center gap-2 group">
-              <img src="/favicon.svg" alt="GoAxonAI" className="w-8 h-8 sm:w-9 sm:h-9 group-hover:scale-105 transition-transform duration-300" />
+              <img src="/logo.png" alt="GoAxonAI Logo" className="w-8 h-8 sm:w-9 sm:h-9 group-hover:scale-105 transition-transform duration-300" />
               <span className="text-base sm:text-lg font-bold text-white group-hover:text-orange-400 transition-colors duration-300">
                 GoAxon<span className="text-orange-500">AI</span>
               </span>
