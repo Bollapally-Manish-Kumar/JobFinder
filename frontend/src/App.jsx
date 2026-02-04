@@ -27,6 +27,7 @@ import Profile from './pages/Profile';
 // Components
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
+import SEO from './components/SEO';
 
 // Hooks
 import useAuthStore from './hooks/useAuthStore';
@@ -41,8 +42,20 @@ function App() {
     }
   }, []);
 
+  const organizationStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "GoAxonAI",
+    "url": "https://www.goaxonai.in",
+    "logo": "https://www.goaxonai.in/logo.svg",
+    "sameAs": [
+      "https://www.linkedin.com/company/goaxonai"
+    ]
+  };
+
   return (
     <Router>
+      <SEO structuredData={organizationStructuredData} />
       {/* Toast notifications */}
       <Toaster
         position="top-right"
