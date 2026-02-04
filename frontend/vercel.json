@@ -1,6 +1,13 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    {
+      "source": "/:path((?!api/|sitemap.xml|robots.xml|favicon.svg|logo.svg|og-image.png|apple-touch-icon.png).*)",
+      "destination": "/",
+      "missing": [
+        { "type": "file" },
+        { "type": "header", "key": "x-prerender-revalidate" }
+      ]
+    }
   ],
   "headers": [
     {
