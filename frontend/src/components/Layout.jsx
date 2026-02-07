@@ -42,6 +42,7 @@ const accountNav = [
   { name: 'Saved Jobs', href: '/saved-jobs', icon: Bookmark },
   { name: 'My Applications', href: '/my-applications', icon: ClipboardList },
   { name: 'Profile', href: '/profile', icon: User },
+  { name: 'Pricing', href: '/payment', icon: CreditCard },
 ];
 
 // Admin email - only this user sees admin panel
