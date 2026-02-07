@@ -738,41 +738,70 @@ function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 sm:py-12 border-t border-dark-800">
+      <footer className="py-12 sm:py-16 border-t border-dark-800 bg-dark-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Legal Disclaimer */}
-          <div className="mb-6 sm:mb-8 p-4 bg-dark-800/50 rounded-xl border border-dark-700 text-center">
+          <div className="mb-8 sm:mb-10 p-4 bg-dark-800/50 rounded-xl border border-dark-700 text-center">
             <p className="text-dark-400 text-xs sm:text-sm flex items-center justify-center gap-2 flex-wrap">
               <Shield className="w-4 h-4 text-green-400" />
               <span>GoAxonAI provides AI-assisted application tools. Applications are submitted <strong className="text-dark-300">only with explicit user action</strong>.</span>
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-4 sm:gap-6 md:flex-row md:justify-between">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <img src="/logo.png" alt="GoAxonAI" className="w-8 h-8 sm:w-10 sm:h-10" />
-              <div>
-                <span className="text-base sm:text-lg font-bold text-white">GoAxon<span className="text-orange-500">AI</span></span>
-                <p className="text-dark-500 text-[10px] sm:text-xs">Your AI Brain for Job Hunting</p>
+          {/* Footer Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+            {/* Company Info */}
+            <div className="col-span-2 md:col-span-1">
+              <div className="flex items-center gap-2 mb-4">
+                <img src="/logo.png" alt="GoAxonAI" className="w-8 h-8" />
+                <span className="text-lg font-bold text-white">GoAxon<span className="text-orange-500">AI</span></span>
               </div>
+              <p className="text-dark-400 text-sm mb-4">Your AI Brain for Job Hunting. Find, match, and apply to jobs smarter.</p>
             </div>
-            <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm">
-              <Link to="/axon-apply" className="text-orange-400 hover:text-orange-300 transition-colors font-medium">
-                AxonApply™
-              </Link>
-              <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">
-                Disclaimer
-              </Link>
-              <a href="#pricing" className="text-dark-400 hover:text-white transition-colors">
-                Pricing
-              </a>
-              <Link to="/login" className="text-dark-400 hover:text-white transition-colors">
-                Login
-              </Link>
+
+            {/* Products */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Products</h4>
+              <ul className="space-y-2">
+                <li><Link to="/ai-match" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">AxonMatch™</Link></li>
+                <li><Link to="/resume-builder" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">AxonResume™</Link></li>
+                <li><Link to="/axon-apply" className="text-dark-400 hover:text-orange-400 transition-colors text-sm flex items-center gap-2">AxonApply™ <span className="text-[10px] bg-orange-500/20 text-orange-400 px-1.5 py-0.5 rounded">Soon</span></Link></li>
+                <li><Link to="/dashboard" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Job Dashboard</Link></li>
+              </ul>
             </div>
-            <p className="text-dark-500 text-xs sm:text-sm text-center">
-              © {new Date().getFullYear()} GoAxonAI
+
+            {/* Documentation */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Documentation</h4>
+              <ul className="space-y-2">
+                <li><a href="#how-it-works" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">How It Works</a></li>
+                <li><a href="#pricing" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Pricing Guide</a></li>
+                <li><Link to="/axonapply/install" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Extension Setup</Link></li>
+                <li><Link to="/disclaimer" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Terms & Privacy</Link></li>
+              </ul>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="text-white font-semibold mb-4">Company</h4>
+              <ul className="space-y-2">
+                <li><a href="#how-it-works" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">About Us</a></li>
+                <li><Link to="/disclaimer" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Contact</Link></li>
+                <li><Link to="/disclaimer" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Disclaimer</Link></li>
+                <li><Link to="/login" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Login</Link></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-8 border-t border-dark-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-dark-500 text-sm">
+              © {new Date().getFullYear()} GoAxonAI. All rights reserved.
             </p>
+            <div className="flex items-center gap-6 text-sm">
+              <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">Privacy Policy</Link>
+              <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">Terms of Service</Link>
+            </div>
           </div>
         </div>
       </footer>
