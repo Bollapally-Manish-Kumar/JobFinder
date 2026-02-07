@@ -7,6 +7,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
+import SEO from '../components/SEO';
 
 // Backend URL for OAuth (production Render URL)
 const API_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://jobfinder-wog8.onrender.com';

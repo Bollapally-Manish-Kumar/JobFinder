@@ -30,6 +30,7 @@ import {
 import toast from 'react-hot-toast';
 import paymentService from '../services/paymentService';
 import useAuthStore from '../hooks/useAuthStore';
+import SEO from '../components/SEO';
 
 // Plan definitions
 const PLANS = {
@@ -517,6 +518,12 @@ function Payment() {
   // Payment page for non-subscribers or free users
   return (
     <div>
+      <SEO
+        title="Pricing & Plans | GoAxonAI"
+        description="Choose your GoAxonAI plan. Get AI job matching, resume builder, and career tools. Plans starting at ₹10/month. Pay via UPI."
+        keywords="pricing, plans, subscription, AI job matching, resume builder, GoAxonAI pricing"
+        url="https://www.goaxonai.in/payment"
+      />
       <h1 className="text-2xl font-bold text-white mb-2">Choose Your Plan</h1>
       <p className="text-dark-400 mb-8">Pay via UPI • Admin verified • 30 days access</p>
 
