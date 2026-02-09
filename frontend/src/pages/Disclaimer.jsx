@@ -93,7 +93,7 @@ function Disclaimer() {
               <p>
                 If you have any questions or concerns about our platform, please contact us at{' '}
                 <a href="mailto:support@goaxonai.in" className="text-primary-400 hover:underline">
-                  support@goaxonai.in
+                  goaxonai@gmail.com
                 </a>
               </p>
             </section>
