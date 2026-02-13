@@ -92,7 +92,7 @@ function Disclaimer() {
               <h2 className="text-lg font-semibold text-white mb-3">Contact Us</h2>
               <p>
                 If you have any questions or concerns about our platform, please contact us at{' '}
-                <a href="mailto:support@goaxonai.in" className="text-primary-400 hover:underline">
+                <a href="mailto:goaxonai@gmail.com" className="text-primary-400 hover:underline">
                   goaxonai@gmail.com
                 </a>
               </p>
