@@ -45,7 +45,31 @@ export const getProfile = asyncHandler(async (req, res) => {
       portfolio: true,
       experienceYears: true,
       currentCompany: true,
-      currentTitle: true
+      currentTitle: true,
+      // Extended profile fields
+      address: true,
+      state: true,
+      zipCode: true,
+      gender: true,
+      dateOfBirth: true,
+      nationality: true,
+      highestEducation: true,
+      university: true,
+      graduationYear: true,
+      major: true,
+      gpa: true,
+      noticePeriod: true,
+      expectedSalary: true,
+      currentSalary: true,
+      skills: true,
+      workAuthorization: true,
+      willingToRelocate: true,
+      remotePreference: true,
+      preferredLocations: true,
+      preferredRoles: true,
+      github: true,
+      twitter: true,
+      website: true
     }
   });
 
@@ -197,7 +221,31 @@ export const updateProfile = asyncHandler(async (req, res) => {
     portfolio,
     experienceYears,
     currentCompany,
-    currentTitle
+    currentTitle,
+    // Extended fields
+    address,
+    state,
+    zipCode,
+    gender,
+    dateOfBirth,
+    nationality,
+    highestEducation,
+    university,
+    graduationYear,
+    major,
+    gpa,
+    noticePeriod,
+    expectedSalary,
+    currentSalary,
+    skills,
+    workAuthorization,
+    willingToRelocate,
+    remotePreference,
+    preferredLocations,
+    preferredRoles,
+    github,
+    twitter,
+    website
   } = req.body;
 
   const updateData = {};
@@ -228,10 +276,35 @@ export const updateProfile = asyncHandler(async (req, res) => {
     updateData.currentTitle = (currentTitle || '').trim().substring(0, 100) || null;
   }
   
-  // Integer field
+  // Integer fields
   if (experienceYears !== undefined) {
     const years = parseInt(experienceYears, 10);
     updateData.experienceYears = !isNaN(years) && years >= 0 && years <= 50 ? years : null;
+  }
+  if (graduationYear !== undefined) {
+    const year = parseInt(graduationYear, 10);
+    updateData.graduationYear = !isNaN(year) && year >= 1950 && year <= 2040 ? year : null;
+  }
+
+  // Boolean field
+  if (willingToRelocate !== undefined) {
+    updateData.willingToRelocate = willingToRelocate === true || willingToRelocate === 'true' ? true : willingToRelocate === false || willingToRelocate === 'false' ? false : null;
+  }
+
+  // Extended string fields
+  const extendedStringFields = {
+    address: 300, state: 100, zipCode: 20, gender: 30, dateOfBirth: 20,
+    nationality: 100, highestEducation: 100, university: 200, major: 100,
+    gpa: 20, noticePeriod: 50, expectedSalary: 50, currentSalary: 50,
+    skills: 500, workAuthorization: 100, remotePreference: 50,
+    preferredLocations: 300, preferredRoles: 300,
+    github: 200, twitter: 200, website: 200
+  };
+  for (const [field, maxLen] of Object.entries(extendedStringFields)) {
+    const val = req.body[field];
+    if (val !== undefined) {
+      updateData[field] = (val || '').toString().trim().substring(0, maxLen) || null;
+    }
   }
 
   if (Object.keys(updateData).length === 0) {
@@ -254,7 +327,30 @@ export const updateProfile = asyncHandler(async (req, res) => {
       portfolio: true,
       experienceYears: true,
       currentCompany: true,
-      currentTitle: true
+      currentTitle: true,
+      address: true,
+      state: true,
+      zipCode: true,
+      gender: true,
+      dateOfBirth: true,
+      nationality: true,
+      highestEducation: true,
+      university: true,
+      graduationYear: true,
+      major: true,
+      gpa: true,
+      noticePeriod: true,
+      expectedSalary: true,
+      currentSalary: true,
+      skills: true,
+      workAuthorization: true,
+      willingToRelocate: true,
+      remotePreference: true,
+      preferredLocations: true,
+      preferredRoles: true,
+      github: true,
+      twitter: true,
+      website: true
     }
   });
 

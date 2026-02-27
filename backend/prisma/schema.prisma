@@ -43,6 +43,39 @@ model User {
   currentCompany  String?
   currentTitle    String?
   
+  // Extended profile fields for AxonApply™ form filling
+  address         String?   // Full street address
+  state           String?   // State / province
+  zipCode         String?   // Zip / postal code
+  gender          String?   // Male / Female / Other / Prefer not to say
+  dateOfBirth     String?   // DOB string (YYYY-MM-DD)
+  nationality     String?   // Nationality
+  
+  // Education
+  highestEducation String?  // e.g., "Bachelor's", "Master's", "PhD"
+  university       String?  // University / College name
+  graduationYear   Int?     // Year of graduation
+  major            String?  // Field of study / Major
+  gpa              String?  // GPA string (e.g., "3.8/4.0")
+  
+  // Work details
+  noticePeriod     String?  // e.g., "30 days", "Immediate"
+  expectedSalary   String?  // e.g., "12 LPA", "$80,000"
+  currentSalary    String?  // Current salary
+  skills           String?  // Comma-separated skills
+  
+  // Work authorization & preferences
+  workAuthorization  String?  // e.g., "Citizen", "H1B", "Work Permit"
+  willingToRelocate  Boolean? // Whether willing to relocate
+  remotePreference   String?  // "Remote", "Onsite", "Hybrid"
+  preferredLocations String?  // Comma-separated preferred locations
+  preferredRoles     String?  // Comma-separated preferred role titles
+  
+  // Links
+  github          String?
+  twitter         String?
+  website         String?
+  
   // Resume for AI Job Matching
   resumeText      String?   // Extracted text from uploaded resume PDF
   resumeUploadedAt DateTime? // When resume was last uploaded

@@ -16,6 +16,7 @@ import ResumeBuilder from './pages/ResumeBuilder';
 import SavedJobs from './pages/SavedJobs';
 import MyApplications from './pages/MyApplications';
 import AIJobMatch from './pages/AIJobMatch';
+import AxonApply from './pages/AxonApply';
 import AxonApplyComingSoon from './pages/AxonApplyComingSoon';
 import AxonApplyInstall from './pages/AxonApplyInstall';
 import OAuthSuccess from './pages/OAuthSuccess';
@@ -157,7 +158,7 @@ function App() {
           element={
             <ProtectedRoute>
               <Layout>
-                <AxonApplyComingSoon />
+                <AxonApply />
               </Layout>
             </ProtectedRoute>
           }

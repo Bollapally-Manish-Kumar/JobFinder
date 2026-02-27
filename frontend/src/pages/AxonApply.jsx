@@ -142,21 +142,45 @@ function AxonApply() {
         lastName,
         email: user.email || '',
         phone: user.phone || '',
-        // Location fields (if available in user object)
+        // Location
         city: user.city || user.location || '',
+        state: user.state || '',
         country: user.country || 'India',
-        // Work details (if available)
+        address: user.address || '',
+        zipCode: user.zipCode || '',
+        // Work details
         experienceYears: user.experienceYears ?? undefined,
         currentCompany: user.currentCompany || '',
         currentTitle: user.headline || user.currentTitle || '',
-        // Links (if available)
+        expectedSalary: user.expectedSalary || '',
+        currentSalary: user.currentSalary || '',
+        noticePeriod: user.noticePeriod || '',
+        skills: user.skills || '',
+        // Education
+        highestEducation: user.highestEducation || '',
+        university: user.university || '',
+        graduationYear: user.graduationYear || undefined,
+        major: user.major || '',
+        gpa: user.gpa || '',
+        // Personal
+        gender: user.gender || '',
+        dateOfBirth: user.dateOfBirth || '',
+        nationality: user.nationality || '',
+        // Work authorization
+        workAuthorization: user.workAuthorization || '',
+        willingToRelocate: user.willingToRelocate ?? undefined,
+        remotePreference: user.remotePreference || '',
+        // Links
         linkedin: user.linkedin || '',
-        portfolio: user.portfolio || user.github || ''
+        portfolio: user.portfolio || '',
+        github: user.github || '',
+        website: user.website || '',
+        twitter: user.twitter || ''
       },
       resume: null,
       preferences: {
-        roles: user.preferredRoles || [],
-        locations: user.preferredLocations || []
+        roles: user.preferredRoles ? (typeof user.preferredRoles === 'string' ? user.preferredRoles.split(',').map(s => s.trim()) : user.preferredRoles) : [],
+        locations: user.preferredLocations ? (typeof user.preferredLocations === 'string' ? user.preferredLocations.split(',').map(s => s.trim()) : user.preferredLocations) : []
       }
     };
 
