@@ -1,31 +1,27 @@
-# GoAxonAI Robots.txt
+# GoAxonAI robots.txt
 # https://www.goaxonai.in
 
-# Allow all search engines
 User-agent: *
 Allow: /
 
-# Crawl-delay for polite crawling
-Crawl-delay: 1
-
-# Specific crawlers
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-# Block admin, payment, and private pages from indexing
-Disallow: /admin*
+# Private/authenticated or non-index pages
+Disallow: /dashboard
+Disallow: /saved-jobs
+Disallow: /my-applications
+Disallow: /profile
 Disallow: /payment
+Disallow: /usage-center
+Disallow: /admin-dashboard
 Disallow: /manage-*
 Disallow: /oauth-success
 Disallow: /api/
 
-# Block common non-content paths
-Disallow: /*.json$
-Disallow: /*.js$
-Disallow: /*.css$
+# Keep static assets crawlable for proper rendering
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.svg$
+Allow: /*.webp$
 
-# Sitemap location
+Sitemap: https://www.goaxonai.in/sitemap-index.xml
 Sitemap: https://www.goaxonai.in/sitemap.xml

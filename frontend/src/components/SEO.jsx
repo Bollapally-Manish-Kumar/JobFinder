@@ -56,6 +56,8 @@ const SEO = ({
       
       {/* Canonical URL */}
       <link rel="canonical" href={url} />
+      <link rel="alternate" hrefLang="en-in" href={url} />
+      <link rel="alternate" hrefLang="x-default" href={url} />
       
       {/* Structured Data (JSON-LD) */}
       {structuredData && (

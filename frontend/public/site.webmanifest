@@ -1,0 +1,21 @@
+{
+  "name": "GoAxonAI",
+  "short_name": "GoAxonAI",
+  "description": "AI-powered job search platform aggregating jobs from 50+ sources",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F1115",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
