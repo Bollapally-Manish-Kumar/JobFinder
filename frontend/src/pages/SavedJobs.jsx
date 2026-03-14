@@ -52,7 +52,7 @@ function SavedJobs() {
         url="https://www.goaxonai.in/saved-jobs"
         noIndex={true}
       />
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
             <Bookmark className="w-7 h-7 text-primary-500" />
@@ -64,7 +64,7 @@ function SavedJobs() {
         </div>
         <button
           onClick={fetchSavedJobs}
-          className="btn-secondary flex items-center gap-2"
+          className="btn-secondary flex items-center gap-2 text-sm"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           Refresh
@@ -72,7 +72,7 @@ function SavedJobs() {
       </div>
 
       {loading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="card p-5 animate-pulse">
               <div className="h-6 bg-dark-700 rounded w-3/4 mb-3" />
@@ -83,7 +83,7 @@ function SavedJobs() {
           ))}
         </div>
       ) : jobs.length === 0 ? (
-        <div className="card p-12 text-center">
+        <div className="card p-6 sm:p-8 md:p-12 text-center">
           <Bookmark className="w-12 h-12 text-dark-600 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-white mb-2">No saved jobs</h3>
           <p className="text-dark-400">
@@ -91,7 +91,7 @@ function SavedJobs() {
           </p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {jobs.map((job) => (
             <div key={job.id} className="relative">
               <JobCard

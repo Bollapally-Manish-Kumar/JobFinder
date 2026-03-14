@@ -23,7 +23,7 @@ import {
   Settings,
   Zap
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
 
@@ -41,6 +41,7 @@ const toolsNav = [
 const accountNav = [
   { name: 'Saved Jobs', href: '/saved-jobs', icon: Bookmark },
   { name: 'My Applications', href: '/my-applications', icon: ClipboardList },
+  { name: 'Usage & Trust', href: '/usage-center', icon: BadgeCheck },
   { name: 'Profile', href: '/profile', icon: User },
   { name: 'Pricing', href: '/payment', icon: CreditCard },
 ];
@@ -92,8 +93,12 @@ function Layout({ children }) {
           </button>
         </div>
 
+        {/* Subtle edge fades for scroll area */}
+        <div className="pointer-events-none absolute top-20 left-0 right-0 h-8 bg-gradient-to-b from-[#0F1115] to-transparent z-10" />
+        <div className="pointer-events-none absolute bottom-24 left-0 right-0 h-10 bg-gradient-to-t from-[#0F1115] to-transparent z-10" />
+
         {/* Navigation Wrapper */}
-        <div className="px-4 py-6 space-y-6 overflow-y-auto h-[calc(100vh-160px)] scrollbar-hide">
+        <div className="px-4 py-6 pr-2 pb-28 space-y-6 overflow-y-auto h-[calc(100vh-220px)] custom-sidebar-scroll">
 
           {/* Core Menu */}
           <div>
@@ -335,6 +340,53 @@ function Layout({ children }) {
           {children}
         </main>
       </div>
+
+      {/* Storex Ad - small dismissible floating card */}
+      <StorexAd />
+    </div>
+  );
+}
+
+function StorexAd() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (localStorage.getItem('storex_ad_dismissed')) return;
+    const t = setTimeout(() => setVisible(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const dismiss = () => {
+    setVisible(false);
+    localStorage.setItem('storex_ad_dismissed', '1');
+  };
+
+  if (!visible) return null;
+
+  return (
+    <div className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 w-[calc(100vw-2rem)] max-w-[16rem] sm:w-64 bg-dark-800/95 backdrop-blur-md border border-dark-700/60 rounded-2xl shadow-xl shadow-black/30 p-3 animate-fade-in">
+      <button
+        onClick={dismiss}
+        className="absolute top-2 right-2 text-dark-500 hover:text-white transition-colors"
+        aria-label="Close"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+      <p className="text-[10px] font-semibold text-dark-500 uppercase tracking-wider mb-1.5">Sponsored</p>
+      <a
+        href="https://storexmedia.netlify.app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2.5 group"
+      >
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-violet-500/20">
+          <span className="text-white text-xs font-black">S</span>
+        </div>
+        <div className="min-w-0">
+          <p className="text-white text-sm font-semibold group-hover:text-violet-400 transition-colors leading-tight">Storex</p>
+          <p className="text-dark-400 text-xs truncate">storexmedia.netlify.app</p>
+        </div>
+      </a>
     </div>
   );
 }

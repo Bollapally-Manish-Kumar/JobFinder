@@ -567,7 +567,7 @@ function AdminDashboard() {
               <img 
                 src={currentQrUrl || GITHUB_QR_URL} 
                 alt="Current Payment QR" 
-                className="w-48 h-48 object-contain"
+                className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 object-contain"
                 onError={(e) => {
                   console.error('QR image failed to load:', e.target.src);
                   e.target.src = GITHUB_QR_URL;

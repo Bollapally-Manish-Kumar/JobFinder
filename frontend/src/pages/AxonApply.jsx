@@ -225,8 +225,8 @@ function AxonApply() {
       <section className="relative pt-8 pb-16 overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-orange-500/20 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/15 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-12 -left-16 sm:top-20 sm:left-10 w-48 h-48 sm:w-72 sm:h-72 bg-orange-500/20 rounded-full blur-[90px] sm:blur-[100px] animate-pulse" />
+          <div className="absolute bottom-16 -right-16 sm:bottom-20 sm:right-10 w-56 h-56 sm:w-96 sm:h-96 bg-purple-500/15 rounded-full blur-[100px] sm:blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -241,7 +241,7 @@ function AxonApply() {
 
           {/* Title */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4">
               AxonApply<span className="text-orange-500">™</span>
             </h1>
             <p className="text-xl md:text-2xl text-dark-300 max-w-3xl mx-auto">
@@ -347,7 +347,7 @@ function AxonApply() {
             <p className="text-dark-400">Simple 4-step process. You stay in control.</p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {steps.map((step, index) => (
               <div
                 key={index}
@@ -386,7 +386,7 @@ function AxonApply() {
             <p className="text-dark-400">More than just form filling — it's intelligent.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {features.map((feature, index) => (
               <div
                 key={index}
@@ -411,7 +411,7 @@ function AxonApply() {
             <p className="text-dark-400">We believe in ethical automation. Here's exactly what AxonApply™ does.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Allowed */}
             <div className="bg-green-500/5 rounded-2xl p-6 border border-green-500/20">
               <div className="flex items-center gap-3 mb-6">

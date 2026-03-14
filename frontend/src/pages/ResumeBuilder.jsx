@@ -49,6 +49,8 @@ function ResumeBuilder() {
       });
       
       setLatexCode(data.latex);
+      const current = Number(localStorage.getItem('usage_resume_builds') || '0');
+      localStorage.setItem('usage_resume_builds', String(current + 1));
       toast.success('Resume generated successfully!');
     } catch (error) {
       const message = error.response?.data?.error || 'Failed to generate resume';
@@ -88,13 +90,14 @@ function ResumeBuilder() {
   const hasAccess = user?.role === 'ADMIN' || (user?.paymentVerified && user?.plan !== 'BASIC');
   if (!hasAccess) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="card p-8 max-w-md text-center">
-          <div className="w-16 h-16 mx-auto rounded-full bg-primary-500/20 flex items-center justify-center mb-4">
+      <div className="flex items-center justify-center min-h-[60vh] px-4">
+        <div className="relative card p-8 max-w-md text-center overflow-hidden border border-dark-700/70">
+          <div className="absolute -top-14 left-1/2 -translate-x-1/2 w-60 h-28 bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="relative w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center mb-4 shadow-xl shadow-primary-500/25">
             <Lock className="w-8 h-8 text-primary-500" />
           </div>
-          <h2 className="text-xl font-bold text-white mb-2">Premium Feature</h2>
-          <p className="text-dark-400 mb-6">
+          <h2 className="text-2xl font-bold text-white mb-2 relative">Premium Feature</h2>
+          <p className="text-dark-300 mb-6 relative leading-relaxed">
             The Resume Builder is available for Basic Plus subscribers and above. 
             Upgrade to generate professional LaTeX resumes tailored to job descriptions.
           </p>
@@ -108,27 +111,29 @@ function ResumeBuilder() {
   }
 
   return (
-    <div>
+    <div className="max-w-7xl mx-auto">
       <SEO 
         title="AxonResume™ - AI Resume Builder | Create ATS-Optimized Resumes"
         description="Build professional ATS-friendly resumes with AI. AxonResume™ generates LaTeX resumes tailored to job descriptions. Stand out to recruiters."
         keywords="AI resume builder, ATS resume, LaTeX resume generator, professional resume maker, job resume creator, GoAxonAI AxonResume"
         url="https://www.goaxonai.in/resume-builder"
       />
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-          <FileText className="w-7 h-7 text-primary-500" />
+      <div className="relative mb-6 md:mb-8 p-6 md:p-7 rounded-3xl border border-dark-700/70 bg-gradient-to-b from-dark-800/80 to-dark-900/50 overflow-hidden">
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-[520px] h-40 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+        <h1 className="text-3xl md:text-4xl font-black text-white flex items-center justify-center gap-2 md:gap-3 tracking-tight relative">
+          <FileText className="w-7 h-7 md:w-8 md:h-8 text-primary-500" />
           AxonResume™
         </h1>
-        <p className="text-dark-400 mt-1">
+        <p className="text-dark-300 mt-2 text-center relative max-w-2xl mx-auto">
           AI-powered LaTeX resume generator. ATS-friendly & professionally formatted.
         </p>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Input section */}
-        <div className="card p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">
+        <div className="card p-5 md:p-6 border border-dark-700/70">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-primary-400" />
             Job Description
           </h2>
           
@@ -139,7 +144,7 @@ function ResumeBuilder() {
 
 Example:
 We are looking for a Software Engineer with 2+ years of experience in React, Node.js, and cloud technologies. The ideal candidate should have strong problem-solving skills..."
-            className="input min-h-[300px] resize-none"
+            className="input min-h-[320px] resize-none"
             disabled={loading}
           />
 
@@ -150,7 +155,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
             <button
               onClick={handleGenerate}
               disabled={loading || jobDescription.length < 50}
-              className="btn-primary flex items-center gap-2"
+              className="btn-primary flex items-center gap-2 rounded-xl"
             >
               {loading ? (
                 <>
@@ -167,7 +172,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
           </div>
 
           {/* Tips */}
-          <div className="mt-6 p-4 bg-dark-700/50 rounded-lg">
+          <div className="mt-6 p-4 bg-dark-800/70 border border-dark-700 rounded-xl">
             <h3 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
               <AlertCircle className="w-4 h-4 text-primary-500" />
               Tips for best results
@@ -182,7 +187,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
         </div>
 
         {/* Output section */}
-        <div className="card p-6">
+        <div className="card p-5 md:p-6 border border-dark-700/70">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white">
               LaTeX Output
@@ -191,7 +196,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleCopy}
-                  className="btn-secondary py-1.5 px-3 text-sm flex items-center gap-2"
+                  className="btn-secondary py-1.5 px-3 text-sm flex items-center gap-2 rounded-xl"
                 >
                   {copied ? (
                     <>
@@ -207,7 +212,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
                 </button>
                 <button
                   onClick={handleDownload}
-                  className="btn-secondary py-1.5 px-3 text-sm flex items-center gap-2"
+                  className="btn-secondary py-1.5 px-3 text-sm flex items-center gap-2 rounded-xl"
                 >
                   <Download className="w-4 h-4" />
                   Download .tex
@@ -226,12 +231,13 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
             </div>
           ) : latexCode ? (
             <div className="relative">
-              <pre className="bg-dark-700 rounded-lg p-4 overflow-auto max-h-[500px] text-sm text-dark-300 font-mono">
+              <div className="absolute inset-x-0 -top-0.5 h-8 bg-gradient-to-b from-dark-800 to-transparent pointer-events-none rounded-t-xl" />
+              <pre className="bg-dark-800/90 border border-dark-700 rounded-xl p-4 overflow-auto max-h-[500px] text-sm text-dark-300 font-mono">
                 {latexCode}
               </pre>
             </div>
           ) : (
-            <div className="flex items-center justify-center min-h-[300px] border-2 border-dashed border-dark-700 rounded-lg">
+            <div className="flex items-center justify-center min-h-[300px] border-2 border-dashed border-dark-700 rounded-xl bg-dark-900/40">
               <div className="text-center">
                 <FileText className="w-12 h-12 text-dark-600 mx-auto mb-4" />
                 <p className="text-dark-400">Generated LaTeX code will appear here</p>
@@ -243,7 +249,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
           )}
 
           {latexCode && (
-            <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+            <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
               <h3 className="text-sm font-medium text-blue-400 mb-2">
                 How to use this LaTeX code
               </h3>

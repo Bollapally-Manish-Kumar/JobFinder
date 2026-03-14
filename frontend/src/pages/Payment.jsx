@@ -270,7 +270,7 @@ function Payment() {
               <img
                 src={fullQrUrl}
                 alt="Payment QR Code"
-                className="w-48 h-48 object-contain"
+                className="w-36 h-36 sm:w-44 sm:h-44 md:w-48 md:h-48 object-contain"
                 onError={(e) => {
                   console.error('QR image failed to load:', fullQrUrl);
                   setQrImageError(true);
@@ -376,7 +376,7 @@ function Payment() {
 
         <div className="grid lg:grid-cols-2 gap-4 lg:gap-8">
           {/* Current Subscription */}
-          <div className="card p-8">
+          <div className="card p-6 sm:p-8">
             <div className="text-center mb-8">
               <div className="w-16 h-16 mx-auto rounded-full bg-green-500/20 flex items-center justify-center mb-4">
                 <CheckCircle className="w-8 h-8 text-green-500" />
@@ -540,7 +540,7 @@ function Payment() {
               key={planId}
               className={`card p-6 relative overflow-hidden ${plan.recommended ? 'border-2 border-purple-500/50' : ''} ${isProPlus ? 'border-2 border-yellow-500/50' : ''}`}
             >
-              <div className={`absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-r ${plan.gradient} opacity-20 rounded-full blur-3xl`} />
+              <div className={`absolute -top-10 -right-10 sm:-top-20 sm:-right-20 w-24 h-24 sm:w-40 sm:h-40 bg-gradient-to-r ${plan.gradient} opacity-20 rounded-full blur-3xl`} />
 
               {plan.recommended && (
                 <div className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-3 py-1 rounded-full">

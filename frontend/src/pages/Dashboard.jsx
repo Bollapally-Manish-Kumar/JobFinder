@@ -3,10 +3,11 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Search, Filter, MapPin, Briefcase, RefreshCw, ChevronLeft, ChevronRight, X, Clock, TrendingUp, Globe, Wifi, BadgeCheck, Star, Sparkles, Zap, Infinity as InfinityIcon } from 'lucide-react';
+import { Search, Filter, MapPin, Briefcase, RefreshCw, ChevronLeft, ChevronRight, X, Clock, TrendingUp, Globe, Star, Sparkles, Zap, Infinity as InfinityIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 import JobCard from '../components/JobCard';
 import JobDetailModal from '../components/JobDetailModal';
+import OnboardingWizard from '../components/OnboardingWizard';
 import jobService from '../services/jobService';
 import api from '../services/api';
 import useAuthStore from '../hooks/useAuthStore';
@@ -45,8 +46,11 @@ function Dashboard() {
   const [savedJobIds, setSavedJobIds] = useState(new Set());
   const [trackingMap, setTrackingMap] = useState({});
   const [selectedJob, setSelectedJob] = useState(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const { user } = useAuthStore();
+
+  const onboardingStorageKey = user?.id ? `goaxon_onboarding_done_${user.id}` : null;
 
   // Fetch sync status
   const fetchSyncStatus = async () => {
@@ -134,6 +138,10 @@ function Dashboard() {
       }
       await api.post('/applications', { jobId, status: 'APPLIED' });
       setTrackingMap(prev => ({ ...prev, [jobId]: 'APPLIED' }));
+
+      const trackedCount = Number(localStorage.getItem('usage_tracked_apps') || '0') + 1;
+      localStorage.setItem('usage_tracked_apps', String(trackedCount));
+
       toast.success('Added to Application Tracker!');
     } catch (error) {
       if (error.response?.data?.error === 'Already tracking this job') {
@@ -150,6 +158,13 @@ function Dashboard() {
     fetchFilters();
     fetchSyncStatus();
   }, []);
+
+  useEffect(() => {
+    if (!user || !onboardingStorageKey) return;
+    if (!localStorage.getItem(onboardingStorageKey)) {
+      setShowOnboarding(true);
+    }
+  }, [user, onboardingStorageKey]);
 
   // Fetch tracking status when jobs change
   useEffect(() => {
@@ -188,6 +203,15 @@ function Dashboard() {
     } catch (error) {
       toast.error(error.response?.data?.error || 'Failed to save job');
     }
+  };
+
+  const completeOnboarding = (profileData) => {
+    if (onboardingStorageKey) {
+      localStorage.setItem(onboardingStorageKey, '1');
+      localStorage.setItem(`goaxon_onboarding_profile_${user.id}`, JSON.stringify(profileData));
+    }
+    setShowOnboarding(false);
+    toast.success('Dashboard personalized successfully!');
   };
 
   // Structured data for job listings
@@ -336,7 +360,7 @@ function Dashboard() {
 
         <form onSubmit={handleSearch} className="relative flex flex-col gap-2">
           {/* Search row - Compact Grid on mobile */}
-          <div className="grid grid-cols-4 md:flex md:flex-row gap-2 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:flex md:flex-row gap-2 md:gap-4">
             {/* Search input - Full width row 1 */}
             <div className="relative col-span-4 md:flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400" />
@@ -517,12 +541,23 @@ function Dashboard() {
 
       {/* Results header */}
       <div className="flex items-center justify-between mb-4">
-        <p className="text-dark-400">
-          {loading ? 'Loading...' : `${pagination.total} jobs found`}
-        </p>
+        <div className="flex items-center gap-2">
+          {loading ? (
+            <div className="h-4 w-32 bg-dark-700 rounded animate-pulse" />
+          ) : (
+            <p className="text-dark-400 text-sm">
+              <span className="text-white font-semibold">{pagination.total}</span> jobs found
+              {syncStatus.lastSyncAt && (
+                <span className="ml-2 text-dark-600 text-xs">
+                  · synced {new Date(syncStatus.lastSyncAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </span>
+              )}
+            </p>
+          )}
+        </div>
         <button
           onClick={() => fetchJobs(pagination.page)}
-          className="flex items-center gap-2 text-dark-400 hover:text-white"
+          className="flex items-center gap-2 text-dark-400 hover:text-white text-sm transition-colors"
         >
           <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           Refresh
@@ -533,11 +568,33 @@ function Dashboard() {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="card p-4 md:p-5 animate-pulse">
-              <div className="h-5 md:h-6 bg-dark-700 rounded w-3/4 mb-3" />
-              <div className="h-4 bg-dark-700 rounded w-1/2 mb-4" />
-              <div className="h-4 bg-dark-700 rounded w-full mb-2" />
-              <div className="h-4 bg-dark-700 rounded w-2/3" />
+            <div key={i} className="card p-5">
+              {/* Title + company skeleton */}
+              <div className="flex items-start justify-between gap-3 mb-4">
+                <div className="flex-1">
+                  <div className="h-5 skeleton rounded-lg w-3/4 mb-2.5" />
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 skeleton rounded-lg" />
+                    <div className="h-4 skeleton rounded w-1/3" />
+                  </div>
+                </div>
+                <div className="h-5 w-14 skeleton rounded-lg flex-shrink-0" />
+              </div>
+              {/* Tags skeleton */}
+              <div className="flex gap-2 mb-4">
+                <div className="h-7 w-20 skeleton rounded-lg" />
+                <div className="h-7 w-16 skeleton rounded-lg" />
+              </div>
+              {/* Description skeleton */}
+              <div className="space-y-2 mb-4">
+                <div className="h-3.5 skeleton rounded w-full" />
+                <div className="h-3.5 skeleton rounded w-5/6" />
+              </div>
+              {/* Actions skeleton */}
+              <div className="flex gap-2">
+                <div className="h-10 w-20 skeleton rounded-xl" />
+                <div className="h-10 flex-1 skeleton rounded-xl" />
+              </div>
             </div>
           ))}
         </div>
@@ -608,6 +665,14 @@ function Dashboard() {
             }
           }}
           isSaved={savedJobIds.has(selectedJob.id)}
+        />
+      )}
+
+      {showOnboarding && (
+        <OnboardingWizard
+          userName={user?.name?.split(' ')[0]}
+          onClose={() => setShowOnboarding(false)}
+          onComplete={completeOnboarding}
         />
       )}
     </div>

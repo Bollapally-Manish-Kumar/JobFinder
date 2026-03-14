@@ -19,7 +19,10 @@ import {
   Sparkles,
   FileCode,
   Shield,
-  MousePointer
+  MousePointer,
+  Users,
+  MessageSquare,
+  HelpCircle
 } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import SEO from '../components/SEO';
@@ -46,20 +49,54 @@ const useCounter = (end, duration = 2000) => {
 
 // Job sources we aggregate from - with brand colors
 const jobSources = [
-  { name: 'Accenture', logo: 'A', bgColor: 'bg-[#A100FF]' },
-  { name: 'TCS', logo: 'T', bgColor: 'bg-[#0052C2]' },
-  { name: 'Infosys', logo: 'I', bgColor: 'bg-[#007CC3]' },
-  { name: 'Wipro', logo: 'W', bgColor: 'bg-[#3F1D74]' },
-  { name: 'LinkedIn', logo: 'in', bgColor: 'bg-[#0A66C2]' },
-  { name: 'Naukri', logo: 'N', bgColor: 'bg-gradient-to-br from-[#4285F4] to-[#EA4335]' },
-  { name: 'Indeed', logo: 'I', bgColor: 'bg-[#2164F3]' },
-  { name: 'Wellfound', logo: 'W', bgColor: 'bg-black' },
+  { name: 'Accenture', logo: 'A', bgColor: 'bg-[#A100FF]', logoUrl: 'https://logo.clearbit.com/accenture.com' },
+  { name: 'TCS', logo: 'T', bgColor: 'bg-[#0052C2]', logoUrl: 'https://logo.clearbit.com/tcs.com' },
+  { name: 'Infosys', logo: 'I', bgColor: 'bg-[#007CC3]', logoUrl: 'https://logo.clearbit.com/infosys.com' },
+  { name: 'Wipro', logo: 'W', bgColor: 'bg-[#3F1D74]', logoUrl: 'https://logo.clearbit.com/wipro.com' },
+  { name: 'LinkedIn', logo: 'in', bgColor: 'bg-[#0A66C2]', logoUrl: 'https://logo.clearbit.com/linkedin.com' },
+  { name: 'Naukri', logo: 'N', bgColor: 'bg-gradient-to-br from-[#4285F4] to-[#EA4335]', logoUrl: 'https://logo.clearbit.com/naukri.com' },
+  { name: 'Indeed', logo: 'I', bgColor: 'bg-[#2164F3]', logoUrl: 'https://logo.clearbit.com/indeed.com' },
+  { name: 'Wellfound', logo: 'W', bgColor: 'bg-black', logoUrl: 'https://logo.clearbit.com/wellfound.com' },
+];
+
+const testimonials = [
+  {
+    name: 'Aarav S.',
+    role: 'Software Engineer',
+    quote: 'The match scores helped me stop random applying. I focused on better-fit roles and got interviews faster.',
+  },
+  {
+    name: 'Priya M.',
+    role: 'Product Analyst',
+    quote: 'AxonResume and the tracker together made my process organized. I could finally see what was working.',
+  },
+  {
+    name: 'Rohan K.',
+    role: 'Frontend Developer',
+    quote: 'The extension removed repetitive form filling, but I still stayed in control before submitting anything.',
+  },
+];
+
+const homeFaq = [
+  {
+    q: 'Will GoAxonAI auto-submit applications?',
+    a: 'No. Submissions always require your explicit final action.',
+  },
+  {
+    q: 'Do I need to check 50+ sites manually?',
+    a: 'No. AxonSearch aggregates listings so you can track opportunities from one dashboard.',
+  },
+  {
+    q: 'Is there a free plan?',
+    a: 'Yes. You can start free and upgrade only when you need advanced AI tools.',
+  },
 ];
 
 function Home() {
   const jobCount = useCounter(1247);
   const companyCount = useCounter(50);
   const userCount = useCounter(500);
+  const [openHomeFaq, setOpenHomeFaq] = useState(0);
 
   // Enhanced structured data for Google rich results
   const structuredData = {
@@ -143,11 +180,11 @@ function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-900/95 to-purple-900/20" />
 
           {/* Glowing orbs */}
-          <div className="absolute top-20 left-10 w-72 h-72 bg-primary-500/30 rounded-full blur-[100px] animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500/25 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-gradient-to-r from-primary-500/15 to-purple-500/15 rounded-full blur-3xl" />
-          <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-pink-500/15 rounded-full blur-[80px] float-slow" />
-          <div className="absolute bottom-1/3 left-1/4 w-48 h-48 bg-cyan-500/10 rounded-full blur-[60px] float-slow" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-16 -left-14 sm:top-20 sm:left-10 w-44 h-44 sm:w-72 sm:h-72 bg-primary-500/30 rounded-full blur-[80px] sm:blur-[100px] animate-pulse" />
+          <div className="absolute bottom-16 -right-14 sm:bottom-20 sm:right-10 w-56 h-56 sm:w-96 sm:h-96 bg-purple-500/25 rounded-full blur-[95px] sm:blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] h-[340px] sm:w-[700px] sm:h-[700px] bg-gradient-to-r from-primary-500/15 to-purple-500/15 rounded-full blur-3xl" />
+          <div className="absolute top-1/4 right-1/4 w-40 h-40 sm:w-64 sm:h-64 bg-pink-500/15 rounded-full blur-[65px] sm:blur-[80px] float-slow" />
+          <div className="absolute bottom-1/3 left-1/4 w-28 h-28 sm:w-48 sm:h-48 bg-cyan-500/10 rounded-full blur-[45px] sm:blur-[60px] float-slow" style={{ animationDelay: '2s' }} />
 
           {/* Floating Particles */}
           <div className="particle w-2 h-2 bg-primary-500/40 top-[20%] left-[10%]" style={{ animationDelay: '0s' }} />
@@ -166,7 +203,7 @@ function Home() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
             {/* Left - Content */}
             <div className="text-center lg:text-left">
 
@@ -377,23 +414,38 @@ function Home() {
             <p className="text-dark-400 mt-2 text-sm sm:text-base">So you don't have to visit each one</p>
           </div>
 
-          <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-2 sm:gap-4">
-            {jobSources.map((source, i) => (
-              <div
-                key={i}
-                className="group relative bg-dark-800/50 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-4 border border-dark-700/50 hover:border-primary-500/40 transition-all duration-300 text-center hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-500/10"
-                style={{ animationDelay: `${i * 100}ms` }}
-              >
-                {/* Hover effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full overflow-hidden">
-                  <div className={`absolute inset-0 ${source.bgColor} opacity-10`} />
+          <div className="relative overflow-hidden py-1">
+            <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-12 sm:w-20 bg-gradient-to-r from-dark-900 to-transparent" />
+            <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-12 sm:w-20 bg-gradient-to-l from-dark-900 to-transparent" />
+
+            <div className="logo-marquee-track">
+              {[...jobSources, ...jobSources].map((source, i) => (
+                <div
+                  key={`${source.name}-${i}`}
+                  className="group relative min-w-[122px] sm:min-w-[150px] bg-dark-800/50 backdrop-blur-sm rounded-lg sm:rounded-xl p-3 sm:p-4 border border-dark-700/50 hover:border-primary-500/40 transition-all duration-300 text-center hover:-translate-y-1 hover:shadow-lg hover:shadow-primary-500/10"
+                >
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl overflow-hidden">
+                    <div className={`absolute inset-0 ${source.bgColor} opacity-10`} />
+                  </div>
+                  <div className={`relative w-10 h-10 sm:w-14 sm:h-14 mx-auto rounded-full ${source.bgColor} flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-110 transition-all duration-300 shadow-lg border border-white/10 overflow-hidden`}>
+                    <span className="text-white font-bold text-xs sm:text-base">{source.logo}</span>
+                    {source.logoUrl ? (
+                      <img
+                        src={source.logoUrl}
+                        alt={`${source.name} logo`}
+                        className="absolute inset-0 w-full h-full object-contain p-1.5 bg-white"
+                        loading="lazy"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.remove();
+                        }}
+                      />
+                    ) : null}
+                  </div>
+                  <p className="relative text-dark-300 text-[11px] sm:text-xs truncate group-hover:text-white transition-colors">{source.name}</p>
                 </div>
-                <div className={`relative w-10 h-10 sm:w-14 sm:h-14 mx-auto rounded-full ${source.bgColor} flex items-center justify-center mb-1 sm:mb-2 group-hover:scale-110 transition-all duration-300 shadow-lg border border-white/10`}>
-                  <span className="text-white font-bold text-xs sm:text-base">{source.logo}</span>
-                </div>
-                <p className="relative text-dark-400 text-[10px] sm:text-xs truncate hidden sm:block group-hover:text-white transition-colors">{source.name}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <p className="text-center text-dark-500 text-xs sm:text-sm mt-6 sm:mt-8">
@@ -582,6 +634,72 @@ function Home() {
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-2 relative z-10">{item.title}</h3>
                   <p className="text-dark-400 relative z-10 text-sm sm:text-base">{item.desc}</p>
                 </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIALS + FAQ */}
+      <section className="py-12 sm:py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-dark-900 via-dark-800/40 to-dark-900" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-40 bg-primary-500/10 rounded-full blur-[120px]" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10 sm:mb-14">
+            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 font-medium text-xs sm:text-sm tracking-wider uppercase mb-4">
+              <Users className="w-4 h-4" />
+              Real User Feedback
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
+              People Use It As a <span className="animate-gradient-text">System</span>, Not Just a Tool
+            </h2>
+            <p className="text-dark-400 mt-3 max-w-2xl mx-auto text-sm sm:text-base">
+              Structured search, better-fit applications, and less guesswork.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 mb-10 sm:mb-12">
+            {testimonials.map((item, i) => (
+              <div key={i} className="group bg-dark-800/60 backdrop-blur-sm rounded-2xl p-5 sm:p-6 border border-dark-700/50 hover:border-primary-500/30 transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="inline-flex items-center gap-2 text-primary-400">
+                    <MessageSquare className="w-4 h-4" />
+                    <span className="text-xs font-medium">Verified user story</span>
+                  </div>
+                  <div className="flex items-center gap-0.5 text-yellow-400">
+                    {[...Array(5)].map((_, idx) => <Star key={idx} className="w-3.5 h-3.5 fill-current" />)}
+                  </div>
+                </div>
+                <p className="text-dark-200 text-sm sm:text-base leading-relaxed mb-5">"{item.quote}"</p>
+                <div className="pt-4 border-t border-dark-700/60">
+                  <p className="text-white font-semibold text-sm">{item.name}</p>
+                  <p className="text-dark-400 text-xs">{item.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-5">
+              <h3 className="text-xl sm:text-2xl font-bold text-white inline-flex items-center gap-2">
+                <HelpCircle className="w-5 h-5 text-primary-400" />
+                Quick FAQs
+              </h3>
+            </div>
+
+            <div className="space-y-3">
+              {homeFaq.map((item, idx) => (
+                <button
+                  key={item.q}
+                  onClick={() => setOpenHomeFaq(openHomeFaq === idx ? -1 : idx)}
+                  className="w-full text-left rounded-xl border border-dark-700 bg-dark-800/40 px-4 py-3 hover:border-dark-600 transition-colors"
+                >
+                  <p className="text-white text-sm sm:text-base font-medium">{item.q}</p>
+                  {openHomeFaq === idx && (
+                    <p className="text-dark-400 text-sm mt-2 leading-relaxed">{item.a}</p>
+                  )}
+                </button>
               ))}
             </div>
           </div>
@@ -795,9 +913,14 @@ function Home() {
 
           {/* Bottom Bar */}
           <div className="pt-8 border-t border-dark-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-dark-500 text-sm">
-              © {new Date().getFullYear()} GoAxonAI. All rights reserved.
-            </p>
+            <div className="text-center sm:text-left">
+              <p className="text-dark-500 text-sm">
+                © {new Date().getFullYear()} GoAxonAI. All rights reserved.
+              </p>
+              <p className="text-dark-600 text-xs mt-1">
+                Developed by Bollapally Manish Kumar
+              </p>
+            </div>
             <div className="flex items-center gap-6 text-sm">
               <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">Privacy Policy</Link>
               <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">Terms of Service</Link>

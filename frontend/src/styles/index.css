@@ -150,6 +150,30 @@
   .container-responsive {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
+
+  /* Sidebar-specific scrollbar */
+  .custom-sidebar-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+    scrollbar-gutter: stable;
+  }
+
+  .custom-sidebar-scroll::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .custom-sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-sidebar-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, rgba(251, 146, 60, 0.45), rgba(100, 116, 139, 0.35));
+    border-radius: 999px;
+  }
+
+  .custom-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, rgba(251, 146, 60, 0.7), rgba(148, 163, 184, 0.55));
+  }
 }
 
 /* Animations */
@@ -597,6 +621,40 @@
     }
   }
 
+  /* Fade in animation */
+    /* Skeleton shimmer animation */
+    .skeleton {
+      background: linear-gradient(90deg, #1e2433 25%, #252d3d 50%, #1e2433 75%);
+      background-size: 200% 100%;
+      animation: skeletonShimmer 1.5s ease-in-out infinite;
+    }
+
+    @keyframes skeletonShimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Fade in animation */
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Perspective for 3D transforms */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
   /* Staggered fade in */
   .stagger-fade>* {
     opacity: 0;
@@ -621,6 +679,39 @@
 
   .stagger-fade>*:nth-child(5) {
     animation-delay: 0.5s;
+  }
+
+  /* Infinite logo marquee for source list */
+  .logo-marquee-track {
+    display: flex;
+    gap: 0.5rem;
+    width: max-content;
+    animation: logoMarquee 26s linear infinite;
+  }
+
+  .logo-marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes logoMarquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (min-width: 640px) {
+    .logo-marquee-track {
+      gap: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-marquee-track {
+      animation: none;
+    }
   }
 
   @keyframes fadeInUp {

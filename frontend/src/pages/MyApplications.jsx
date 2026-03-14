@@ -52,8 +52,10 @@ function MyApplications() {
   const [axonEvents, setAxonEvents] = useState([]);
   const [loadingAxonEvents, setLoadingAxonEvents] = useState(true);
   const [filter, setFilter] = useState('ALL');
+  const [viewMode, setViewMode] = useState('KANBAN');
   const [editingNotes, setEditingNotes] = useState(null);
   const [noteText, setNoteText] = useState('');
+  const [draggedAppId, setDraggedAppId] = useState(null);
 
   useEffect(() => {
     fetchApplications();
@@ -124,6 +126,24 @@ function MyApplications() {
     ? applications
     : applications.filter(app => app.status === filter);
 
+  const groupedApplications = Object.keys(STATUS_CONFIG).reduce((acc, status) => {
+    acc[status] = filteredApplications.filter((app) => app.status === status);
+    return acc;
+  }, {});
+
+  const handleDragStart = (appId) => {
+    setDraggedAppId(appId);
+  };
+
+  const handleDropStatus = (nextStatus) => {
+    if (!draggedAppId) return;
+    const app = applications.find((item) => item.id === draggedAppId);
+    if (app && app.status !== nextStatus) {
+      updateStatus(draggedAppId, nextStatus);
+    }
+    setDraggedAppId(null);
+  };
+
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-IN', {
       day: 'numeric',
@@ -160,14 +180,37 @@ function MyApplications() {
         noIndex={true}
       />
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-3">
-          <ClipboardList className="w-8 h-8 text-white" />
-          My Applications
-        </h1>
-        <p className="text-dark-400">
-          Track your job applications and monitor your progress
-        </p>
+      <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-3">
+            <ClipboardList className="w-8 h-8 text-white" />
+            My Applications
+          </h1>
+          <p className="text-dark-400">
+            Track your job applications and monitor your progress
+          </p>
+        </div>
+
+        <div className="inline-flex p-1 rounded-xl border border-dark-700 bg-dark-800/60 self-start">
+          <button
+            onClick={() => setViewMode('KANBAN')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${viewMode === 'KANBAN'
+              ? 'bg-primary-500 text-white shadow-md shadow-primary-500/20'
+              : 'text-dark-400 hover:text-white'
+              }`}
+          >
+            Kanban
+          </button>
+          <button
+            onClick={() => setViewMode('LIST')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${viewMode === 'LIST'
+              ? 'bg-primary-500 text-white shadow-md shadow-primary-500/20'
+              : 'text-dark-400 hover:text-white'
+              }`}
+          >
+            List
+          </button>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -270,9 +313,9 @@ function MyApplications() {
         )}
       </div>
 
-      {/* Applications List */}
+      {/* Applications List / Board */}
       {filteredApplications.length === 0 ? (
-        <div className="card p-12 text-center">
+        <div className="card p-6 sm:p-8 md:p-12 text-center">
           <Briefcase className="w-16 h-16 text-dark-500 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-white mb-2">
             {filter === 'ALL' ? 'No applications yet' : `No ${STATUS_CONFIG[filter]?.label || filter} applications`}
@@ -283,6 +326,88 @@ function MyApplications() {
           <Link to="/dashboard" className="btn-primary inline-flex items-center gap-2">
             Browse Jobs <ArrowRight className="w-4 h-4" />
           </Link>
+        </div>
+      ) : viewMode === 'KANBAN' ? (
+        <div className="overflow-x-auto pb-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 min-w-[760px] md:min-w-0">
+            {Object.entries(STATUS_CONFIG).map(([status, config]) => {
+              const StatusIcon = config.icon;
+              const items = groupedApplications[status] || [];
+
+              return (
+                <div
+                  key={status}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => handleDropStatus(status)}
+                  className={`rounded-2xl border ${config.border} bg-dark-800/40 p-3 min-h-[420px] transition-colors ${draggedAppId ? 'border-dashed' : ''}`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="inline-flex items-center gap-2">
+                      <div className={`p-1.5 rounded-lg ${config.bg}`}>
+                        <StatusIcon className={`w-4 h-4 ${config.color}`} />
+                      </div>
+                      <h3 className="text-sm font-semibold text-white">{config.label}</h3>
+                    </div>
+                    <span className="text-xs px-2 py-1 rounded-full bg-dark-700 text-dark-300">{items.length}</span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {items.map((app) => (
+                      <div
+                        key={app.id}
+                        draggable
+                        onDragStart={() => handleDragStart(app.id)}
+                        onDragEnd={() => setDraggedAppId(null)}
+                        className="rounded-xl border border-dark-700 bg-dark-900/70 p-3 cursor-grab active:cursor-grabbing hover:border-dark-600 transition-colors"
+                      >
+                        <p className="text-sm font-semibold text-white line-clamp-2">{app.job.title}</p>
+                        <p className="text-xs text-primary-400 mt-1">{app.job.company}</p>
+                        <div className="flex items-center gap-2 text-[11px] text-dark-400 mt-2">
+                          <Clock className="w-3 h-3" />
+                          {formatDate(app.appliedAt)}
+                          {app.job.isRemote && (
+                            <span className="inline-flex items-center gap-1 text-cyan-400 ml-auto">
+                              <Globe className="w-3 h-3" />
+                              Remote
+                            </span>
+                          )}
+                        </div>
+
+                        {app.notes && (
+                          <div className="mt-2 text-xs text-dark-300 bg-dark-800/70 rounded-lg px-2 py-1.5 line-clamp-2">
+                            {app.notes}
+                          </div>
+                        )}
+
+                        <div className="flex items-center gap-2 mt-3">
+                          <a
+                            href={app.job.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 rounded-lg bg-dark-700 text-dark-400 hover:text-white hover:bg-dark-600"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                          </a>
+                          <button
+                            onClick={() => deleteApplication(app.id)}
+                            className="p-2 rounded-lg bg-dark-700 text-dark-400 hover:text-red-400 hover:bg-red-500/10"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+
+                    {items.length === 0 && (
+                      <div className="text-xs text-dark-500 border border-dashed border-dark-700 rounded-xl p-4 text-center">
+                        Drop cards here
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       ) : (
         <div className="space-y-4">

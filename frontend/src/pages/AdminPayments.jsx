@@ -318,7 +318,7 @@ function AdminPayments() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setActiveTab('pending')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -349,7 +349,7 @@ function AdminPayments() {
         </div>
       ) : activeTab === 'pending' ? (
         pendingPayments.length === 0 ? (
-          <div className="card p-12 text-center">
+          <div className="card p-6 sm:p-8 md:p-12 text-center">
             <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">All caught up!</h3>
             <p className="text-dark-400">No pending payments to review</p>
@@ -363,7 +363,7 @@ function AdminPayments() {
         )
       ) : (
         allPayments.length === 0 ? (
-          <div className="card p-12 text-center">
+          <div className="card p-6 sm:p-8 md:p-12 text-center">
             <CreditCard className="w-12 h-12 text-dark-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">No payments yet</h3>
             <p className="text-dark-400">Payment history will appear here</p>

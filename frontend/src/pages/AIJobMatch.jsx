@@ -22,6 +22,11 @@ function AIJobMatch() {
   const [pdfFile, setPdfFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
+  const incrementAiUsage = () => {
+    const current = Number(localStorage.getItem('usage_ai_matches') || '0');
+    localStorage.setItem('usage_ai_matches', String(current + 1));
+  };
+
   useEffect(() => {
     checkAccess();
   }, []);
@@ -92,6 +97,7 @@ function AIJobMatch() {
       if (response.data.success) {
         setResults(response.data.matches);
         setResumeProfile(response.data.resumeProfile);
+        incrementAiUsage();
         toast.success(`Found ${response.data.matches.length} matching jobs!`);
       } else {
         throw new Error(response.data.error || 'Analysis failed');
@@ -132,6 +138,7 @@ function AIJobMatch() {
       if (response.data.success) {
         setResults(response.data.matches);
         setResumeProfile(response.data.resumeProfile);
+        incrementAiUsage();
         toast.success(`Found ${response.data.matches.length} matching jobs!`);
         setUploadProgress(100);
       } else {
@@ -244,23 +251,24 @@ function AIJobMatch() {
   // Show payment required if no access
   if (!hasAccess) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-12">
-        <div className="card p-8 text-center">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
+      <div className="max-w-3xl mx-auto px-4 py-10 md:py-14">
+        <div className="relative card p-8 md:p-10 text-center overflow-hidden border border-dark-700/60">
+          <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-40 bg-orange-500/15 blur-3xl rounded-full pointer-events-none" />
+          <div className="relative w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center shadow-2xl shadow-orange-500/30">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
+          <h1 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">
             AxonMatch™
           </h1>
 
-          <p className="text-dark-400 mb-8 max-w-md mx-auto">
+          <p className="text-dark-300 mb-8 max-w-md mx-auto leading-relaxed">
             Upload your resume and let AI find jobs you're actually eligible for.
             Get match scores, reasons why jobs fit, and skills to improve.
           </p>
 
-          <div className="bg-dark-700 rounded-xl p-6 mb-8">
-            <h3 className="text-lg font-semibold text-white mb-4">What you get:</h3>
+          <div className="bg-dark-800/70 border border-dark-700/70 rounded-2xl p-6 mb-8 text-left">
+            <h3 className="text-lg font-semibold text-white mb-4">What you unlock</h3>
             <ul className="space-y-3 text-left">
               <li className="flex items-start gap-3">
                 <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
@@ -285,9 +293,9 @@ function AIJobMatch() {
             </ul>
           </div>
 
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 relative">
             <div className="text-center">
-              <p className="text-sm text-dark-400 mb-2">Available in</p>
+              <p className="text-sm text-dark-400 mb-2">Available in plans</p>
               <div className="flex items-center gap-4">
                 <div className="text-center">
                   <div className="flex items-center gap-1 text-2xl font-bold text-purple-400">
@@ -309,7 +317,7 @@ function AIJobMatch() {
 
             <Link
               to="/payment"
-              className="btn-primary px-8 py-3 text-lg flex items-center gap-2"
+              className="btn-primary px-8 py-3 text-lg flex items-center gap-2 rounded-2xl"
             >
               <Lock className="w-5 h-5" />
               Unlock AxonMatch™
@@ -325,7 +333,7 @@ function AIJobMatch() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-5xl mx-auto px-4 py-6 md:py-8">
       <SEO
         title="AxonMatch™ - AI Job Matching | Find Jobs That Match Your Resume"
         description="Upload your resume and let AI find the best matching jobs. AxonMatch™ analyzes your skills and experience to recommend jobs you're actually qualified for."
@@ -333,28 +341,29 @@ function AIJobMatch() {
         url="https://www.goaxonai.in/ai-match"
       />
       {/* Header */}
-      <div className="text-center mb-8">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/20 text-primary-400 mb-4">
+      <div className="relative mb-8 md:mb-10 rounded-3xl border border-dark-700/70 bg-gradient-to-b from-dark-800/80 to-dark-900/60 overflow-hidden p-6 md:p-8 text-center">
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[520px] h-56 bg-orange-500/10 blur-3xl rounded-full pointer-events-none" />
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-300 mb-4">
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">Premium Feature</span>
         </div>
-        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+        <h1 className="text-3xl md:text-4xl font-black text-white mb-2 tracking-tight relative">
           AxonMatch™
         </h1>
-        <p className="text-dark-400">
+        <p className="text-dark-300 relative max-w-2xl mx-auto">
           JD ↔ Resume intelligence. Find jobs you're actually eligible for.
         </p>
       </div>
 
       {/* Resume Input */}
-      <div className="card p-6 mb-6">
+      <div className="card p-5 md:p-7 mb-6 border border-dark-700/70">
         {/* Upload Method Tabs */}
-        <div className="flex gap-2 mb-6">
+        <div className="grid grid-cols-2 gap-2 mb-6 bg-dark-900/60 p-1 rounded-xl border border-dark-700/70">
           <button
             onClick={() => setUploadMethod('text')}
-            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'text'
-              ? 'bg-primary-500 text-white'
-              : 'bg-dark-700 text-dark-400 hover:text-white'
+            className={`py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'text'
+              ? 'bg-gradient-to-r from-primary-500 to-orange-500 text-white shadow-lg shadow-primary-500/25'
+              : 'text-dark-400 hover:text-white hover:bg-dark-700/60'
               }`}
           >
             <FileText className="w-4 h-4" />
@@ -362,9 +371,9 @@ function AIJobMatch() {
           </button>
           <button
             onClick={() => setUploadMethod('pdf')}
-            className={`flex-1 py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'pdf'
-              ? 'bg-primary-500 text-white'
-              : 'bg-dark-700 text-dark-400 hover:text-white'
+            className={`py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'pdf'
+              ? 'bg-gradient-to-r from-primary-500 to-orange-500 text-white shadow-lg shadow-primary-500/25'
+              : 'text-dark-400 hover:text-white hover:bg-dark-700/60'
               }`}
           >
             <File className="w-4 h-4" />
@@ -435,7 +444,7 @@ function AIJobMatch() {
             </div>
 
             {/* Drag & Drop Zone */}
-            <label className="block w-full p-8 border-2 border-dashed border-dark-600 rounded-xl hover:border-primary-500 transition-colors cursor-pointer text-center mb-4">
+            <label className="block w-full p-8 border-2 border-dashed border-dark-600 rounded-2xl hover:border-primary-500/70 bg-dark-900/40 transition-colors cursor-pointer text-center mb-4">
               <input
                 type="file"
                 accept=".pdf,application/pdf"
@@ -477,9 +486,9 @@ function AIJobMatch() {
                   <span className="text-dark-400">Processing...</span>
                   <span className="text-primary-400">{Math.round(uploadProgress)}%</span>
                 </div>
-                <div className="w-full bg-dark-700 rounded-full h-2">
+                <div className="w-full bg-dark-700 rounded-full h-2 overflow-hidden">
                   <div
-                    className="bg-primary-500 h-2 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-primary-500 to-orange-500 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   />
                 </div>
@@ -513,7 +522,7 @@ function AIJobMatch() {
 
       {/* Resume Profile Summary */}
       {resumeProfile && (
-        <div className="card p-6 mb-6">
+        <div className="card p-5 md:p-6 mb-6 border border-dark-700/70">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-green-400" />
             Your Profile Analysis
@@ -523,7 +532,7 @@ function AIJobMatch() {
               <p className="text-sm text-dark-400 mb-2">Technical Skills</p>
               <div className="flex flex-wrap gap-2">
                 {resumeProfile.technicalSkills?.map((skill, i) => (
-                  <span key={i} className="px-2 py-1 bg-primary-500/20 text-primary-400 rounded text-xs">
+                  <span key={i} className="px-2.5 py-1 bg-primary-500/15 border border-primary-500/30 text-primary-300 rounded-lg text-xs">
                     {skill}
                   </span>
                 ))}
@@ -531,7 +540,7 @@ function AIJobMatch() {
             </div>
             <div>
               <p className="text-sm text-dark-400 mb-2">Experience Level</p>
-              <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-sm capitalize">
+              <span className="px-3 py-1 bg-green-500/15 border border-green-500/30 text-green-400 rounded-full text-sm capitalize">
                 {resumeProfile.experienceLevel}
               </span>
             </div>
@@ -539,7 +548,7 @@ function AIJobMatch() {
               <p className="text-sm text-dark-400 mb-2">Domains</p>
               <div className="flex flex-wrap gap-2">
                 {resumeProfile.domains?.map((domain, i) => (
-                  <span key={i} className="px-2 py-1 bg-cyan-500/20 text-cyan-400 rounded text-xs">
+                  <span key={i} className="px-2.5 py-1 bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 rounded-lg text-xs">
                     {domain}
                   </span>
                 ))}
@@ -549,7 +558,7 @@ function AIJobMatch() {
               <p className="text-sm text-dark-400 mb-2">Keywords</p>
               <div className="flex flex-wrap gap-2">
                 {resumeProfile.keywords?.slice(0, 5).map((kw, i) => (
-                  <span key={i} className="px-2 py-1 bg-dark-600 text-dark-300 rounded text-xs">
+                  <span key={i} className="px-2.5 py-1 bg-dark-700/70 border border-dark-600 text-dark-300 rounded-lg text-xs">
                     {kw}
                   </span>
                 ))}
@@ -562,7 +571,7 @@ function AIJobMatch() {
       {/* Results */}
       {results && (
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <h2 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
             <Target className="w-6 h-6 text-primary-400" />
             Top {results.length} Matching Jobs
           </h2>
@@ -574,10 +583,10 @@ function AIJobMatch() {
             </div>
           ) : (
             results.map((match, index) => (
-              <div key={match.job.id} className="card p-6">
+              <div key={match.job.id} className="card p-5 md:p-6 border border-dark-700/70 hover:border-primary-500/30 transition-all duration-300">
                 <div className="flex items-start gap-4">
                   {/* Match Score */}
-                  <div className={`flex-shrink-0 w-16 h-16 rounded-xl border-2 flex flex-col items-center justify-center ${getScoreBg(match.matchScore)}`}>
+                  <div className={`flex-shrink-0 w-16 h-16 rounded-2xl border-2 flex flex-col items-center justify-center shadow-lg ${getScoreBg(match.matchScore)}`}>
                     <span className={`text-2xl font-bold ${getScoreColor(match.matchScore)}`}>
                       {match.matchScore}%
                     </span>
@@ -587,7 +596,7 @@ function AIJobMatch() {
                   <div className="flex-1">
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <h3 className="text-lg font-semibold text-white">
+                        <h3 className="text-lg md:text-xl font-semibold text-white">
                           {match.job.title}
                         </h3>
                         <p className="text-primary-400">{match.job.company}</p>
@@ -611,7 +620,7 @@ function AIJobMatch() {
                         href={match.job.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn-primary text-sm flex items-center gap-2"
+                        className="btn-primary text-sm flex items-center gap-2 rounded-xl"
                       >
                         Apply
                         <ExternalLink className="w-4 h-4" />
@@ -620,7 +629,7 @@ function AIJobMatch() {
 
                     {/* Why it matches */}
                     <div className="mt-4">
-                      <p className="text-sm text-dark-400 mb-2">Why it matches:</p>
+                        <p className="text-sm text-dark-400 mb-2">Why it matches</p>
                       <ul className="space-y-1">
                         {match.reasons.map((reason, i) => (
                           <li key={i} className="flex items-start gap-2 text-sm text-dark-300">
@@ -634,10 +643,10 @@ function AIJobMatch() {
                     {/* Missing Skills */}
                     {match.missingSkills?.length > 0 && (
                       <div className="mt-3">
-                        <p className="text-sm text-dark-400 mb-2">Skills to improve:</p>
+                        <p className="text-sm text-dark-400 mb-2">Skills to improve</p>
                         <div className="flex flex-wrap gap-2">
                           {match.missingSkills.map((skill, i) => (
-                            <span key={i} className="px-2 py-1 bg-red-500/10 text-red-400 rounded text-xs flex items-center gap-1">
+                            <span key={i} className="px-2.5 py-1 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-xs flex items-center gap-1">
                               <XCircle className="w-3 h-3" />
                               {skill}
                             </span>
