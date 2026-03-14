@@ -267,7 +267,7 @@ function Layout({ children }) {
       </aside>
 
       {/* Main content */}
-      <div className="lg:pl-[20rem] flex flex-col h-screen pt-4 pr-4 pb-4">
+      <div className="lg:pl-[20rem] flex flex-col h-screen p-4">
         {/* Top header */}
         <header className="sticky top-4 z-30 h-16 bg-[#0F1115]/80 backdrop-blur-md border border-dark-800/60 rounded-2xl shadow-lg shadow-black/20">
           <div className="flex items-center justify-between h-full px-4 md:px-6">

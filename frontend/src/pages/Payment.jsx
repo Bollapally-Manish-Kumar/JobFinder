@@ -374,7 +374,7 @@ function Payment() {
 
         {pendingNotice}
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-4 lg:gap-8">
           {/* Current Subscription */}
           <div className="card p-8">
             <div className="text-center mb-8">
@@ -471,6 +471,7 @@ function Payment() {
           <div className="mt-8">
             <h2 className="text-xl font-bold text-white mb-4">Payment History</h2>
             <div className="card overflow-hidden">
+              <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-dark-700">
                   <tr>
@@ -506,6 +507,7 @@ function Payment() {
                   ))}
                 </tbody>
               </table>
+              </div>
             </div>
           </div>
         )}
@@ -529,7 +531,7 @@ function Payment() {
 
       {pendingNotice}
 
-      <div className="grid lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
         {Object.entries(PLANS).map(([planId, plan]) => {
           const IconComponent = plan.icon;
           const isProPlus = planId === 'PRO_PLUS';
@@ -613,6 +615,7 @@ function Payment() {
         <div className="mt-8">
           <h2 className="text-xl font-bold text-white mb-4">Payment History</h2>
           <div className="card overflow-hidden">
+            <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-dark-700">
                 <tr>
@@ -648,6 +651,7 @@ function Payment() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       )}

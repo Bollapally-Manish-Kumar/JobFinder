@@ -151,7 +151,7 @@ function MyApplications() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-4 md:py-8">
       <SEO
         title="My Applications - Track Job Applications | GoAxonAI"
         description="Track all your job applications in one place. Monitor application status, interviews, offers, and rejections."
@@ -161,7 +161,7 @@ function MyApplications() {
       />
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-3">
           <ClipboardList className="w-8 h-8 text-white" />
           My Applications
         </h1>

@@ -211,7 +211,7 @@ function Profile() {
 
       <div className="space-y-6">
         {/* Account Info Card */}
-        <div className="card p-6">
+        <div className="card p-4 md:p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-white flex items-center gap-2">
               <User className="w-5 h-5 text-primary-500" />
@@ -506,7 +506,7 @@ function Profile() {
         </div>
 
         {/* Resume Upload Card */}
-        <div className="card p-6">
+        <div className="card p-4 md:p-6">
           <h2 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
             <FileText className="w-5 h-5 text-primary-500" />
             Resume for AI Job Matching
@@ -606,7 +606,7 @@ function Profile() {
 
         {/* AI Features Info */}
         {profile?.plan === 'BASIC' || profile?.plan === 'BASIC_PLUS' ? (
-          <div className="card p-6 bg-gradient-to-br from-purple-500/10 to-primary-500/10 border-purple-500/30">
+          <div className="card p-4 md:p-6 bg-gradient-to-br from-purple-500/10 to-primary-500/10 border-purple-500/30">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
                 <Sparkles className="w-6 h-6 text-purple-400" />

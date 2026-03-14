@@ -256,7 +256,7 @@ function AdminPayments() {
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="p-3 bg-primary-500/20 rounded-lg">
             <Shield className="w-6 h-6 text-primary-400" />

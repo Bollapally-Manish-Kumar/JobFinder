@@ -250,7 +250,7 @@ function AIJobMatch() {
             <Sparkles className="w-10 h-10 text-white" />
           </div>
 
-          <h1 className="text-3xl font-bold text-white mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-4">
             AxonMatch™
           </h1>
 
@@ -338,7 +338,7 @@ function AIJobMatch() {
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">Premium Feature</span>
         </div>
-        <h1 className="text-3xl font-bold text-white mb-2">
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
           AxonMatch™
         </h1>
         <p className="text-dark-400">

@@ -93,7 +93,7 @@ function Login() {
         </Link>
 
         {/* Login card */}
-        <div className="card p-8">
+        <div className="card p-6 sm:p-8">
           <h1 className="text-2xl font-bold text-white text-center mb-2">
             Login to Your Account
           </h1>

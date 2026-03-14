@@ -158,7 +158,7 @@ function App() {
           element={
             <ProtectedRoute>
               <Layout>
-                <AxonApply />
+                <AxonApplyComingSoon />
               </Layout>
             </ProtectedRoute>
           }
