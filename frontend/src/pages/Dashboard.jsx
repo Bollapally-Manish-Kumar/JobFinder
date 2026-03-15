@@ -52,6 +52,13 @@ function Dashboard() {
 
   const onboardingStorageKey = user?.id ? `goaxon_onboarding_done_${user.id}` : null;
 
+  const dismissOnboarding = () => {
+    if (onboardingStorageKey) {
+      localStorage.setItem(onboardingStorageKey, 'dismissed');
+    }
+    setShowOnboarding(false);
+  };
+
   // Fetch sync status
   const fetchSyncStatus = async () => {
     try {
@@ -161,7 +168,8 @@ function Dashboard() {
 
   useEffect(() => {
     if (!user || !onboardingStorageKey) return;
-    if (!localStorage.getItem(onboardingStorageKey)) {
+    const onboardingStatus = localStorage.getItem(onboardingStorageKey);
+    if (!onboardingStatus) {
       setShowOnboarding(true);
     }
   }, [user, onboardingStorageKey]);
@@ -207,7 +215,7 @@ function Dashboard() {
 
   const completeOnboarding = (profileData) => {
     if (onboardingStorageKey) {
-      localStorage.setItem(onboardingStorageKey, '1');
+      localStorage.setItem(onboardingStorageKey, 'completed');
       localStorage.setItem(`goaxon_onboarding_profile_${user.id}`, JSON.stringify(profileData));
     }
     setShowOnboarding(false);
@@ -671,7 +679,7 @@ function Dashboard() {
       {showOnboarding && (
         <OnboardingWizard
           userName={user?.name?.split(' ')[0]}
-          onClose={() => setShowOnboarding(false)}
+          onClose={dismissOnboarding}
           onComplete={completeOnboarding}
         />
       )}

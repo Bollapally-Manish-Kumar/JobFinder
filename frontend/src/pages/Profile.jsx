@@ -23,6 +23,18 @@ const PLAN_CONFIG = {
   ULTIMATE: { label: 'Ultimate', color: 'text-emerald-400', bg: 'bg-emerald-500/20' }
 };
 
+const buildFormData = (profileData) => ({
+  name: profileData?.name || '',
+  phone: profileData?.phone || '',
+  city: profileData?.city || '',
+  country: profileData?.country || 'India',
+  linkedin: profileData?.linkedin || '',
+  portfolio: profileData?.portfolio || '',
+  experienceYears: profileData?.experienceYears?.toString() || '',
+  currentCompany: profileData?.currentCompany || '',
+  currentTitle: profileData?.currentTitle || ''
+});
+
 function Profile() {
   const { user, refreshUser } = useAuthStore();
   const [profile, setProfile] = useState(null);
@@ -55,18 +67,7 @@ function Profile() {
     try {
       const data = await profileService.getProfile();
       setProfile(data.profile);
-      // Initialize form data with profile values
-      setFormData({
-        name: data.profile?.name || '',
-        phone: data.profile?.phone || '',
-        city: data.profile?.city || '',
-        country: data.profile?.country || 'India',
-        linkedin: data.profile?.linkedin || '',
-        portfolio: data.profile?.portfolio || '',
-        experienceYears: data.profile?.experienceYears?.toString() || '',
-        currentCompany: data.profile?.currentCompany || '',
-        currentTitle: data.profile?.currentTitle || ''
-      });
+      setFormData(buildFormData(data.profile));
     } catch (err) {
       console.error('Failed to fetch profile:', err);
       toast.error('Failed to load profile');
@@ -83,14 +84,21 @@ function Profile() {
   const handleSaveProfile = async () => {
     setSaving(true);
     try {
-      await profileService.updateProfile(formData);
+      const payload = {
+        ...formData,
+        experienceYears: formData.experienceYears === '' ? '' : Number(formData.experienceYears)
+      };
+      const data = await profileService.updateProfile(payload);
+      if (data?.profile) {
+        setProfile((prev) => ({ ...prev, ...data.profile }));
+        setFormData(buildFormData(data.profile));
+      }
       toast.success('Profile updated successfully!');
       setEditing(false);
-      await fetchProfile();
-      refreshUser?.();
+      await refreshUser?.();
     } catch (err) {
       console.error('Failed to update profile:', err);
-      toast.error(err.response?.data?.error || 'Failed to update profile');
+      toast.error(err.response?.data?.message || err.response?.data?.error || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
@@ -98,17 +106,7 @@ function Profile() {
 
   const handleCancelEdit = () => {
     // Reset form to current profile values
-    setFormData({
-      name: profile?.name || '',
-      phone: profile?.phone || '',
-      city: profile?.city || '',
-      country: profile?.country || 'India',
-      linkedin: profile?.linkedin || '',
-      portfolio: profile?.portfolio || '',
-      experienceYears: profile?.experienceYears?.toString() || '',
-      currentCompany: profile?.currentCompany || '',
-      currentTitle: profile?.currentTitle || ''
-    });
+    setFormData(buildFormData(profile));
     setEditing(false);
   };
 
