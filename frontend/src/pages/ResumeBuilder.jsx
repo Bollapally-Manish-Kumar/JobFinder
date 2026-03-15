@@ -18,6 +18,7 @@ import resumeService from '../services/resumeService';
 import useAuthStore from '../hooks/useAuthStore';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { incrementUsageMetric } from '../utils/usageMetrics';
 
 function ResumeBuilder() {
   const [jobDescription, setJobDescription] = useState('');
@@ -49,8 +50,7 @@ function ResumeBuilder() {
       });
       
       setLatexCode(data.latex);
-      const current = Number(localStorage.getItem('usage_resume_builds') || '0');
-      localStorage.setItem('usage_resume_builds', String(current + 1));
+      incrementUsageMetric('resumeBuilds');
       toast.success('Resume generated successfully!');
     } catch (error) {
       const message = error.response?.data?.error || 'Failed to generate resume';

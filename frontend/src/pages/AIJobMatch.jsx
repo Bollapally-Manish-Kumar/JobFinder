@@ -9,6 +9,7 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
 import SEO from '../components/SEO';
+import { incrementUsageMetric } from '../utils/usageMetrics';
 
 function AIJobMatch() {
   const { user } = useAuthStore();
@@ -23,8 +24,7 @@ function AIJobMatch() {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   const incrementAiUsage = () => {
-    const current = Number(localStorage.getItem('usage_ai_matches') || '0');
-    localStorage.setItem('usage_ai_matches', String(current + 1));
+    incrementUsageMetric('aiMatches');
   };
 
   useEffect(() => {

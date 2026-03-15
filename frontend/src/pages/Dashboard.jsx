@@ -12,6 +12,7 @@ import jobService from '../services/jobService';
 import api from '../services/api';
 import useAuthStore from '../hooks/useAuthStore';
 import SEO from '../components/SEO';
+import { incrementUsageMetric } from '../utils/usageMetrics';
 
 function Dashboard() {
   const [jobs, setJobs] = useState([]);
@@ -146,8 +147,7 @@ function Dashboard() {
       await api.post('/applications', { jobId, status: 'APPLIED' });
       setTrackingMap(prev => ({ ...prev, [jobId]: 'APPLIED' }));
 
-      const trackedCount = Number(localStorage.getItem('usage_tracked_apps') || '0') + 1;
-      localStorage.setItem('usage_tracked_apps', String(trackedCount));
+      incrementUsageMetric('trackedApps');
 
       toast.success('Added to Application Tracker!');
     } catch (error) {

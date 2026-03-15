@@ -1,18 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BadgeCheck, BarChart3, Sparkles, HelpCircle } from 'lucide-react';
 import useAuthStore from '../hooks/useAuthStore';
 import SEO from '../components/SEO';
+import { readUsageStats } from '../utils/usageMetrics';
 
 function UsageCenter() {
   const { user } = useAuthStore();
-  const [openFaq, setOpenFaq] = useState(0);
-
-  const usageStats = useMemo(() => ({
-    aiMatches: Number(localStorage.getItem('usage_ai_matches') || '0'),
-    resumeBuilds: Number(localStorage.getItem('usage_resume_builds') || '0'),
-    trackedApps: Number(localStorage.getItem('usage_tracked_apps') || '0'),
-  }), []);
+  const [openFaq, setOpenFaq] = useState(-1);
+  const [usageStats, setUsageStats] = useState(() => readUsageStats());
 
   const planLimits = {
     BASIC: { aiMatches: 0, resumeBuilds: 0, trackedApps: 100 },
@@ -25,6 +21,21 @@ function UsageCenter() {
 
   const effectivePlan = user?.role === 'ADMIN' ? 'ADMIN' : (user?.plan || 'BASIC');
   const currentPlanLimits = planLimits[effectivePlan] || planLimits.BASIC;
+
+  useEffect(() => {
+    const syncUsageStats = () => setUsageStats(readUsageStats());
+
+    syncUsageStats();
+    window.addEventListener('focus', syncUsageStats);
+    window.addEventListener('storage', syncUsageStats);
+    window.addEventListener('goaxonai:usage-updated', syncUsageStats);
+
+    return () => {
+      window.removeEventListener('focus', syncUsageStats);
+      window.removeEventListener('storage', syncUsageStats);
+      window.removeEventListener('goaxonai:usage-updated', syncUsageStats);
+    };
+  }, []);
 
   const faqItems = [
     {
@@ -103,6 +114,13 @@ function UsageCenter() {
           <p className="text-xs text-dark-500 mt-4">
             Usage counters update as you use features from AxonMatch, AxonResume, and My Applications.
           </p>
+
+          <button
+            onClick={() => setUsageStats(readUsageStats())}
+            className="mt-3 text-xs text-primary-400 hover:text-primary-300 transition-colors"
+          >
+            Refresh usage
+          </button>
         </div>
 
         <div className="card p-5 border border-dark-700/70">
