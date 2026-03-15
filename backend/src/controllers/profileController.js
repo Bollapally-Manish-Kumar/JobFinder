@@ -74,6 +74,8 @@ const serializeProfile = (user) => ({
 export const getProfile = asyncHandler(async (req, res) => {
   const userId = req.user.id;
 
+  res.set('Cache-Control', 'no-store');
+
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: profileSelect
@@ -214,6 +216,8 @@ export const deleteResume = asyncHandler(async (req, res) => {
  */
 export const updateProfile = asyncHandler(async (req, res) => {
   const userId = req.user.id;
+
+  res.set('Cache-Control', 'no-store');
   const { 
     name, 
     phone, 
@@ -315,9 +319,14 @@ export const updateProfile = asyncHandler(async (req, res) => {
     });
   }
 
-  const updatedUser = await prisma.user.update({
+  await prisma.user.update({
     where: { id: userId },
     data: updateData,
+    select: profileSelect
+  });
+
+  const updatedUser = await prisma.user.findUnique({
+    where: { id: userId },
     select: profileSelect
   });
 
