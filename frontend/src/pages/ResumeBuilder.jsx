@@ -136,6 +136,10 @@ function ResumeBuilder() {
             <Sparkles className="w-4 h-4 text-primary-400" />
             Job Description
           </h2>
+
+          <div className="mb-4 rounded-xl border border-primary-500/30 bg-primary-500/10 px-4 py-3 text-xs text-primary-200">
+            We use your profile details and the uploaded resume text (if available) to personalize the generated resume.
+          </div>
           
           <textarea
             value={jobDescription}

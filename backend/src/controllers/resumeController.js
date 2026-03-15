@@ -6,6 +6,7 @@
 import { validationResult } from 'express-validator';
 import { asyncHandler } from '../middlewares/errorHandler.js';
 import { generateCompletion, GROQ_MODEL } from '../utils/groqClient.js';
+import prisma from '../utils/prisma.js';
 
 /**
  * Generate LaTeX resume using Groq API
@@ -36,33 +37,83 @@ export const generateResume = asyncHandler(async (req, res) => {
       });
     }
 
-    const userName = userInfo?.name || '[Your Name]';
-    const userEmail = userInfo?.email || '[your.email@example.com]';
-    const userPhone = userInfo?.phone || '[Your Phone]';
+    const profile = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: {
+        name: true,
+        email: true,
+        phone: true,
+        linkedin: true,
+        portfolio: true,
+        currentCompany: true,
+        currentTitle: true,
+        experienceYears: true,
+        city: true,
+        country: true,
+        skills: true,
+        highestEducation: true,
+        university: true,
+        graduationYear: true,
+        major: true,
+        gpa: true,
+        resumeText: true
+      }
+    });
+
+    const userName = profile?.name || userInfo?.name || '[Your Name]';
+    const userEmail = profile?.email || userInfo?.email || '[your.email@example.com]';
+    const userPhone = profile?.phone || userInfo?.phone || '[Your Phone]';
+    const userLinkedin = profile?.linkedin || userInfo?.linkedin || '';
+    const userPortfolio = profile?.portfolio || userInfo?.portfolio || '';
+    const userCompany = profile?.currentCompany || '';
+    const userTitle = profile?.currentTitle || '';
+    const userExperience = profile?.experienceYears !== null && profile?.experienceYears !== undefined
+      ? `${profile.experienceYears} years`
+      : '';
+    const userLocation = [profile?.city, profile?.country].filter(Boolean).join(', ');
+    const userSkills = profile?.skills || '';
+    const userEducation = [
+      profile?.highestEducation,
+      profile?.major,
+      profile?.university,
+      profile?.graduationYear ? `(${profile.graduationYear})` : ''
+    ].filter(Boolean).join(' ');
+    const resumeText = profile?.resumeText || '';
 
     console.log(`[Resume] 🚀 Generating resume using Groq (${GROQ_MODEL})...`);
 
     // Construct prompt for LaTeX resume generation
     const prompt = `You are an expert ATS resume writer. Generate a professional LaTeX resume.
 
-JOB DESCRIPTION:
-${jobDescription}
+  JOB DESCRIPTION:
+  ${jobDescription}
 
-USER INFORMATION:
-- Name: ${userName}
-- Email: ${userEmail}
-- Phone: ${userPhone}
+  USER PROFILE (from GoAxonAI profile):
+  - Name: ${userName}
+  - Email: ${userEmail}
+  - Phone: ${userPhone}
+  - LinkedIn: ${userLinkedin}
+  - Portfolio: ${userPortfolio}
+  - Current Role: ${[userTitle, userCompany].filter(Boolean).join(' at ') || 'N/A'}
+  - Experience: ${userExperience || 'N/A'}
+  - Location: ${userLocation || 'N/A'}
+  - Education: ${userEducation || 'N/A'}
+  - Skills: ${userSkills || 'N/A'}
 
-STRICT REQUIREMENTS:
-1. Use the moderncv package with "classic" style and "blue" color theme
-2. Include these sections: Professional Summary, Technical Skills, Work Experience, Education, Projects
-3. Make content highly relevant to the job description above
-4. Use proper LaTeX syntax and escaping
-5. Output ONLY raw LaTeX code - no markdown, no code blocks, no explanations
-6. Make it ATS-friendly with clear formatting
-7. Keep it to 1-2 pages maximum
+  UPLOADED RESUME TEXT (use as primary source of truth, if provided):
+  ${resumeText || '[No resume text available]'}
 
-Generate the complete LaTeX resume code now:`;
+  STRICT REQUIREMENTS:
+  1. Use the moderncv package with "classic" style and "blue" color theme
+  2. Include these sections: Professional Summary, Technical Skills, Work Experience, Education, Projects
+  3. Make content highly relevant to the job description above
+  4. Use proper LaTeX syntax and escaping
+  5. Output ONLY raw LaTeX code - no markdown, no code blocks, no explanations
+  6. Make it ATS-friendly with clear formatting
+  7. Keep it to 1-2 pages maximum
+  8. If resume text exists, prefer it over inventing details
+
+  Generate the complete LaTeX resume code now:`;
 
     // Call Groq API
     const responseText = await generateCompletion(prompt, {

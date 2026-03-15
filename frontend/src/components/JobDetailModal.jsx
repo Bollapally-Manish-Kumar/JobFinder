@@ -325,7 +325,7 @@ function JobDetailModal({ jobId, onClose, onSaveToggle, isSaved: initialSaved })
           </div>
 
           {/* Content */}
-          <div className="overflow-y-auto max-h-[calc(90vh-80px)]">
+          <div className="overflow-y-auto max-h-[calc(100vh-80px)] sm:max-h-[calc(90vh-80px)]">
             {loading ? (
               <div className="flex items-center justify-center py-20">
                 <Loader2 className="w-8 h-8 text-primary-500 animate-spin" />

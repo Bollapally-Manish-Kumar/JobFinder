@@ -72,8 +72,8 @@ function Layout({ children }) {
 
       {/* Sidebar - Polished Premium Design (Orange Theme) */}
       <aside className={`
-        fixed top-4 left-4 z-50 h-[calc(100vh-32px)] w-72 bg-[#0F1115] border border-dark-800/80
-        rounded-3xl shadow-2xl shadow-black/40 overflow-hidden
+        fixed top-0 lg:top-4 left-0 lg:left-4 z-50 h-screen lg:h-[calc(100vh-32px)] w-72 bg-[#0F1115] border border-dark-800/80
+        rounded-none lg:rounded-3xl shadow-2xl shadow-black/40 overflow-hidden
         transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
@@ -272,7 +272,7 @@ function Layout({ children }) {
       </aside>
 
       {/* Main content */}
-      <div className="lg:pl-[20rem] flex flex-col h-screen p-4">
+      <div className="lg:pl-[20rem] flex flex-col min-h-screen lg:h-screen p-4">
         {/* Top header */}
         <header className="sticky top-4 z-30 h-16 bg-[#0F1115]/80 backdrop-blur-md border border-dark-800/60 rounded-2xl shadow-lg shadow-black/20">
           <div className="flex items-center justify-between h-full px-4 md:px-6">
@@ -336,7 +336,7 @@ function Layout({ children }) {
         </header>
 
         {/* Page content - scrollable area */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 mt-4 rounded-2xl border border-dark-800/60 bg-[#0F1115]/60 shadow-xl shadow-black/20">
+        <main className="flex-1 min-h-0 overflow-y-auto p-4 md:p-6 lg:p-8 mt-4 rounded-2xl border border-dark-800/60 bg-[#0F1115]/60 shadow-xl shadow-black/20">
           {children}
         </main>
       </div>
