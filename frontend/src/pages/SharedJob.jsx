@@ -10,15 +10,26 @@ import {
   Clock, Share2, LogIn, Globe, Calendar, ArrowLeft,
   Sparkles, Flame, ChevronRight, CheckCircle,
   Zap, Target, Brain, FileText, ArrowRight,
-  Shield, Star, Users, Rocket
+  Shield, Star, Users, Rocket, Loader2,
+  AlertCircle, Lock, TrendingUp, FileCode,
+  Download, Copy
 } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import useAuthStore from '../hooks/useAuthStore';
 import Navbar from '../components/Navbar';
 import SEO from '../components/SEO';
+import jobService from '../services/jobService';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://jobfinder-wog8.onrender.com/api';
+
+const MATCH_LEVELS = {
+  PERFECT_MATCH: { color: 'text-green-400', bg: 'bg-green-500/20', label: 'Perfect Match', icon: <Target className="w-4 h-4" /> },
+  STRONG_MATCH: { color: 'text-emerald-400', bg: 'bg-emerald-500/20', label: 'Strong Match', icon: <Sparkles className="w-4 h-4" /> },
+  GOOD_MATCH: { color: 'text-blue-400', bg: 'bg-blue-500/20', label: 'Good Match', icon: <CheckCircle className="w-4 h-4" /> },
+  PARTIAL_MATCH: { color: 'text-yellow-400', bg: 'bg-yellow-500/20', label: 'Partial Match', icon: <Clock className="w-4 h-4" /> },
+  WEAK_MATCH: { color: 'text-red-400', bg: 'bg-red-500/20', label: 'Needs Work', icon: <AlertCircle className="w-4 h-4" /> }
+};
 
 function stripHtml(html) {
   if (!html) return '';
@@ -47,11 +58,16 @@ function getFreshness(postedAt) {
 export default function SharedJob() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+  const [match, setMatch] = useState(null);
+  const [aiUsage, setAiUsage] = useState(null);
+  const [generatingLatex, setGeneratingLatex] = useState(false);
+  const [latexCode, setLatexCode] = useState(null);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -67,6 +83,30 @@ export default function SharedJob() {
     fetchJob();
   }, [id]);
 
+  useEffect(() => {
+    const fetchPremiumDetails = async () => {
+      if (!isAuthenticated) {
+        setMatch(null);
+        setAiUsage(null);
+        setLatexCode(null);
+        return;
+      }
+
+      setDetailsLoading(true);
+      try {
+        const data = await jobService.getJobDetails(id);
+        setMatch(data.match || null);
+        setAiUsage(data.aiUsage || null);
+      } catch (err) {
+        console.error('Failed to fetch premium job details:', err);
+      } finally {
+        setDetailsLoading(false);
+      }
+    };
+
+    fetchPremiumDetails();
+  }, [id, isAuthenticated]);
+
   const handleApply = () => {
     if (!isAuthenticated) {
       navigate('/login', { state: { from: { pathname: `/jobs/${id}` } } });
@@ -78,6 +118,195 @@ export default function SharedJob() {
   const handleShare = () => {
     const url = `${window.location.origin}/jobs/${id}`;
     navigator.clipboard.writeText(url).then(() => toast.success('Link copied to clipboard!'));
+  };
+
+  const handleGenerateLatex = async () => {
+    setGeneratingLatex(true);
+    try {
+      const data = await jobService.generateLatexResume(id);
+      setLatexCode(data.latex);
+      toast.success('LaTeX resume generated!');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to generate LaTeX resume');
+    } finally {
+      setGeneratingLatex(false);
+    }
+  };
+
+  const copyLatexToClipboard = () => {
+    if (latexCode) {
+      navigator.clipboard.writeText(latexCode);
+      toast.success('LaTeX code copied to clipboard!');
+    }
+  };
+
+  const downloadLatex = () => {
+    if (!latexCode || !job) return;
+    const blob = new Blob([latexCode], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `resume_${job.company?.replace(/\s+/g, '_')}_${job.title?.replace(/\s+/g, '_')}.tex`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('LaTeX file downloaded!');
+  };
+
+  const renderMatchAnalysis = () => {
+    if (!isAuthenticated) {
+      return (
+        <div>
+          <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-3">
+            <Lock className="w-6 h-6 text-primary-400" />
+          </div>
+          <h3 className="text-white font-semibold mb-2">Unlock AI Match Analysis</h3>
+          <p className="text-dark-400 text-sm mb-4">See job fit score, matched skills, and missing skills after login.</p>
+          <Link
+            to="/login"
+            state={{ from: { pathname: `/jobs/${id}` } }}
+            className="btn-primary inline-flex items-center gap-2 text-sm"
+          >
+            <LogIn className="w-4 h-4" />
+            Login to Use
+          </Link>
+        </div>
+      );
+    }
+
+    if (detailsLoading) {
+      return (
+        <div className="flex items-center gap-2 text-dark-300">
+          <Loader2 className="w-4 h-4 animate-spin" />
+          Loading AI match analysis...
+        </div>
+      );
+    }
+
+    if (!match) {
+      return <p className="text-dark-400 text-sm">AI insights will appear here for logged in premium users.</p>;
+    }
+
+    if (match.accessDenied) {
+      return (
+        <div>
+          <div className="w-12 h-12 rounded-xl bg-primary-500/20 flex items-center justify-center mb-3">
+            <Lock className="w-6 h-6 text-primary-400" />
+          </div>
+          <h3 className="text-white font-semibold mb-2">AI Match Analysis</h3>
+          <p className="text-dark-400 text-sm mb-4">{match.message}</p>
+          <Link to="/payment" className="btn-primary inline-flex items-center gap-2 text-sm">
+            <Sparkles className="w-4 h-4" />
+            Upgrade Plan
+          </Link>
+        </div>
+      );
+    }
+
+    if (match.resumeRequired) {
+      return (
+        <div>
+          <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center mb-3">
+            <FileText className="w-6 h-6 text-blue-400" />
+          </div>
+          <h3 className="text-white font-semibold mb-2">Resume Required</h3>
+          <p className="text-dark-400 text-sm mb-4">{match.message}</p>
+          <Link to="/profile" className="btn-primary inline-flex items-center gap-2 text-sm">
+            <FileText className="w-4 h-4" />
+            Upload Resume
+          </Link>
+        </div>
+      );
+    }
+
+    if (match.error) {
+      return <p className="text-red-300 text-sm">{match.message}</p>;
+    }
+
+    const levelInfo = MATCH_LEVELS[match.level] || MATCH_LEVELS.PARTIAL_MATCH;
+    const circumference = 2 * Math.PI * 40;
+    const strokeDashoffset = circumference - (match.score / 100) * circumference;
+
+    return (
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="relative w-24 h-24">
+            <svg className="w-24 h-24 transform -rotate-90">
+              <circle cx="48" cy="48" r="40" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-dark-700" />
+              <circle
+                cx="48"
+                cy="48"
+                r="40"
+                stroke="currentColor"
+                strokeWidth="8"
+                fill="transparent"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                className={levelInfo.color}
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-xl font-bold text-white">{match.score}%</span>
+              <span className="text-[10px] text-dark-400">Match</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full ${levelInfo.bg}`}>
+              {levelInfo.icon}
+              <span className={`text-sm font-semibold ${levelInfo.color}`}>{levelInfo.label}</span>
+            </div>
+            {aiUsage && (
+              <p className="text-xs text-dark-500">Plan usage: {aiUsage.used} / {aiUsage.limit === Infinity ? 'Unlimited' : aiUsage.limit}</p>
+            )}
+          </div>
+        </div>
+
+        {match.summary && <p className="text-dark-300 text-sm">{match.summary}</p>}
+
+        {match.skillsMatched?.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-green-400" /> Skills You Have
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {match.skillsMatched.map((skill, i) => (
+                <span key={i} className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-400 border border-green-500/30">{skill}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {match.skillsMissing?.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-yellow-400" /> Skills to Develop
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {match.skillsMissing.map((skill, i) => (
+                <span key={i} className="px-2 py-1 text-xs rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">{skill}</span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {match.recommendations?.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-primary-400" /> Recommendations
+            </h4>
+            <ul className="space-y-1">
+              {match.recommendations.map((rec, i) => (
+                <li key={i} className="text-sm text-dark-300 flex items-start gap-2">
+                  <span className="text-primary-400 mt-1">•</span>
+                  {rec}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
   };
 
   const freshness = job ? getFreshness(job.postedAt) : null;
@@ -277,6 +506,90 @@ export default function SharedJob() {
       {/* ── Job Details Sections ── */}
       {!loading && job && (
         <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-12 space-y-5">
+          {/* Premium insights for shared links */}
+          <div className="group relative">
+            <div className="absolute -inset-[0.5px] bg-gradient-to-r from-primary-500/30 to-orange-500/30 rounded-2xl opacity-60" />
+            <div className="relative bg-dark-800/80 backdrop-blur-xl rounded-2xl p-6 border border-dark-700/50">
+              <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <span className="w-1 h-5 rounded-full bg-gradient-to-b from-primary-500 to-orange-500" />
+                Resume Match Analysis
+              </h2>
+              {renderMatchAnalysis()}
+            </div>
+          </div>
+
+          <div className="group relative">
+            <div className="absolute -inset-[0.5px] bg-gradient-to-r from-emerald-500/30 to-teal-500/30 rounded-2xl opacity-60" />
+            <div className="relative bg-gradient-to-br from-emerald-900/10 to-teal-900/10 backdrop-blur-xl rounded-2xl p-6 border border-emerald-500/20">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                    <FileCode className="w-5 h-5 text-emerald-400" />
+                    Tailored LaTeX Resume
+                  </h2>
+                  <span className="text-[10px] font-bold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/20 uppercase">Ultimate</span>
+                </div>
+                <p className="text-sm text-dark-400 mb-4">Generate a job-specific LaTeX resume directly from this shared job page.</p>
+
+                {!isAuthenticated ? (
+                  <div>
+                    <p className="text-xs text-dark-500 mb-3">Login first to generate and download your tailored LaTeX resume.</p>
+                    <Link
+                      to="/login"
+                      state={{ from: { pathname: `/jobs/${id}` } }}
+                      className="btn-primary w-full inline-flex items-center justify-center gap-2"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      Login to Use
+                    </Link>
+                  </div>
+                ) : user?.plan === 'ULTIMATE' || user?.role === 'ADMIN' ? (
+                  !latexCode ? (
+                    <button
+                      onClick={handleGenerateLatex}
+                      disabled={generatingLatex}
+                      className="btn-primary w-full bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2"
+                    >
+                      {generatingLatex ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <FileCode className="w-4 h-4" />
+                          Generate LaTeX Resume
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <div className="space-y-3">
+                      <div className="flex gap-2">
+                        <button onClick={copyLatexToClipboard} className="btn-secondary flex-1 flex items-center justify-center gap-2 text-sm">
+                          <Copy className="w-4 h-4" />
+                          Copy
+                        </button>
+                        <button onClick={downloadLatex} className="btn-primary flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 border-0 flex items-center justify-center gap-2 text-sm">
+                          <Download className="w-4 h-4" />
+                          Download .tex
+                        </button>
+                      </div>
+                      <div className="bg-dark-900/50 rounded-lg p-3 max-h-32 overflow-y-auto border border-dark-700/50">
+                        <pre className="text-[10px] text-dark-400 font-mono whitespace-pre-wrap break-all">{latexCode.substring(0, 1000)}...</pre>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <div>
+                    <p className="text-xs text-dark-500 mb-3">This feature is available in the Ultimate plan.</p>
+                    <Link to="/payment" className="btn-primary w-full inline-flex items-center justify-center gap-2 text-sm">
+                      <Sparkles className="w-4 h-4" />
+                      Upgrade to Ultimate
+                    </Link>
+                  </div>
+                )}
+            </div>
+          </div>
+
           {/* Description */}
           {job.description && (
             <div className="group relative">
