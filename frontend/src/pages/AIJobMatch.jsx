@@ -251,14 +251,14 @@ function AIJobMatch() {
   // Show payment required if no access
   if (!hasAccess) {
     return (
-      <div className="max-w-3xl mx-auto px-4 py-10 md:py-14">
-        <div className="relative card p-8 md:p-10 text-center overflow-hidden border border-dark-700/60">
+      <div className="max-w-3xl mx-auto px-4 py-6 md:py-14">
+        <div className="relative card p-5 sm:p-8 md:p-10 text-center overflow-hidden border border-dark-700/60">
           <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-72 h-40 bg-orange-500/15 blur-3xl rounded-full pointer-events-none" />
-          <div className="relative w-20 h-20 mx-auto mb-6 rounded-3xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center shadow-2xl shadow-orange-500/30">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center shadow-2xl shadow-orange-500/30">
             <Sparkles className="w-10 h-10 text-white" />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">
             AxonMatch™
           </h1>
 
@@ -333,7 +333,7 @@ function AIJobMatch() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-6 md:py-8">
+    <div className="max-w-5xl mx-auto px-4 py-3 sm:py-5 md:py-8">
       <SEO
         title="AxonMatch™ - AI Job Matching | Find Jobs That Match Your Resume"
         description="Upload your resume and let AI find the best matching jobs. AxonMatch™ analyzes your skills and experience to recommend jobs you're actually qualified for."
@@ -341,27 +341,27 @@ function AIJobMatch() {
         url="https://www.goaxonai.in/ai-match"
       />
       {/* Header */}
-      <div className="relative mb-8 md:mb-10 rounded-3xl border border-dark-700/70 bg-gradient-to-b from-dark-800/80 to-dark-900/60 overflow-hidden p-6 md:p-8 text-center">
+      <div className="relative mb-5 sm:mb-7 md:mb-10 rounded-3xl border border-dark-700/70 bg-gradient-to-b from-dark-800/80 to-dark-900/60 overflow-hidden p-4 sm:p-6 md:p-8 text-center">
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[520px] h-56 bg-orange-500/10 blur-3xl rounded-full pointer-events-none" />
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-300 mb-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary-500/15 border border-primary-500/30 text-primary-300 mb-3 sm:mb-4">
           <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-medium">Premium Feature</span>
+          <span className="text-xs sm:text-sm font-medium">Premium Feature</span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-black text-white mb-2 tracking-tight relative">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-2 tracking-tight relative">
           AxonMatch™
         </h1>
-        <p className="text-dark-300 relative max-w-2xl mx-auto">
+        <p className="text-base sm:text-lg text-dark-300 relative max-w-2xl mx-auto">
           JD ↔ Resume intelligence. Find jobs you're actually eligible for.
         </p>
       </div>
 
       {/* Resume Input */}
-      <div className="card p-5 md:p-7 mb-6 border border-dark-700/70">
+      <div className="card p-4 sm:p-5 md:p-7 mb-5 sm:mb-6 border border-dark-700/70">
         {/* Upload Method Tabs */}
         <div className="grid grid-cols-2 gap-2 mb-6 bg-dark-900/60 p-1 rounded-xl border border-dark-700/70">
           <button
             onClick={() => setUploadMethod('text')}
-            className={`py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'text'
+            className={`py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base flex items-center justify-center gap-2 transition-all ${uploadMethod === 'text'
               ? 'bg-gradient-to-r from-primary-500 to-orange-500 text-white shadow-lg shadow-primary-500/25'
               : 'text-dark-400 hover:text-white hover:bg-dark-700/60'
               }`}
@@ -371,7 +371,7 @@ function AIJobMatch() {
           </button>
           <button
             onClick={() => setUploadMethod('pdf')}
-            className={`py-3 rounded-lg font-medium flex items-center justify-center gap-2 transition-all ${uploadMethod === 'pdf'
+            className={`py-2.5 sm:py-3 rounded-lg font-medium text-sm sm:text-base flex items-center justify-center gap-2 transition-all ${uploadMethod === 'pdf'
               ? 'bg-gradient-to-r from-primary-500 to-orange-500 text-white shadow-lg shadow-primary-500/25'
               : 'text-dark-400 hover:text-white hover:bg-dark-700/60'
               }`}
@@ -405,7 +405,7 @@ function AIJobMatch() {
               value={resumeText}
               onChange={(e) => setResumeText(e.target.value)}
               placeholder="Paste your resume text here... Include your skills, experience, education, and projects."
-              className="input w-full h-64 text-sm resize-none"
+              className="input w-full h-48 sm:h-64 text-sm resize-none"
             />
 
             <div className="flex items-center justify-between mt-4">
