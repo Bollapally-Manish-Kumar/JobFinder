@@ -25,6 +25,7 @@ import AdminPayments from './pages/AdminPayments';
 import AdminDashboard from './pages/AdminDashboard';
 import Disclaimer from './pages/Disclaimer';
 import Profile from './pages/Profile';
+import SharedJob from './pages/SharedJob';
 
 // Components
 import Layout from './components/Layout';
@@ -92,6 +93,7 @@ function App() {
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/axon-apply-install" element={<AxonApplyInstall />} />
         <Route path="/axonapply/install" element={<AxonApplyInstall />} />
+        <Route path="/jobs/:id" element={<SharedJob />} />
 
         {/* Protected routes */}
         <Route

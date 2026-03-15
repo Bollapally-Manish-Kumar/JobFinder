@@ -2,8 +2,9 @@
  * JobCard Component - Modern job listing card with glassmorphism
  */
 
-import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check, Eye, Sparkles, Flame, Calendar, Coins, Globe } from 'lucide-react';
+import { MapPin, Building2, Briefcase, ExternalLink, Bookmark, BookmarkCheck, Lock, Clock, ClipboardList, Check, Eye, Sparkles, Flame, Calendar, Coins, Globe, Share2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 // Helper to strip HTML tags from description
 function stripHtml(html) {
@@ -237,6 +238,21 @@ function JobCard({ job, onSave, isSaved, showSaveButton = true, onTrack, isTrack
               )}
             </button>
           )}
+
+          {/* Share button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const url = `${window.location.origin}/jobs/${job.id}`;
+              navigator.clipboard.writeText(url).then(() =>
+                toast.success('Job link copied!')
+              );
+            }}
+            className="p-2.5 rounded-xl border bg-dark-700/60 border-dark-600/50 text-dark-400 hover:border-primary-500/50 hover:text-primary-400 transition-all"
+            title="Share job link"
+          >
+            <Share2 className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Status badges */}
