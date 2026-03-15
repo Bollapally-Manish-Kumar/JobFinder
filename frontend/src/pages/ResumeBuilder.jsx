@@ -111,7 +111,7 @@ function ResumeBuilder() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto overflow-x-hidden">
       <SEO 
         title="AxonResume™ - AI Resume Builder | Create ATS-Optimized Resumes"
         description="Build professional ATS-friendly resumes with AI. AxonResume™ generates LaTeX resumes tailored to job descriptions. Stand out to recruiters."
@@ -131,7 +131,7 @@ function ResumeBuilder() {
 
       <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Input section */}
-        <div className="card p-5 md:p-6 border border-dark-700/70">
+        <div className="card min-w-0 overflow-hidden p-5 md:p-6 border border-dark-700/70">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
             <Sparkles className="w-4 h-4 text-primary-400" />
             Job Description
@@ -148,7 +148,7 @@ function ResumeBuilder() {
 
 Example:
 We are looking for a Software Engineer with 2+ years of experience in React, Node.js, and cloud technologies. The ideal candidate should have strong problem-solving skills..."
-            className="input min-h-[320px] resize-none"
+            className="input min-h-[320px] resize-none break-all [overflow-wrap:anywhere]"
             disabled={loading}
           />
 
@@ -191,7 +191,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
         </div>
 
         {/* Output section */}
-        <div className="card p-5 md:p-6 border border-dark-700/70">
+        <div className="card min-w-0 overflow-hidden p-5 md:p-6 border border-dark-700/70">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <h2 className="text-lg font-semibold text-white">
               LaTeX Output
@@ -236,7 +236,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
           ) : latexCode ? (
             <div className="relative">
               <div className="absolute inset-x-0 -top-0.5 h-8 bg-gradient-to-b from-dark-800 to-transparent pointer-events-none rounded-t-xl" />
-              <pre className="bg-dark-800/90 border border-dark-700 rounded-xl p-4 overflow-auto max-h-[500px] text-sm text-dark-300 font-mono">
+              <pre className="w-full max-w-full bg-dark-800/90 border border-dark-700 rounded-xl p-4 overflow-auto max-h-[500px] text-sm text-dark-300 font-mono">
                 {latexCode}
               </pre>
             </div>
