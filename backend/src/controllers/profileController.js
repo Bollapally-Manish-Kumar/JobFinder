@@ -18,6 +18,55 @@ const loadPdfParse = async () => {
   return pdfParse;
 };
 
+const profileSelect = {
+  id: true,
+  email: true,
+  name: true,
+  plan: true,
+  paymentVerified: true,
+  expiresAt: true,
+  resumeText: true,
+  resumeUploadedAt: true,
+  createdAt: true,
+  phone: true,
+  city: true,
+  country: true,
+  linkedin: true,
+  portfolio: true,
+  experienceYears: true,
+  currentCompany: true,
+  currentTitle: true,
+  address: true,
+  state: true,
+  zipCode: true,
+  gender: true,
+  dateOfBirth: true,
+  nationality: true,
+  highestEducation: true,
+  university: true,
+  graduationYear: true,
+  major: true,
+  gpa: true,
+  noticePeriod: true,
+  expectedSalary: true,
+  currentSalary: true,
+  skills: true,
+  workAuthorization: true,
+  willingToRelocate: true,
+  remotePreference: true,
+  preferredLocations: true,
+  preferredRoles: true,
+  github: true,
+  twitter: true,
+  website: true
+};
+
+const serializeProfile = (user) => ({
+  ...user,
+  hasResume: !!user.resumeText,
+  resumeTextPreview: user.resumeText ? user.resumeText.substring(0, 200) + '...' : null
+});
+
 /**
  * Get user profile
  * GET /api/profile
@@ -27,50 +76,7 @@ export const getProfile = asyncHandler(async (req, res) => {
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: {
-      id: true,
-      email: true,
-      name: true,
-      plan: true,
-      paymentVerified: true,
-      expiresAt: true,
-      resumeText: true,
-      resumeUploadedAt: true,
-      createdAt: true,
-      // AxonApply profile fields
-      phone: true,
-      city: true,
-      country: true,
-      linkedin: true,
-      portfolio: true,
-      experienceYears: true,
-      currentCompany: true,
-      currentTitle: true,
-      // Extended profile fields
-      address: true,
-      state: true,
-      zipCode: true,
-      gender: true,
-      dateOfBirth: true,
-      nationality: true,
-      highestEducation: true,
-      university: true,
-      graduationYear: true,
-      major: true,
-      gpa: true,
-      noticePeriod: true,
-      expectedSalary: true,
-      currentSalary: true,
-      skills: true,
-      workAuthorization: true,
-      willingToRelocate: true,
-      remotePreference: true,
-      preferredLocations: true,
-      preferredRoles: true,
-      github: true,
-      twitter: true,
-      website: true
-    }
+    select: profileSelect
   });
 
   if (!user) {
@@ -79,11 +85,7 @@ export const getProfile = asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    profile: {
-      ...user,
-      hasResume: !!user.resumeText,
-      resumeTextPreview: user.resumeText ? user.resumeText.substring(0, 200) + '...' : null
-    }
+    profile: serializeProfile(user)
   });
 });
 
@@ -316,48 +318,13 @@ export const updateProfile = asyncHandler(async (req, res) => {
   const updatedUser = await prisma.user.update({
     where: { id: userId },
     data: updateData,
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      phone: true,
-      city: true,
-      country: true,
-      linkedin: true,
-      portfolio: true,
-      experienceYears: true,
-      currentCompany: true,
-      currentTitle: true,
-      address: true,
-      state: true,
-      zipCode: true,
-      gender: true,
-      dateOfBirth: true,
-      nationality: true,
-      highestEducation: true,
-      university: true,
-      graduationYear: true,
-      major: true,
-      gpa: true,
-      noticePeriod: true,
-      expectedSalary: true,
-      currentSalary: true,
-      skills: true,
-      workAuthorization: true,
-      willingToRelocate: true,
-      remotePreference: true,
-      preferredLocations: true,
-      preferredRoles: true,
-      github: true,
-      twitter: true,
-      website: true
-    }
+    select: profileSelect
   });
 
   res.json({
     success: true,
     message: 'Profile updated successfully',
-    profile: updatedUser
+    profile: serializeProfile(updatedUser)
   });
 });
 

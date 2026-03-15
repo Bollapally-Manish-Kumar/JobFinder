@@ -36,7 +36,7 @@ const buildFormData = (profileData) => ({
 });
 
 function Profile() {
-  const { user, refreshUser } = useAuthStore();
+  const { user, refreshUser, updateUser } = useAuthStore();
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -83,20 +83,37 @@ function Profile() {
 
   const handleSaveProfile = async () => {
     setSaving(true);
+    const previousProfile = profile;
+
     try {
       const payload = {
         ...formData,
         experienceYears: formData.experienceYears === '' ? '' : Number(formData.experienceYears)
       };
+
+      const optimisticProfile = {
+        ...profile,
+        ...payload,
+        experienceYears: payload.experienceYears === '' ? null : payload.experienceYears
+      };
+
+      setProfile(optimisticProfile);
+      setFormData(buildFormData(optimisticProfile));
+      setEditing(false);
+
       const data = await profileService.updateProfile(payload);
       if (data?.profile) {
-        setProfile((prev) => ({ ...prev, ...data.profile }));
+        setProfile(data.profile);
         setFormData(buildFormData(data.profile));
+        updateUser?.({ name: data.profile.name });
       }
+
+      await fetchProfile();
       toast.success('Profile updated successfully!');
-      setEditing(false);
       await refreshUser?.();
     } catch (err) {
+      setProfile(previousProfile);
+      setFormData(buildFormData(previousProfile));
       console.error('Failed to update profile:', err);
       toast.error(err.response?.data?.message || err.response?.data?.error || 'Failed to update profile');
     } finally {
