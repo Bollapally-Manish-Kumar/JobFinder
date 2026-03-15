@@ -53,7 +53,10 @@ function UsageCenter() {
   ];
 
   const getUsagePercent = (value, limit) => {
-    if (limit === 'Unlimited') return 100;
+    if (limit === 'Unlimited') {
+      // Unlimited plans should not appear as fully consumed.
+      return value > 0 ? 25 : 0;
+    }
     if (!limit || limit <= 0) return 0;
     return Math.min(100, Math.round((value / limit) * 100));
   };

@@ -129,7 +129,7 @@ function ResumeBuilder() {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Input section */}
         <div className="card p-5 md:p-6 border border-dark-700/70">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
@@ -152,14 +152,14 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
             disabled={loading}
           />
 
-          <div className="flex items-center justify-between mt-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
             <span className="text-sm text-dark-500">
               {jobDescription.length} characters (min. 50)
             </span>
             <button
               onClick={handleGenerate}
               disabled={loading || jobDescription.length < 50}
-              className="btn-primary flex items-center gap-2 rounded-xl"
+              className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 rounded-xl"
             >
               {loading ? (
                 <>
@@ -192,15 +192,15 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
 
         {/* Output section */}
         <div className="card p-5 md:p-6 border border-dark-700/70">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
             <h2 className="text-lg font-semibold text-white">
               LaTeX Output
             </h2>
             {latexCode && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
                 <button
                   onClick={handleCopy}
-                  className="btn-secondary py-1.5 px-3 text-sm flex items-center gap-2 rounded-xl"
+                  className="btn-secondary py-1.5 px-3 text-sm flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl"
                 >
                   {copied ? (
                     <>
@@ -216,7 +216,7 @@ We are looking for a Software Engineer with 2+ years of experience in React, Nod
                 </button>
                 <button
                   onClick={handleDownload}
-                  className="btn-secondary py-1.5 px-3 text-sm flex items-center gap-2 rounded-xl"
+                  className="btn-secondary py-1.5 px-3 text-sm flex-1 sm:flex-none items-center justify-center gap-2 rounded-xl"
                 >
                   <Download className="w-4 h-4" />
                   Download .tex
