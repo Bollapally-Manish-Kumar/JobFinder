@@ -6,6 +6,7 @@
 
 import cron from 'node-cron';
 import { runAllScrapers } from '../scrapers/runAll.js';
+import { runTrackedScrapers } from './scrapingState.js';
 
 /**
  * Initialize all cron jobs
@@ -19,7 +20,7 @@ export function initializeCronJobs() {
     console.log(`\n🔄 [${timestamp}] Starting scheduled job scraping...`);
     
     try {
-      await runAllScrapers();
+      await runTrackedScrapers(runAllScrapers, 'scheduled');
       console.log(`✅ [${timestamp}] Scheduled job scraping completed successfully`);
     } catch (error) {
       console.error(`❌ [${timestamp}] Scheduled job scraping failed:`, error.message);
@@ -120,7 +121,7 @@ async function checkAndRunIfStale() {
 
     if (!latestJob) {
       console.log('📭 No jobs found in database. Running initial sync...');
-      await runAllScrapers();
+      await runTrackedScrapers(runAllScrapers, 'startup');
       return;
     }
 
@@ -129,7 +130,7 @@ async function checkAndRunIfStale() {
     // Run if jobs are older than 2 hours
     if (hoursSinceLastSync > 2) {
       console.log(`⏰ Jobs are ${Math.floor(hoursSinceLastSync)}h old. Running refresh...`);
-      await runAllScrapers();
+      await runTrackedScrapers(runAllScrapers, 'stale-check');
     } else {
       const minutesSinceLastSync = Math.floor(hoursSinceLastSync * 60);
       console.log(`✅ Jobs are fresh (${minutesSinceLastSync} minutes old)`);

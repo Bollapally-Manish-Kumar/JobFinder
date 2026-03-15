@@ -81,6 +81,14 @@ function AdminDashboard() {
     }
   }, [user, isAdmin]);
 
+  useEffect(() => {
+    if (!isAdmin) return;
+    if (!scrapingStatus?.runState?.isRunning) return;
+
+    const pollId = setInterval(fetchScrapingStatus, 4000);
+    return () => clearInterval(pollId);
+  }, [isAdmin, scrapingStatus?.runState?.isRunning]);
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -108,11 +116,15 @@ function AdminDashboard() {
     setTriggeringScrape(true);
     try {
       await api.post('/admin/scraping/trigger');
-      toast.success('Scraping started! Check back in a few minutes.');
-      // Refresh status after a delay
-      setTimeout(fetchScrapingStatus, 5000);
+      toast.success('Scraping started. Live status will update below.');
+      await fetchScrapingStatus();
     } catch (error) {
-      toast.error('Failed to trigger scraping');
+      if (error.response?.status === 409) {
+        toast('Scraping is already running.');
+        await fetchScrapingStatus();
+      } else {
+        toast.error(error.response?.data?.message || 'Failed to trigger scraping');
+      }
     } finally {
       setTriggeringScrape(false);
     }
@@ -364,21 +376,67 @@ function AdminDashboard() {
               </button>
               <button
                 onClick={handleTriggerScraping}
-                disabled={triggeringScrape}
+                disabled={triggeringScrape || scrapingStatus?.runState?.isRunning}
                 className="btn-primary px-4 py-2 flex items-center gap-2"
               >
-                {triggeringScrape ? (
+                {triggeringScrape || scrapingStatus?.runState?.isRunning ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
                 ) : (
                   <Play className="w-4 h-4" />
                 )}
-                Run Now
+                {scrapingStatus?.runState?.isRunning ? 'Running...' : 'Run Now'}
               </button>
             </div>
           </div>
 
           {scrapingStatus ? (
             <div className="space-y-4">
+              <div className={`rounded-lg p-4 border ${scrapingStatus.runState?.isRunning
+                ? 'bg-blue-500/10 border-blue-500/30'
+                : scrapingStatus.runState?.status === 'failed'
+                ? 'bg-red-500/10 border-red-500/30'
+                : scrapingStatus.runState?.status === 'succeeded'
+                ? 'bg-green-500/10 border-green-500/30'
+                : 'bg-dark-700/50 border-dark-600'
+                }`}>
+                <div className="flex flex-wrap items-center gap-3 justify-between">
+                  <div>
+                    <p className="text-sm text-dark-400">Current Run Status</p>
+                    <p className={`text-lg font-semibold ${scrapingStatus.runState?.isRunning
+                      ? 'text-blue-400'
+                      : scrapingStatus.runState?.status === 'failed'
+                      ? 'text-red-400'
+                      : scrapingStatus.runState?.status === 'succeeded'
+                      ? 'text-green-400'
+                      : 'text-white'
+                      }`}>
+                      {scrapingStatus.runState?.isRunning ? 'Running' : (scrapingStatus.runState?.status || 'idle')}
+                    </p>
+                  </div>
+                  <div className="text-sm text-dark-400 text-right">
+                    {scrapingStatus.runState?.startedAt && (
+                      <p>Started: <span className="text-white">{new Date(scrapingStatus.runState.startedAt).toLocaleString()}</span></p>
+                    )}
+                    {scrapingStatus.runState?.finishedAt && !scrapingStatus.runState?.isRunning && (
+                      <p>Finished: <span className="text-white">{new Date(scrapingStatus.runState.finishedAt).toLocaleString()}</span></p>
+                    )}
+                    {scrapingStatus.runState?.triggerSource && (
+                      <p>Trigger: <span className="text-white capitalize">{scrapingStatus.runState.triggerSource}</span></p>
+                    )}
+                  </div>
+                </div>
+
+                {scrapingStatus.runState?.lastResult && !scrapingStatus.runState?.isRunning && (
+                  <p className="text-sm text-dark-300 mt-3">
+                    Last run found <span className="text-white font-medium">{scrapingStatus.runState.lastResult.totalFound}</span> jobs and saved <span className="text-white font-medium">{scrapingStatus.runState.lastResult.totalSaved}</span> new jobs.
+                  </p>
+                )}
+
+                {scrapingStatus.runState?.lastError && !scrapingStatus.runState?.isRunning && (
+                  <p className="text-sm text-red-300 mt-3">Last error: {scrapingStatus.runState.lastError}</p>
+                )}
+              </div>
+
               {/* Overview Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-dark-700 rounded-lg p-4">

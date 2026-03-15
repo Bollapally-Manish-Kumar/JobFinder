@@ -13,6 +13,7 @@ import {
 } from '../controllers/adminJobController.js';
 import { runAllScrapers } from '../scrapers/runAll.js';
 import prisma from '../utils/prisma.js';
+import { getScrapingState, runTrackedScrapers } from '../utils/scrapingState.js';
 
 const router = express.Router();
 
@@ -57,6 +58,8 @@ router.get('/scraping/status', async (req, res) => {
     const hoursSinceLastSync = latestJob 
       ? ((Date.now() - latestJob.createdAt.getTime()) / (1000 * 60 * 60)).toFixed(2)
       : 'N/A';
+
+    const scrapingRunState = getScrapingState();
     
     res.json({
       success: true,
@@ -75,7 +78,8 @@ router.get('/scraping/status', async (req, res) => {
         jobsAddedLast24h: recentJobs,
         jobsAddedLast2h: veryRecentJobs,
         nextScheduledRun: 'Every 2 hours (0 */2 * * *)',
-        serverTime: new Date().toISOString()
+        serverTime: new Date().toISOString(),
+        runState: scrapingRunState
       }
     });
   } catch (error) {
@@ -86,15 +90,23 @@ router.get('/scraping/status', async (req, res) => {
 // Manually trigger scraping
 router.post('/scraping/trigger', async (req, res) => {
   try {
-    res.json({ 
-      success: true, 
-      message: 'Scraping started in background. Check logs for progress.',
+    const currentState = getScrapingState();
+    if (currentState.isRunning) {
+      return res.status(409).json({
+        success: false,
+        error: 'Scraping already running',
+        status: currentState
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Scraping started in background.',
       startedAt: new Date().toISOString()
     });
-    
-    // Run in background (don't await)
-    runAllScrapers().then(() => {
-      console.log('✅ Manual scraping completed');
+
+    runTrackedScrapers(runAllScrapers, 'manual').then(({ result }) => {
+      console.log(`✅ Manual scraping completed. Saved ${result?.totalSaved || 0} jobs.`);
     }).catch(err => {
       console.error('❌ Manual scraping failed:', err.message);
     });
