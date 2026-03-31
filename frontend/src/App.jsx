@@ -26,6 +26,9 @@ import AdminDashboard from './pages/AdminDashboard';
 import Disclaimer from './pages/Disclaimer';
 import Profile from './pages/Profile';
 import SharedJob from './pages/SharedJob';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
+import DeveloperDocs from './pages/DeveloperDocs';
 
 // Components
 import Layout from './components/Layout';
@@ -91,6 +94,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/developers" element={<DeveloperDocs />} />
         <Route path="/axon-apply-install" element={<AxonApplyInstall />} />
         <Route path="/axonapply/install" element={<AxonApplyInstall />} />
         <Route path="/jobs/:id" element={<SharedJob />} />

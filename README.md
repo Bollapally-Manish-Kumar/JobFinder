@@ -23,6 +23,12 @@ AxonApply™ follows 3 golden rules:
 2. ✅ Agent fills forms **with user data & permission**
 3. ✅ Final submission is **user-controlled**
 
+## 📄 Docs
+
+- Privacy Policy: `docs/PRIVACY_POLICY.md`
+- Terms & Conditions: `docs/TERMS_AND_CONDITIONS.md`
+- Developer Docs: `docs/DEVELOPER.md`
+
 ## 🧠 System Architecture
 
 ```

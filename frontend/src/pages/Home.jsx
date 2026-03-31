@@ -895,7 +895,8 @@ function Home() {
                 <li><a href="#how-it-works" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">How It Works</a></li>
                 <li><a href="#pricing" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Pricing Guide</a></li>
                 <li><Link to="/axonapply/install" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Extension Setup</Link></li>
-                <li><Link to="/disclaimer" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Terms & Privacy</Link></li>
+                <li><Link to="/terms" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Terms & Privacy</Link></li>
+                <li><Link to="/developers" className="text-dark-400 hover:text-orange-400 transition-colors text-sm">Developer Docs</Link></li>
               </ul>
             </div>
 
@@ -922,8 +923,8 @@ function Home() {
               </p>
             </div>
             <div className="flex items-center gap-6 text-sm">
-              <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">Privacy Policy</Link>
-              <Link to="/disclaimer" className="text-dark-400 hover:text-white transition-colors">Terms of Service</Link>
+              <Link to="/privacy-policy" className="text-dark-400 hover:text-white transition-colors">Privacy Policy</Link>
+              <Link to="/terms" className="text-dark-400 hover:text-white transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>
