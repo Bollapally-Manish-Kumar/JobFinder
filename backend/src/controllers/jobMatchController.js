@@ -481,8 +481,12 @@ OUTPUT: Return ONLY the complete LaTeX code starting with \\documentclass. No ex
       temperature: 0.15
     });
 
+    console.log('[LaTeX] raw type:', typeof latexCode);
+    console.log('[LaTeX] raw length:', latexCode?.length || 0);
+    console.log('[LaTeX] raw preview:', String(latexCode || '').slice(0, 500));
+
     // Clean the response (remove markdown code blocks if present)
-    let cleanedLatex = latexCode
+    let cleanedLatex = String(latexCode || '')
       .replace(/```latex\n?/g, '')
       .replace(/```\n?/g, '')
       .trim();
@@ -493,6 +497,14 @@ OUTPUT: Return ONLY the complete LaTeX code starting with \\documentclass. No ex
       if (docStart !== -1) {
         cleanedLatex = cleanedLatex.substring(docStart);
       }
+    }
+
+    if (!cleanedLatex || !cleanedLatex.includes('\\documentclass')) {
+      console.error('[LaTeX] Groq returned non-LaTeX output:', cleanedLatex.slice(0, 1000));
+      return res.status(502).json({
+        error: 'AI returned invalid LaTeX',
+        message: 'The model did not return valid LaTeX content. Please retry or use a simpler resume prompt.'
+      });
     }
 
     console.log(`[LaTeX] ✅ Generated ${cleanedLatex.length} characters of LaTeX`);

@@ -25,8 +25,8 @@ const getGroqClient = () => {
 };
 
 // Default model to use across all AI features.
-// allam-2-7b is available on the current Groq account and returns standard text responses.
-export const GROQ_MODEL = 'allam-2-7b';
+// qwen/qwen3.8-27b is available on the current Groq account and returns standard text responses.
+export const GROQ_MODEL = 'qwen/qwen3.8-27b';
 
 /**
  * Generate a chat completion using Groq
@@ -36,10 +36,11 @@ export const GROQ_MODEL = 'allam-2-7b';
  */
 export const generateCompletion = async (prompt, options = {}) => {
   const { temperature = 0.7, max_tokens, maxTokens } = options;
-  const tokenLimit = max_tokens || maxTokens || 4096;
+  const requestedLimit = Number(max_tokens ?? maxTokens ?? 2048);
+  const tokenLimit = Number.isFinite(requestedLimit) ? Math.min(Math.max(requestedLimit, 64), 4096) : 2048;
 
   const groq = getGroqClient();
-  
+
   const completion = await groq.chat.completions.create({
     model: GROQ_MODEL,
     messages: [
