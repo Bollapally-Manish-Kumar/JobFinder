@@ -24,9 +24,9 @@ const getGroqClient = () => {
   return groqClient;
 };
 
-// Default model to use across all AI features
-// Using llama-3.3-70b-versatile (latest available model)
-export const GROQ_MODEL = 'llama-3.3-70b-versatile';
+// Default model to use across all AI features.
+// allam-2-7b is available on the current Groq account and returns standard text responses.
+export const GROQ_MODEL = 'allam-2-7b';
 
 /**
  * Generate a chat completion using Groq
@@ -52,7 +52,8 @@ export const generateCompletion = async (prompt, options = {}) => {
     max_tokens: tokenLimit
   });
 
-  return completion.choices[0]?.message?.content || '';
+  const message = completion.choices?.[0]?.message || {};
+  return message.content || message.reasoning || '';
 };
 
 export default getGroqClient;
