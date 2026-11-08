@@ -6,7 +6,7 @@
 
 import prisma from '../utils/prisma.js';
 import { asyncHandler } from '../middlewares/errorHandler.js';
-import { generateCompletion, GROQ_MODEL } from '../utils/groqClient.js';
+import { generateCompletion, GROQ_LATEX_MODEL, GROQ_MODEL } from '../utils/groqClient.js';
 
 // Plan hierarchy and AI match limits
 const PLAN_CONFIG = {
@@ -380,66 +380,6 @@ export const generateLatexResume = asyncHandler(async (req, res) => {
     console.log(`[LaTeX] Generating tailored resume for job ${jobId}`);
     console.log(`[LaTeX] Resume text length: ${user.resumeText.length} characters`);
 
-    const atsTemplate = `
-% ATS-FRIENDLY LATEX RESUME TEMPLATE
-\\documentclass[11pt,a4paper]{article}
-\\usepackage[margin=0.75in]{geometry}
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-\\usepackage{lmodern}
-\\usepackage{enumitem}
-\\usepackage{hyperref}
-\\usepackage{titlesec}
-
-% ATS-friendly simple formatting
-\\pagestyle{empty}
-\\setlength{\\parindent}{0pt}
-\\titleformat{\\section}{\\large\\bfseries}{}{0em}{}[\\titlerule]
-\\titlespacing{\\section}{0pt}{12pt}{6pt}
-
-\\begin{document}
-
-% HEADER
-\\begin{center}
-{\\LARGE\\bfseries FULL NAME}\\\\[4pt]
-Location $|$ Phone $|$ \\href{mailto:email@email.com}{email@email.com} $|$ \\href{https://linkedin.com/in/username}{LinkedIn} $|$ \\href{https://github.com/username}{GitHub}
-\\end{center}
-
-\\section{Professional Summary}
-Brief 2-3 sentence summary highlighting relevant experience for target role.
-
-\\section{Technical Skills}
-\\textbf{Languages:} Python, JavaScript, Java, C++\\\\
-\\textbf{Frameworks:} React, Node.js, Django\\\\
-\\textbf{Tools:} Git, Docker, AWS, MongoDB\\\\
-\\textbf{Concepts:} Machine Learning, REST APIs, Agile
-
-\\section{Experience}
-\\textbf{Job Title} \\hfill Start -- End\\\\
-\\textit{Company Name, Location}
-\\begin{itemize}[leftmargin=*, nosep, topsep=3pt]
-\\item Achievement with metrics and impact
-\\item Another accomplishment using action verbs
-\\end{itemize}
-
-\\section{Projects}
-\\textbf{Project Name} | Technologies \\hfill Date
-\\begin{itemize}[leftmargin=*, nosep, topsep=3pt]
-\\item What you built and the problem it solved
-\\item Technologies used and results achieved
-\\end{itemize}
-
-\\section{Education}
-\\textbf{Degree} \\hfill Year\\\\
-\\textit{University Name, Location}\\\\
-GPA: X.XX, Relevant Coursework: Course1, Course2
-
-\\section{Certifications}
-Certification Name -- Issuing Organization (Year)
-
-\\end{document}
-`;
-
     const prompt = `You are an expert resume writer specializing in ATS-optimized resumes.
 
 TASK: Create an ATS-friendly LaTeX resume for the candidate, tailored for the target job.
@@ -459,31 +399,20 @@ ${user.resumeText}
 === CANDIDATE EMAIL ===
 ${user.email}
 
-=== ATS-FRIENDLY TEMPLATE TO USE ===
-${atsTemplate}
+Use only facts in the resume; do not invent or alter candidate details. Retain the candidate's name and available contact details, every distinct role, project, degree and certification, all relevant skills, and existing metrics. Condense wording, not important achievements. Tailor a brief summary and prioritize supported job keywords naturally. Omit only information absent from the source.
 
-=== CRITICAL INSTRUCTIONS ===
-1. USE ONLY REAL DATA from the candidate's resume above - DO NOT invent any information
-2. Extract: Name, Phone, Email, LinkedIn, GitHub, Location, Education, Experience, Skills, Projects
-3. Fill in the template with the candidate's ACTUAL information
-4. Write a Professional Summary tailored for "${job.title}" at "${job.company}"
-5. Reorder skills to prioritize those matching the job description
-6. Use strong action verbs: Developed, Implemented, Built, Designed, Led, Optimized, Created
-7. Include metrics/numbers where available (e.g., "Improved performance by 40%")
-8. Remove sections with no data (if no certifications, remove that section)
-9. ESCAPE special characters: & → \\&, % → \\%, # → \\#, _ → \\_
-10. Keep resume to 1 page for freshers, 2 pages max for experienced
-
-OUTPUT: Return ONLY the complete LaTeX code starting with \\documentclass. No explanations, no markdown code blocks.`;
+Return a complete compilable, single-column ATS-friendly article document (article class; geometry, fontenc, enumitem, and hidelinks hyperref only). Use clear sections, compact spacing, no custom classes or external assets, and no more than two pages. Escape LaTeX special characters in source text: backslash, {, }, $, &, %, #, _, ^, and ~. Output only LaTeX starting with \\documentclass and ending with \\end{document}; no markdown or explanation.`;
 
     const latexCode = await generateCompletion(prompt, {
-      maxTokens: 6000,
-      temperature: 0.15
+      model: GROQ_LATEX_MODEL,
+      maxCompletionTokens: 900,
+      reasoningEffort: 'low',
+      reasoningFormat: 'hidden',
+      maxRetries: 0,
+      temperature: 0.6
     });
 
-    console.log('[LaTeX] raw type:', typeof latexCode);
     console.log('[LaTeX] raw length:', latexCode?.length || 0);
-    console.log('[LaTeX] raw preview:', String(latexCode || '').slice(0, 500));
 
     // Clean the response (remove markdown code blocks if present)
     let cleanedLatex = String(latexCode || '')
@@ -499,7 +428,11 @@ OUTPUT: Return ONLY the complete LaTeX code starting with \\documentclass. No ex
       }
     }
 
-    if (!cleanedLatex || !cleanedLatex.includes('\\documentclass')) {
+    if (
+      !cleanedLatex.startsWith('\\documentclass')
+      || !cleanedLatex.includes('\\begin{document}')
+      || !cleanedLatex.includes('\\end{document}')
+    ) {
       console.error('[LaTeX] Groq returned non-LaTeX output:', cleanedLatex.slice(0, 1000));
       return res.status(502).json({
         error: 'AI returned invalid LaTeX',
@@ -521,6 +454,36 @@ OUTPUT: Return ONLY the complete LaTeX code starting with \\documentclass. No ex
 
   } catch (error) {
     console.error('[LaTeX] Generation failed:', error);
+    if (error.status === 429 || error.error?.error?.code === 'rate_limit_exceeded') {
+      const retryAfterMs = error.headers?.get?.('retry-after-ms')
+        ?? error.headers?.['retry-after-ms'];
+      const retryAfterHeader = error.headers?.get?.('retry-after')
+        ?? error.headers?.['retry-after'];
+      let retryAfterSeconds;
+
+      if (retryAfterMs !== undefined && Number.isFinite(Number(retryAfterMs))) {
+        retryAfterSeconds = Math.ceil(Number(retryAfterMs) / 1000);
+      } else if (retryAfterHeader !== undefined) {
+        const seconds = Number(retryAfterHeader);
+        const retryAt = Date.parse(retryAfterHeader);
+        if (Number.isFinite(seconds)) {
+          retryAfterSeconds = Math.ceil(seconds);
+        } else if (Number.isFinite(retryAt)) {
+          retryAfterSeconds = Math.max(0, Math.ceil((retryAt - Date.now()) / 1000));
+        }
+      }
+
+      if (retryAfterSeconds !== undefined) {
+        res.set('Retry-After', String(retryAfterSeconds));
+      }
+      return res.status(429).json({
+        error: 'AI rate limit exceeded',
+        message: retryAfterSeconds !== undefined
+          ? `AI service is temporarily rate limited. Please try again in ${retryAfterSeconds} seconds.`
+          : 'AI service is temporarily rate limited. Please wait a minute before trying again.'
+      });
+    }
+
     res.status(500).json({
       error: 'Generation failed',
       message: 'Could not generate LaTeX resume. Please try again later.'
