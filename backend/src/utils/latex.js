@@ -1,6 +1,8 @@
-const DOCUMENT_CLASS = '\\documentclass';
-const BEGIN_DOCUMENT = '\\begin{document}';
-const END_DOCUMENT = '\\end{document}';
+const DOCUMENT_CLASS = /\\documentclass\s*(?:\[[^\]]*\]\s*)?\{[^}]+\}/g;
+const BEGIN_DOCUMENT = /\\begin\s*\{\s*document\s*\}/g;
+const END_DOCUMENT = /\\end\s*\{\s*document\s*\}/g;
+
+const withoutComments = (latex) => latex.replace(/(?<!\\)%.*$/gm, '');
 
 /**
  * Extract one complete LaTeX document, ignoring surrounding prose and fences.
@@ -12,30 +14,35 @@ export const extractLatexDocument = (response) => {
   }
 
   const responseText = response.trim();
-  const documentClassIndex = responseText.indexOf(DOCUMENT_CLASS);
-  if (documentClassIndex === -1) {
-    return null;
+  for (const declaration of responseText.matchAll(DOCUMENT_CLASS)) {
+    const document = responseText.slice(declaration.index);
+    const beginMatch = BEGIN_DOCUMENT.exec(document);
+    BEGIN_DOCUMENT.lastIndex = 0;
+    if (!beginMatch) {
+      continue;
+    }
+
+    const contentAfterBegin = document.slice(beginMatch.index + beginMatch[0].length);
+    const endMatch = END_DOCUMENT.exec(contentAfterBegin);
+    END_DOCUMENT.lastIndex = 0;
+    if (!endMatch) {
+      continue;
+    }
+
+    const latex = document.slice(
+      0,
+      beginMatch.index + beginMatch[0].length + endMatch.index + endMatch[0].length
+    ).trim();
+    const latexWithoutComments = withoutComments(latex);
+    const beginMarkers = [...latexWithoutComments.matchAll(BEGIN_DOCUMENT)];
+    BEGIN_DOCUMENT.lastIndex = 0;
+    const endMarkers = [...latexWithoutComments.matchAll(END_DOCUMENT)];
+    END_DOCUMENT.lastIndex = 0;
+
+    if (beginMarkers.length === 1 && endMarkers.length === 1) {
+      return latex;
+    }
   }
 
-  const document = responseText.slice(documentClassIndex);
-  const beginIndex = document.indexOf(BEGIN_DOCUMENT);
-  const endIndex = document.indexOf(END_DOCUMENT);
-
-  if (beginIndex === -1 || endIndex === -1 || endIndex < beginIndex) {
-    return null;
-  }
-
-  const latex = document.slice(0, endIndex + END_DOCUMENT.length).trim();
-  const beginMarkers = latex.match(/\\begin\{document\}/g) || [];
-  const endMarkers = latex.match(/\\end\{document\}/g) || [];
-
-  if (
-    !latex.startsWith(DOCUMENT_CLASS)
-    || beginMarkers.length !== 1
-    || endMarkers.length !== 1
-  ) {
-    return null;
-  }
-
-  return latex;
+  return null;
 };

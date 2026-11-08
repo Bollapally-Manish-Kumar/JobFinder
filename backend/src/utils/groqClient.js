@@ -44,7 +44,8 @@ export const generateCompletion = async (prompt, options = {}) => {
     maxRetries = 2,
     model = GROQ_MODEL,
     reasoningEffort,
-    reasoningFormat
+    reasoningFormat,
+    onCompletion
   } = options;
   const requestedLimit = Number(maxCompletionTokens ?? max_tokens ?? maxTokens ?? 2048);
   const tokenLimit = Number.isFinite(requestedLimit) ? Math.min(Math.max(requestedLimit, 64), 4096) : 2048;
@@ -74,6 +75,12 @@ export const generateCompletion = async (prompt, options = {}) => {
   }
 
   const completion = await groq.chat.completions.create(completionOptions, { maxRetries });
+  if (typeof onCompletion === 'function') {
+    onCompletion({
+      finishReason: completion.choices?.[0]?.finish_reason,
+      completionTokens: completion.usage?.completion_tokens
+    });
+  }
 
   const message = completion.choices?.[0]?.message || {};
   return message.content || message.reasoning || '';

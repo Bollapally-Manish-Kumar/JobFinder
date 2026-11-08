@@ -12,6 +12,14 @@ test('accepts a complete LaTeX document with surrounding whitespace', () => {
   assert.equal(extractLatexDocument(` \r\n${validLatex}\r\n `), validLatex);
 });
 
+test('accepts document markers with legal whitespace', () => {
+  const spacedMarkers = validLatex
+    .replace('\\documentclass{article}', '\\documentclass {article}')
+    .replace('\\begin{document}', '\\begin { document }')
+    .replace('\\end{document}', '\\end { document }');
+  assert.equal(extractLatexDocument(spacedMarkers), spacedMarkers);
+});
+
 test('extracts LaTeX from Markdown code fences', () => {
   const wrapped = `Here is the resume:\n\`\`\`latex\n${validLatex}\n\`\`\`\nGenerated resume.`;
   assert.equal(extractLatexDocument(wrapped), validLatex);
@@ -49,4 +57,12 @@ test('drops trailing text after the matching document end marker', () => {
     extractLatexDocument(`${validLatex}\n\\end{document}\nExplanation`),
     validLatex
   );
+});
+
+test('does not count document markers inside LaTeX comments', () => {
+  const commented = validLatex.replace(
+    '\\begin{document}',
+    '% \\begin{document}\n\\begin{document}'
+  );
+  assert.equal(extractLatexDocument(commented), commented);
 });
